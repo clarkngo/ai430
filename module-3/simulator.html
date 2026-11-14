@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 430 HOS 3 simulator: drift a feature, loosen an LLM judge, and tune a retrieval index, and see what each signal shows.">
+<title>Observability &amp; RAG Benchmark Simulator</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.sim-layout { display:grid; grid-template-columns:minmax(260px,340px) 1fr; gap:16px; align-items:start; }
+@media (max-width:860px){ .sim-layout { grid-template-columns:1fr; } }
+.panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow); margin-bottom:16px; min-width:0; }
+.panel h2 { font-size:1.02rem; margin-bottom:10px; }
+.panel h3 { font-size:.9rem; margin:14px 0 6px; }
+.presets { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 4px; }
+.presets button { font-family:inherit; font-size:.74rem; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:14px; padding:4px 10px; cursor:pointer; }
+.presets button:hover { border-color:var(--accent); }
+.toggle { display:flex; gap:8px; align-items:flex-start; font-size:.85rem; margin:6px 0; cursor:pointer; }
+.toggle input { accent-color:var(--accent); margin-top:4px; }
+.toggle small { display:block; color:var(--muted); font-size:.74rem; }
+.lanes { display:grid; grid-template-columns:repeat(var(--lanes,4),1fr); gap:8px; margin-bottom:12px; }
+.lane { border:2px solid var(--border); border-radius:10px; padding:10px; text-align:center; font-size:.8rem; background:var(--surface2); transition:all .2s; min-width:0; }
+.lane b { display:block; font-size:.86rem; }
+.lane .ic { font-size:1.3rem; display:block; }
+.lane.from { border-color:var(--blue); background:var(--blue-bg); }
+.lane.to { border-color:var(--accent); background:var(--accent-light); box-shadow:0 0 0 3px var(--accent-light); }
+.lane.err { border-color:var(--bad); background:var(--bad-bg); }
+@media (max-width:520px){ .lanes { grid-template-columns:repeat(2,1fr); } }
+.stepbox { border:1px solid var(--border); border-left:5px solid var(--accent); border-radius:8px; padding:10px 14px; background:var(--surface2); margin-bottom:12px; min-height:84px; }
+.stepbox.err { border-left-color:var(--bad); } .stepbox.warn { border-left-color:var(--amber); }
+.stepbox .k { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.steps-list { list-style:none; margin:0; padding:0; font-size:.8rem; }
+.steps-list li { padding:5px 8px; border-radius:6px; color:var(--muted); display:flex; gap:8px; }
+.steps-list li.cur { background:var(--accent-light); color:var(--text); font-weight:700; }
+.steps-list li.past { color:var(--text); }
+.steps-list li .n { flex:none; width:20px; text-align:right; }
+.steps-list li.bad { color:var(--bad); }
+.verdict { border-radius:8px; padding:10px 14px; font-size:.86rem; margin-top:10px; }
+.verdict.ok { background:var(--ok-bg); color:var(--ok); } .verdict.bad { background:var(--bad-bg); color:var(--bad); } .verdict.warn { background:var(--amber-bg); color:var(--amber); }
+.kv { display:grid; grid-template-columns:auto 1fr; gap:4px 12px; font-size:.82rem; }
+.kv dt { color:var(--muted); } .kv dd { margin:0; font-weight:600; }
+.bar-row { display:grid; grid-template-columns:70px 1fr 48px; gap:8px; align-items:center; font-size:.78rem; margin-bottom:4px; }
+.bar-track { height:12px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; overflow:hidden; position:relative; }
+.bar-fill { height:100%; background:var(--accent); }
+.project-tip { border:1px dashed var(--accent); border-radius:var(--radius); padding:14px 18px; background:var(--accent-light); font-size:.88rem; }
+.project-tip b.h { display:block; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--accent2); margin-bottom:4px; }
+
+.stepcard { border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:8px; padding:8px 12px; margin-bottom:6px; font-size:.84rem; background:var(--surface); }
+.stepcard .k { font-size:.68rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); }
+.stepcard.tool { border-left-color:var(--blue); } .stepcard.final { border-left-color:var(--ok); } .stepcard.stop { border-left-color:var(--amber); } .stepcard.bad { border-left-color:var(--bad); background:var(--bad-bg); }
+.stepcard.pick { cursor:pointer; } .stepcard.pick:hover { box-shadow:0 0 0 2px var(--accent-light); } .stepcard.chosen { box-shadow:0 0 0 3px var(--accent); }
+.metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:10px 0; }
+@media (max-width:560px){ .metrics { grid-template-columns:repeat(2,1fr); } }
+.metric { border:1px solid var(--border); border-radius:8px; padding:8px; text-align:center; background:var(--surface2); }
+.metric b { display:block; font-size:1.2rem; } .metric span { font-size:.72rem; color:var(--muted); }
+.seg { display:inline-flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; flex-wrap:wrap; }
+.seg button { font-family:inherit; font-size:.8rem; font-weight:700; padding:6px 12px; border:none; background:var(--surface2); color:var(--text); cursor:pointer; }
+.seg button[aria-pressed="true"] { background:var(--accent); color:var(--on-accent); }
+.tbl { width:100%; border-collapse:collapse; font-size:.8rem; }
+.tbl th, .tbl td { border:1px solid var(--border); padding:5px 8px; text-align:left; }
+.tbl th { background:var(--surface2); font-size:.7rem; text-transform:uppercase; color:var(--muted); }
+.ok { color:var(--ok); font-weight:700; } .no { color:var(--bad); font-weight:700; }
+
+.lanes.five { --lanes:5; }
+.lane.skip { opacity:.55; }
+.lane.ok { border-color:var(--ok); background:var(--ok-bg); }
+.tbl td.star { font-weight:800; color:var(--accent2); }
+.subhead { font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:12px 0 4px; }
+.bar-fill.alert { background:var(--bad); } .bar-fill.human { background:var(--blue); }
+.thr-line { position:absolute; top:-2px; bottom:-2px; width:2px; background:var(--text); }
+.sim-section-title { font-size:1.1rem; margin:22px 0 10px; }
+.sim-layout > * { min-width:0; } .panel select { max-width:100%; }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="../index.html"><span class="brand-icon">430</span><span><b>AI 430: MLOps and AgentOps</b><small>Course guides</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../index.html">Course home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Simulator 3 · Pairs with HOS 3 (Weeks 5–6)</div>
+    <h1>Observability &amp; RAG Benchmark Simulator</h1>
+    <p class="lede">Three small dashboards: inject drift and move the alert threshold, make the judge lenient and compare it with a human sample, and benchmark retrieval across top-k, chunk size and database.</p>
+    <div class="chips"><span class="chip">Outcomes CO3 · CO4</span><span class="chip">Evidently</span><span class="chip">LLM-as-judge</span><span class="chip">Ragas</span><span class="chip">Chroma · Qdrant</span></div>
+  </div>
+</section>
+<main id="main">
+<div class="row no-print" style="margin-bottom:16px"><span class="small muted"><b>Simulators:</b></span><a class="tag blue" href="../module-1/simulator.html" style="text-decoration:none">1 · Data &amp; Experiment Pipeline</a><a class="tag blue" href="../module-2/simulator.html" style="text-decoration:none">2 · CI/CD/CT Pipeline</a><span class="tag">3 · Observability &amp; RAG Benchmark</span><a class="tag blue" href="../module-4/simulator.html" style="text-decoration:none">4 · Red-Team &amp; Guardrails</a></div><p class="sim-note">⚠ Simulation only — scripted behaviour and made-up numbers standing in for the real tools. No API key, no network calls.</p>
+<section class="card tour" id="tour" aria-label="Guided tour"><p class="small muted" style="margin:0">Guided tour loading…</p></section>
+<h2 class="sim-section-title">A · Drift: the demand model's inputs</h2>
+<div class="sim-layout">
+  <div class="panel">
+    <label class="field" for="feat">Feature to drift</label>
+    <select id="feat"><option value="temp_c">temp_c</option><option value="orders">orders (lagged)</option><option value="is_holiday">is_holiday</option></select>
+    <label class="field" for="shift">Injected drift from week 5: <span id="shiftV">0</span>%</label>
+    <input type="range" id="shift" min="0" max="100" step="10" value="0">
+    <label class="field" for="thr">Alert threshold (drift score): <span id="thrV">0.10</span></label>
+    <input type="range" id="thr" min="0.05" max="0.5" step="0.05" value="0.1">
+  </div>
+  <div class="panel">
+    <div class="subhead">Drift score per week (bar) · threshold (line) · MAE</div>
+    <div id="driftBars"></div>
+    <div id="dV" aria-live="polite"></div>
+  </div>
+</div>
+<h2 class="sim-section-title">B · Judge vs. human: pantry_helper's answers</h2>
+<div class="sim-layout">
+  <div class="panel">
+    <label class="field" for="len">Judge leniency: <span id="lenV">strict</span></label>
+    <input type="range" id="len" min="0" max="3" value="0">
+    <label class="toggle"><input type="checkbox" id="jm"><span>The judge's model changes in week 3<small>A provider update, with the rubric unchanged</small></span></label>
+  </div>
+  <div class="panel">
+    <div style="overflow-x:auto" tabindex="0"><table class="tbl" id="jt"></table></div>
+    <div id="jV" aria-live="polite"></div>
+  </div>
+</div>
+<h2 class="sim-section-title">C · Retrieval benchmark: the help-centre index</h2>
+<div class="sim-layout">
+  <div class="panel">
+    <label class="field" for="k">Top-k</label>
+    <select id="k"><option>3</option><option selected>5</option><option>10</option></select>
+    <label class="field" for="chunk">Chunk size (tokens)</label>
+    <select id="chunk"><option>256</option><option selected>512</option><option>1024</option></select>
+    <div class="subhead">Database</div>
+    <div class="seg" role="group" aria-label="Vector database"><button type="button" data-db="chroma" aria-pressed="true">Chroma</button><button type="button" data-db="qdrant" aria-pressed="false">Qdrant</button></div>
+    <div class="row" style="margin-top:12px"><button class="btn" id="bench" type="button">Run benchmark</button><button class="btn secondary" id="clearB" type="button">Clear</button></div>
+  </div>
+  <div class="panel">
+    <div class="metrics"><div class="metric"><b id="mP">—</b><span>context precision</span></div><div class="metric"><b id="mR">—</b><span>context recall</span></div><div class="metric"><b id="mMs">—</b><span>retrieval ms (p50)</span></div><div class="metric"><b id="mT">—</b><span>prompt tokens</span></div></div>
+    <div style="overflow-x:auto" tabindex="0"><table class="tbl" id="bt"><tr><th>DB</th><th>k</th><th>Chunk</th><th>Precision</th><th>Recall</th><th>ms</th><th>Tokens</th></tr></table></div>
+    <div id="bV" aria-live="polite"></div>
+  </div>
+</div>
+<div class="card"><h2>What this teaches</h2><ul>
+<li><b>Drift is an early warning.</b> The inputs move weeks before MAE does, because the model hasn't yet met enough of the new data to fail on it.</li>
+<li><b>A threshold is a decision.</b> Too loose and drift hides; too tight and every week alerts. The right number comes from your own past weeks.</li>
+<li><b>A judge is a model, so it can drift too.</b> Only a regular human-graded sample tells you whether the agent changed or the judge did.</li>
+<li><b>Retrieval has a price.</b> A bigger top-k finds more of what the answer needs (recall) and more of what it doesn't (precision), and every chunk is prompt tokens.</li>
+<li><b>The database changes latency and operations, not relevance.</b> Same embeddings, same chunks: Chroma and Qdrant return nearly the same passages.</li></ul></div>
+<div class="project-tip"><b class="h">For your Term Project</b>Pick the one signal from these three that would warn you first if your Term Project's system started getting worse. Phase 2 expects it to be measured, with a threshold you can justify.</div>
+</main>
+<footer class="foot">AI 430: MLOps and AgentOps · City University of Seattle, School of Technology &amp; Computing<br>Course design &amp; materials: Clark Ngo · Simulators are illustrative HTML models — no real LLM, database, or network calls. <br>© 2026 Clark Ngo · Free to reuse and adapt under <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a>, except where noted · <a href="https://github.com/cityuseattle/ai430/blob/main/LICENSE.md">How to credit</a></footer>
+<script src="../assets/course.js"></script>
+<script>
+var $=function(id){return document.getElementById(id);};
+/* A · drift */
+var SENS={temp_c:1,orders:0.7,is_holiday:0.45};
+function drift(){
+  var f=$('feat').value, sh=+$('shift').value/100, thr=+$('thr').value, out='', first=null;
+  $('shiftV').textContent=Math.round(sh*100); $('thrV').textContent=thr.toFixed(2);
+  for(var w=1;w<=8;w++){
+    var base=[0.03,0.04,0.02,0.05,0.04,0.03,0.05,0.04][w-1];
+    var d= w>=5 ? base + sh*SENS[f]*0.12*(w-4) : base;
+    var mae = 11.8 + (w>=7 ? sh*SENS[f]*1.6*(w-6) : 0);
+    var al=d>thr; if(al && first===null) first=w;
+    out+='<div class="bar-row"><span>Week '+w+'</span><div class="bar-track"><div class="bar-fill'+(al?' alert':'')+'" style="width:'+Math.min(100,d/0.6*100)+'%"></div><div class="thr-line" style="left:'+(thr/0.6*100)+'%"></div></div><span>'+d.toFixed(2)+'</span></div>';
+    out=out.replace(/<\/span><\/div>$/, ' · '+mae.toFixed(1)+'</span></div>');
+  }
+  $('driftBars').innerHTML=out;
+  var v = sh===0 ? ['ok','No injected drift: the weekly scores are noise, all under the threshold.'] :
+    first===null ? ['bad','The drift is real, but the threshold ('+thr.toFixed(2)+') hides it every week. MAE starts climbing in week 7 with no alert.'] :
+    first<=6 ? ['ok','Alert in week '+first+' on '+f+', before MAE moves (week 7). That\'s the warning drift is for.'] :
+    ['warn','Alert in week '+first+': by then MAE is already rising. A tighter threshold would have warned you sooner.'];
+  $('dV').innerHTML='<div class="verdict '+v[0]+'">'+v[1]+'</div>';
+}
+['feat','shift','thr'].forEach(function(id){ $(id).addEventListener('input',drift); $(id).addEventListener('change',drift); });
+/* B · judge */
+var HUMAN=[0.78,0.76,0.79,0.77];
+function judge(){
+  var L=+$('len').value, jm=$('jm').checked, rows='<tr><th>Week</th><th>Judge avg</th><th>Human sample (10)</th><th>Agreement</th></tr>', worst=10;
+  $('lenV').textContent=['strict','a little lenient','lenient','very lenient'][L];
+  for(var w=1;w<=4;w++){
+    var bump=L*0.05 + (jm&&w>=3?0.11:0), j=Math.min(0.99,HUMAN[w-1]+0.01+bump), ag=Math.max(4,9-Math.round(bump*20));
+    worst=Math.min(worst,ag);
+    rows+='<tr><td>'+w+'</td><td>'+j.toFixed(2)+'</td><td>'+HUMAN[w-1].toFixed(2)+'</td><td class="'+(ag>=8?'ok':'no')+'">'+ag+' / 10</td></tr>';
+  }
+  $('jt').innerHTML=rows;
+  var v = (L===0&&!jm) ? ['ok','Judge and human agree on 9 of 10 every week: the judge score is a fair stand-in for the human one.'] :
+    (jm&&L===0) ? ['warn','From week 3 the judge score jumps while the human sample stays flat. The agent didn\'t change; the judge did. Without the human sample, this looks like an improvement.'] :
+    ['bad','The judge says the agent is better than it is: scores up, agreement down to '+worst+' / 10. The human sample is what catches it.'];
+  $('jV').innerHTML='<div class="verdict '+v[0]+'">'+v[1]+'</div>';
+}
+['len','jm'].forEach(function(id){ $(id).addEventListener('input',judge); $(id).addEventListener('change',judge); });
+/* C · retrieval */
+var db='chroma';
+[].slice.call(document.querySelectorAll('.seg button')).forEach(function(b){ b.addEventListener('click',function(){ [].slice.call(document.querySelectorAll('.seg button')).forEach(function(x){ x.setAttribute('aria-pressed','false'); }); b.setAttribute('aria-pressed','true'); db=b.dataset.db; }); });
+function bench(){
+  var k=+$('k').value, ch=+$('chunk').value;
+  var P={3:0.82,5:0.71,10:0.52}[k], R={3:0.68,5:0.81,10:0.93}[k];
+  if(ch===256){ R-=0.07; P+=0.03; } if(ch===1024){ P-=0.08; R+=0.03; }
+  if(db==='qdrant'){ P-=0.01; }
+  var ms = (db==='chroma'?14:9) + k*0.8 + (ch===1024?2:0), tok = Math.round(420 + k*ch*0.92);
+  $('mP').textContent=P.toFixed(2); $('mR').textContent=Math.min(0.97,R).toFixed(2); $('mMs').textContent=ms.toFixed(0); $('mT').textContent=tok;
+  var r=document.createElement('tr'); r.innerHTML='<td>'+(db==='chroma'?'Chroma':'Qdrant')+'</td><td>'+k+'</td><td>'+ch+'</td><td>'+P.toFixed(2)+'</td><td>'+Math.min(0.97,R).toFixed(2)+'</td><td>'+ms.toFixed(0)+'</td><td>'+tok+'</td>'; $('bt').appendChild(r);
+  var n=$('bt').rows.length-1, msg = n<2 ? 'One setting measured. Change one knob and run it again to see what it costs.' :
+    'Compare the rows: top-k moves precision, recall and tokens together; the database moves milliseconds and barely touches relevance.';
+  $('bV').innerHTML='<div class="verdict warn">'+msg+'</div>';
+}
+$('bench').addEventListener('click',bench);
+$('clearB').addEventListener('click',function(){ $('bt').innerHTML='<tr><th>DB</th><th>k</th><th>Chunk</th><th>Precision</th><th>Recall</th><th>ms</th><th>Tokens</th></tr>'; $('bV').innerHTML=''; ['mP','mR','mMs','mT'].forEach(function(i){ $(i).textContent='—'; }); });
+drift(); judge();
+</script>
+<script>window.SIM_TOUR=[
+ {title:'1 · Drift that the threshold hides',
+  'do':'Press <b>Set this up for me</b>. It injects 50% drift into <code>temp_c</code> from week 5 and sets the alert threshold to 0.40.',
+  watch:'Panel A: the bars, the threshold line, and the MAE after each score.',
+  expect:'The drift score climbs from week 5, but never crosses 0.40. MAE starts rising in week 7, and nothing alerts.',
+  why:'A threshold set too loose turns a monitor into decoration. HOS 3 Evaluate injects drift on purpose to check yours.',
+  setup:function(h){ h.set('feat','temp_c'); h.set('shift',50); h.set('thr',0.4); }},
+ {title:'2 · The same drift with a tighter threshold',
+  'do':'Press <b>Set this up for me</b>. It keeps the drift and lowers the threshold to 0.10.',
+  watch:'Which week first turns red, compared with when MAE moves.',
+  expect:'An alert in week 5 or 6, before the MAE rises in week 7.',
+  why:'Drift warns you while accuracy still looks fine. The threshold you choose in HOS 3 Understand &amp; Refine needs a number from your own data behind it.',
+  setup:function(h){ h.set('feat','temp_c'); h.set('shift',50); h.set('thr',0.1); }},
+ {title:'3 · A lenient judge, caught by the human sample',
+  'do':'Press <b>Set this up for me</b>. It makes the judge lenient.',
+  watch:'Panel B: judge average vs. the human sample, and the agreement column.',
+  expect:'The judge scores rise every week; the human scores don\'t, and agreement drops below 8 / 10.',
+  why:'You grade 10 traces yourself in HOS 3 Evaluate, before looking at the judge\'s scores, for exactly this reason.',
+  setup:function(h){ h.set('len',2); h.set('jm',false); }},
+ {title:'4 · The judge\'s model changes mid-month',
+  'do':'Press <b>Set this up for me</b>. It sets the judge back to strict and changes its model in week 3.',
+  watch:'Weeks 3 and 4 in panel B.',
+  expect:'The judge score jumps by about 0.1 while the human sample stays flat.',
+  why:'Same rubric, different judge. Without a human sample every month, this looks like the agent improved.',
+  setup:function(h){ h.set('len',0); h.set('jm',true); }},
+ {title:'5 · Top-k 3 vs. 10: relevance bought with tokens',
+  'do':'Press <b>Set this up for me</b>. It clears panel C and benchmarks Chroma at top-k 3, then at top-k 10.',
+  watch:'The two rows in the benchmark table.',
+  expect:'Top-k 10 raises recall (about 0.68 → 0.93), lowers precision, and roughly triples the prompt tokens.',
+  why:'More context finds more of what the answer needs, and more of what it doesn\'t. Every chunk is paid for in tokens and latency.',
+  setup:function(h){ h.click('clearB'); h.click(h.q('.seg button[data-db="chroma"]')); h.set('chunk','512'); h.set('k','3'); h.click('bench'); h.set('k','10'); h.click('bench'); }},
+ {title:'6 · Chroma vs. Qdrant at the same settings',
+  'do':'Press <b>Set this up for me</b>. It benchmarks both databases at top-k 5, chunk 512.',
+  watch:'Precision and recall, then milliseconds.',
+  expect:'Nearly identical relevance; Qdrant a few milliseconds faster here.',
+  why:'The database is an operations choice (speed, running it, filtering). Relevance comes from the chunks and the embeddings.',
+  setup:function(h){ h.click('clearB'); h.set('chunk','512'); h.set('k','5'); h.click(h.q('.seg button[data-db="chroma"]')); h.click('bench'); h.click(h.q('.seg button[data-db="qdrant"]')); h.click('bench'); }},
+ {title:'Your turn',
+  'do':'Try drift on <code>is_holiday</code>, a very lenient judge, and chunk size 256 vs. 1024.',
+  expect:'You can answer the lesson\'s three questions: why drift warns before accuracy, how you\'d know the judge changed, and what relevance costs.',
+  why:'Those are most of HOS 3 Analyze. Now go back to the <a href="index.html#lecture">lesson</a>.'}
+];</script>
+<script src="../assets/sim-tour.js"></script>
+</body>
+</html>

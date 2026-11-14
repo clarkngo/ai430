@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 430 Starter Code Walkthrough: what every file in each HOS starter repo does, how to run it, and how to read code you didn't write.">
+<title>AI 430 — Starter Code Walkthrough</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.rule-box { background:var(--accent-light); border-left:5px solid var(--accent); padding:13px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.9rem; }
+        .rule-box strong { color:var(--accent2); }
+        .spoiler-box { background:var(--amber-bg); border:2px solid var(--amber); border-radius:8px; padding:14px 18px; margin:18px 0; font-size:0.9rem; }
+        .spoiler-box strong { color:var(--amber); }
+        .intro-box { background:var(--blue-bg); border-left:5px solid var(--blue); padding:15px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.92rem; }
+        .intro-box h4 { margin:0 0 6px; color:var(--blue); font-size:0.95rem; }
+        .jump-table { width:100%; border-collapse:collapse; margin:14px 0; font-size:0.86rem; }
+        .jump-table th, .jump-table td { border:1px solid var(--border); padding:9px 12px; text-align:left; vertical-align:top; }
+        .jump-table th { background:var(--surface2); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:var(--muted); }
+        .jump-table td.hos { font-weight:700; color:var(--accent); white-space:nowrap; }
+        .hos-tag { display:inline-block; font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:999px; background:var(--accent-light); color:var(--accent2); margin-bottom:12px; }
+        .hos-tag.empty { background:var(--surface2); color:var(--muted); }
+        .have-list { margin:8px 0 14px; padding-left:20px; font-size:0.9rem; }
+        .have-list li { margin-bottom:4px; }
+        details.file-block { border:1px solid var(--border); border-radius:8px; margin:10px 0; background:var(--surface); }
+        details.file-block > summary { cursor:pointer; padding:11px 16px; font-weight:700; font-size:0.93rem; list-style:none; display:flex; flex-wrap:wrap; gap:6px 12px; align-items:baseline; }
+        details.file-block > summary::-webkit-details-marker { display:none; }
+        details.file-block > summary::before { content:"▸"; color:var(--accent); font-size:0.85rem; }
+        details.file-block[open] > summary::before { content:"▾"; }
+        details.file-block > summary .role { font-weight:400; color:var(--muted); font-size:0.85rem; }
+        .file-body { padding:2px 18px 16px; font-size:0.9rem; }
+        .file-body p { margin:8px 0; }
+        .file-body ul { margin:6px 0 8px; padding-left:20px; }
+        .file-body li { margin-bottom:5px; }
+        .watch { background:var(--amber-bg); border-left:4px solid var(--amber); padding:9px 14px; margin:10px 0; border-radius:0 4px 4px 0; font-size:0.86rem; }
+        .watch strong { color:var(--amber); }
+        .think { background:var(--blue-bg); border-left:4px solid var(--blue); padding:9px 14px; margin:10px 0; border-radius:0 4px 4px 0; font-size:0.86rem; }
+        .think strong { color:var(--violet); }
+        pre { background:var(--code-bg); color:var(--code-text); padding:13px 15px; border-radius:6px; overflow-x:auto; font-size:0.78rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code, td code { background:var(--surface2); color:var(--rose); padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .diagram { border:1px solid var(--border); border-radius:8px; background:var(--surface2); padding:10px; margin:14px 0; overflow-x:auto; }
+        .diagram svg { display:block; min-width:640px; width:100%; height:auto; }
+        .diagram-cap { font-size:0.8rem; color:var(--muted); margin:6px 4px 0; }
+        .flow-list { font-size:0.9rem; padding-left:22px; }
+        .flow-list li { margin-bottom:6px; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid var(--border); font-size:0.9rem; }
+        .guide-nav a { color:var(--link); text-decoration:none; font-weight:600; }
+    details summary { overflow-wrap:anywhere; }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="../index.html"><span class="brand-icon">430</span><span><b>AI 430: MLOps and AgentOps</b><small>Reference</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../index.html">Course home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 430 · Reference · Read as you start each HOS</div>
+    <h1>Starter Code Walkthrough</h1>
+    <p class="lede">What every file in each HOS's starter code does, and how a change or a request moves through it. Read the section for the HOS you're starting, not the ones after it.</p>
+    <div class="chips"><span class="chip">4 starter repos (planned)</span><span class="chip">Runs in GitHub Codespaces</span><span class="chip">Free tiers only</span></div>
+  </div>
+</section>
+<main id="main">
+<nav class="secnav no-print" aria-label="Page sections">
+<div class="secnav-inner"><a href="#overview">How to use</a><a href="#hos1">HOS 1</a><a href="#hos2">HOS 2</a><a href="#hos3">HOS 3</a><a href="#hos4">HOS 4</a><a href="#run">Run it</a><a href="#reading">Reading code</a></div>
+</nav>
+<section class="module card" id="overview">
+<div class="module-head"><div class="module-icon">🧭</div><div><h2>How to use this page</h2></div></div>
+<div class="rule-box">
+<strong>Course rules this page follows:</strong> everything below runs in GitHub Codespaces and needs no credit card. Gemini, Hugging Face Spaces and Langfuse have free tiers; DVC, MLflow, pandera, Evidently, Chroma, Qdrant, Ragas and promptfoo run in your Codespace with no account.
+</div>
+<div class="intro-box">
+<h4>What "starter code" means in this course</h4>
+<p>Each HOS has a starter template repository on GitHub, and you get your own copy by accepting that HOS's invite, linked from its lesson. The templates (<code>AI430-HOS01</code> to <code>AI430-HOS04</code>) are planned: this page describes what each will contain. The same fictional business, Salish Fresh, runs through all four, but each HOS starts from its own repo, so you don't carry one HOS's bugs into the next. Your first job in each HOS is reading working code you didn't type.</p>
+</div>
+<div class="spoiler-box">
+<strong>Don't read ahead.</strong> HOS 2's starter contains a finished HOS 1 pipeline, and HOS 4's contains finished monitoring. Read a section only when you're <em>starting</em> that HOS.
+</div>
+<div class="table-wrap" tabindex="0"><table class="jump-table">
+<tr><th>You're starting…</th><th>The repo hands you</th><th>Jump</th></tr>
+<tr><td class="hos">HOS 1</td><td>A forecasting model, a year of orders, a support agent and ten evaluation questions, with no pipeline yet</td><td><a href="#hos1">Read →</a></td></tr>
+<tr><td class="hos">HOS 2</td><td>HOS 1's finished pipeline, an app for the Space, a gate script and a drift check, with no workflows yet</td><td><a href="#hos2">Read →</a></td></tr>
+<tr><td class="hos">HOS 3</td><td>The agent with its index in two vector databases, a recorded week, a rubric and benchmark questions</td><td><a href="#hos3">Read →</a></td></tr>
+<tr><td class="hos">HOS 4</td><td>The agent with guardrails off, an orders agent over A2A and a red-team suite</td><td><a href="#hos4">Read →</a></td></tr>
+<tr><td class="hos">Any</td><td>Running it, and how to read code you didn't write</td><td><a href="#run">Run →</a> · <a href="#reading">Read →</a></td></tr>
+</table></div>
+</section>
+
+<section class="module card" id="hos1">
+<div class="module-head"><div class="module-icon">1️⃣</div><div><h2>Starting HOS 1</h2></div></div>
+<span class="hos-tag">A working model and agent, no pipeline yet</span>
+<p>The forecasting code, the data and the support agent all work. What's missing is everything that makes them reproducible: data versioning, validation, tracked runs and the registry. That's yours to build.</p>
+<details class="file-block">
+<summary>requirements.txt + .devcontainer/ <span class="role">— setup, done for you in a Codespace</span></summary>
+<div class="file-body">
+<p>GitHub builds a Python container, copies <code>.env.example</code> to <code>.env</code> and installs <code>requirements.txt</code>: <code>dvc</code>, <code>pandera</code>, <code>mlflow</code>, <code>scikit-learn</code>, <code>pandas</code>, <code>google-adk</code> and <code>pytest</code>. If a command says "not found", the Codespace was built before the config changed: <em>Codespaces: Rebuild Container</em>.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>.env.example <span class="role">— where your key and the tracking server go</span></summary>
+<div class="file-body">
+<pre tabindex="0"># Your free Gemini API key — https://aistudio.google.com/apikey
+GOOGLE_API_KEY=paste-your-key-here
+GOOGLE_GENAI_USE_VERTEXAI=FALSE
+MLFLOW_TRACKING_URI=http://127.0.0.1:5000</pre><p>A template, safe to commit. Your real key goes in <code>.env</code>, which is git-ignored. <code>MLFLOW_TRACKING_URI</code> must match the server you start with <code>mlflow ui --port 5000</code>, or runs go to a local <code>mlruns/</code> folder the UI isn't reading.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>data/orders.csv <span class="role">— 52 weeks of orders for six zones</span></summary>
+<div class="file-body">
+<p>Columns <code>date</code>, <code>zone</code>, <code>orders</code>, <code>temp_c</code>, <code>is_holiday</code>. It isn't under DVC yet: the first commands in the HOS 1 guide put it there and commit the <code>.dvc</code> file instead.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>data/batches/ <span class="role">— weekly batches, some broken on purpose</span></summary>
+<div class="file-body">
+<p>New weeks arrive here. A few are broken the way real data breaks, such as <code>week-07-renamed.csv</code>, where <code>temp_c</code> became <code>temperature</code>. Evaluate uses them to check your validation.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>forecast/model.py <span class="role">— features and the model</span></summary>
+<div class="file-body">
+<p>Builds lag features, temperature and holiday flags, and trains a random forest with a fixed <code>random_state</code>. Reads the CSV with <code>parse_dates=["date"]</code>. Your pipeline calls it; you shouldn't need to change it.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>pantry_helper/ <span class="role">— the support agent</span></summary>
+<div class="file-body">
+<p>A Google ADK agent on <code>gemini-3.8-flash</code> with tools <code>search_help</code> (the help centre), <code>get_order</code> and <code>issue_credit</code> (limit $25). In HOS 1 you don't change it; you evaluate it.</p>
+<div class="watch"><strong>Watch out:</strong> If your assistant changes the model name to something like <code>gemini-2.5-flash</code>, new keys get a 502 or "model not found". Keep <code>gemini-3.8-flash</code>.</div>
+</div>
+</details>
+<details class="file-block">
+<summary>evals/questions.json + evals/run_agent_eval.py <span class="role">— the agent's evaluation</span></summary>
+<div class="file-body">
+<p>Ten customer questions with what a good answer must contain. <code>python -m evals.run_agent_eval --runs 3</code> asks all ten three times and logs each run to MLflow with the prompt version and model name.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>pipelines/ and dvc.yaml <span class="role">— yours (Create)</span></summary>
+<div class="file-body">
+<p>Empty except for TODOs. Your prompt has the assistant write <code>pipelines/schema.py</code> (the pandera schema), the train and evaluate scripts, and <code>dvc.yaml</code> with the stages validate → train → evaluate. In Refine you add one rule to <code>schema.py</code> by hand, with a test in <code>tests/test_schema.py</code>.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>NOTES.md + screenshots/ <span class="role">— where your written work goes</span></summary>
+<div class="file-body">
+<p>One heading per stage. Your prompt, your Evaluate note, your Analyze walkthrough and your Understand explanation go here; screenshots go in <code>screenshots/</code>.</p>
+</div>
+</details>
+<p class="think"><strong>Before you prompt your assistant:</strong> run <code>python -c "from forecast.model import train; print(train('data/orders.csv'))"</code> once and read <code>forecast/model.py</code>, so you know what MAE to expect.</p>
+<p class="small muted">Repo: <code>AI430-HOS01</code> (planned). Guide: <a href="../module-1/hos-guide.html">HOS 1 guide</a>.</p>
+</section>
+
+<section class="module card" id="hos2">
+<div class="module-head"><div class="module-icon">2️⃣</div><div><h2>Starting HOS 2</h2></div></div>
+<span class="hos-tag">HOS 1's pipeline, plus a Space to deploy to</span>
+<p>Your HOS 1 pipeline arrives finished, with an app for the Hugging Face Space, a gate script and a drift check. The three workflows that tie them together are yours.</p>
+<details class="file-block">
+<summary>requirements.txt + .devcontainer/ <span class="role">— setup, done for you in a Codespace</span></summary>
+<div class="file-body">
+<p>GitHub builds a Python container, copies <code>.env.example</code> to <code>.env</code> and installs <code>requirements.txt</code>: everything from HOS 1, plus <code>gradio</code>, <code>huggingface_hub</code>, <code>evidently</code> and <code>pyyaml</code>. If a command says "not found", the Codespace was built before the config changed: <em>Codespaces: Rebuild Container</em>.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>app/ <span class="role">— what runs on the Space</span></summary>
+<div class="file-body">
+<p><code>app/app.py</code> is a Gradio app with a forecast form and a chat box for <code>pantry_helper</code>. It loads the model behind the <code>champion</code> alias. <code>app/requirements.txt</code> is separate from the repo's own: the Space installs only that file.</p>
+<div class="watch"><strong>Watch out:</strong> A Space that shows "Build error" is usually missing a package in <code>app/requirements.txt</code>.</div>
+</div>
+</details>
+<details class="file-block">
+<summary>gates/check.py + gates/thresholds.yaml <span class="role">— the quality gate</span></summary>
+<div class="file-body">
+<p>Loads the candidate's metrics and production's, compares them with the margins in <code>thresholds.yaml</code>, and exits non-zero with a message naming the check that failed. With no champion yet, it passes and registers the candidate. In Refine you add one condition by hand, with a test in <code>tests/test_gate.py</code>.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>monitoring/drift_check.py <span class="role">— the trigger for retraining</span></summary>
+<div class="file-body">
+<p>Compares the latest batch with the training data and prints which features drifted. <code>ct.yml</code> runs it on a schedule and retrains only if it finds drift.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>scripts/scan_logs.py <span class="role">— the secret scanner</span></summary>
+<div class="file-body">
+<p>Searches a job's output for strings that look like tokens, including reversed or encoded ones. GitHub's masking catches only the exact secret.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>.github/workflows/ <span class="role">— yours (Create)</span></summary>
+<div class="file-body">
+<p>Empty. Your prompt has the assistant write <code>ci.yml</code> (tests, schema check, smoke test, secret scan on every push and pull request), <code>deploy.yml</code> (train, evaluate, gate, deploy on merge to <code>main</code>) and <code>ct.yml</code> (weekly drift check and retrain).</p>
+<div class="watch"><strong>Watch out:</strong> Secrets aren't passed to workflows started by pull requests from forks, and a misspelt secret name gives an empty string, not an error.</div>
+</div>
+</details>
+<details class="file-block">
+<summary>Branches candidates/bigger-model and candidates/double-search <span class="role">— changes to sneak past your gate</span></summary>
+<div class="file-body">
+<p>Two ready-made candidates for Evaluate: a more accurate but slower model, and a prompt that doubles the agent's tool calls.</p>
+</div>
+</details>
+<p class="think"><strong>Before you prompt your assistant:</strong> add <code>HF_TOKEN</code>, <code>GOOGLE_API_KEY</code> and the <code>HF_SPACE</code> variable to the repo first (see <a href="../start-here/accounts.html#huggingface">Hugging Face setup</a>), or <code>deploy.yml</code> fails on its first run.</p>
+<p class="small muted">Repo: <code>AI430-HOS02</code> (planned). Guide: <a href="../module-2/hos-guide.html">HOS 2 guide</a>.</p>
+</section>
+
+<section class="module card" id="hos3">
+<div class="module-head"><div class="module-icon">3️⃣</div><div><h2>Starting HOS 3</h2></div></div>
+<span class="hos-tag">An agent and a model to watch, and the data to watch them with</span>
+<p><code>pantry_helper</code> arrives with its help-centre index already built in both vector databases, a recorded week of questions and a judge rubric. Tracing, the judge, the drift report and the benchmark are yours.</p>
+<details class="file-block">
+<summary>requirements.txt + .devcontainer/ <span class="role">— setup, done for you in a Codespace</span></summary>
+<div class="file-body">
+<p>GitHub builds a Python container, copies <code>.env.example</code> to <code>.env</code> and installs <code>requirements.txt</code>: <code>langfuse</code>, <code>evidently</code>, <code>ragas</code>, <code>chromadb</code>, <code>qdrant-client</code> and <code>google-adk</code>; Docker is available for Qdrant. If a command says "not found", the Codespace was built before the config changed: <em>Codespaces: Rebuild Container</em>.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>docker-compose.yml + rag/build_index.py <span class="role">— the two vector databases</span></summary>
+<div class="file-body">
+<p><code>docker compose up -d qdrant</code> starts Qdrant; Chroma runs in-process. <code>rag/build_index.py</code> chunks the help articles and loads the same embeddings into both, so a comparison is fair.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>observability/tracing.py <span class="role">— where tracing is set up</span></summary>
+<div class="file-body">
+<p>A stub that your Create prompt fills in: it connects to Langfuse with the three keys in <code>.env</code> and wraps each agent run in a trace, with a span per retrieval, tool call and model call.</p>
+<div class="watch"><strong>Watch out:</strong> If every span has the same duration, the spans are created after the work instead of around it.</div>
+</div>
+</details>
+<details class="file-block">
+<summary>evals/week.json, evals/rubric.md + evals/run_week.py <span class="role">— a recorded week, and how to grade it</span></summary>
+<div class="file-body">
+<p>40 real-looking customer questions and a 1–5 rubric. <code>python -m evals.run_week --questions evals/week.json --pause 4</code> runs them all and writes <code>results/week.csv</code> with each answer, its span timings and its judge score. <code>evals/judge.py</code>, the judge itself, comes from your prompt.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>bench/questions.json + bench/ragas_setup.py <span class="role">— the retrieval benchmark's inputs</span></summary>
+<div class="file-body">
+<p>30 questions with the passages a good answer needs. <code>ragas_setup.py</code> points Ragas at Gemini instead of its OpenAI default; import it before running any metric. <code>bench/retrieval.py</code> is yours.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>data/batches/week-09-sensor.csv + results/degraded-week.csv <span class="role">— known-bad cases</span></summary>
+<div class="file-body">
+<p>A batch with one feature shifted on purpose, for checking the drift report, and a week where quality drops, for checking the alert you write by hand in <code>monitoring/alerts.py</code> (Refine).</p>
+</div>
+</details>
+<p class="think"><strong>Before you prompt your assistant:</strong> start Qdrant and run <code>python -m rag.build_index</code> once, then ask <code>pantry_helper</code> two questions in <code>adk web --allow_origins "*"</code> so you've seen what a normal answer looks like.</p>
+<p class="small muted">Repo: <code>AI430-HOS03</code> (planned). Guide: <a href="../module-3/hos-guide.html">HOS 3 guide</a>.</p>
+</section>
+
+<section class="module card" id="hos4">
+<div class="module-head"><div class="module-icon">4️⃣</div><div><h2>Starting HOS 4</h2></div></div>
+<span class="hos-tag">An agent with every guardrail off, and an attack suite</span>
+<p><code>pantry_helper</code> arrives with its guardrails switched off, a separate <code>orders_agent</code> served over A2A, and a promptfoo suite of attacks. The guardrail callbacks are yours.</p>
+<details class="file-block">
+<summary>requirements.txt + .devcontainer/ <span class="role">— setup, done for you in a Codespace</span></summary>
+<div class="file-body">
+<p>GitHub builds a Python container, copies <code>.env.example</code> to <code>.env</code> and installs <code>requirements.txt</code>: <code>google-adk</code> with A2A support, and Node for <code>npx promptfoo@latest</code>. If a command says "not found", the Codespace was built before the config changed: <em>Codespaces: Rebuild Container</em>.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>pantry_helper/serve.py + guards.yaml <span class="role">— the agent under attack</span></summary>
+<div class="file-body">
+<p>Serves <code>pantry_helper</code> on port 8000 for promptfoo. <code>guards.yaml</code> has four flags, all off: least privilege, input marking, action check and output check. <code>pantry_helper/guards.py</code>, which implements them as ADK callbacks, comes from your prompt.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>a2a_orders/ <span class="role">— a second agent, over A2A</span></summary>
+<div class="file-body">
+<p><code>python -m a2a_orders.serve</code> runs <code>orders_agent</code> on port 8001. It publishes an agent card, and checks each task's caller against an allowlist (<code>AGENT_ID</code> in <code>.env</code>) and the customer it's for, before any model call.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>redteam/ <span class="role">— the attack suite</span></summary>
+<div class="file-body">
+<p><code>promptfooconfig.yaml</code> has direct and indirect injection, excessive agency, disclosure and prompt-leakage cases, each repeated three times. <code>poisoned_article.md</code> is a help article with a hidden instruction. <code>still_open.yaml</code> has two attacks that four layers don't stop, for Refine.</p>
+<div class="watch"><strong>Watch out:</strong> If your assistant edits a file in <code>redteam/</code> to make a test pass, revert it with <code>git checkout redteam/</code>. The suite is the judge.</div>
+</div>
+</details>
+<details class="file-block">
+<summary>scripts/a2a_probe.py <span class="role">— an unknown caller</span></summary>
+<div class="file-body">
+<p>Sends a task to <code>orders_agent</code> as any agent id you give it. <code>--agent-id stranger</code> should be rejected before any model call.</p>
+</div>
+</details>
+<details class="file-block">
+<summary>pantry_helper/my_guard.py + redteam/my_cases.yaml <span class="role">— yours (Refine)</span></summary>
+<div class="file-body">
+<p>Empty. By hand, you write one callback that stops an attack still getting through, and add an attack case and a legitimate case for it.</p>
+</div>
+</details>
+<p class="think"><strong>Before you prompt your assistant:</strong> run the suite once with every flag off and screenshot the report. That's the baseline every later number is compared with.</p>
+<p class="small muted">Repo: <code>AI430-HOS04</code> (planned). Guide: <a href="../module-4/hos-guide.html">HOS 4 guide</a>.</p>
+</section>
+
+<section class="module card" id="run">
+<div class="module-head"><div class="module-icon">▶️</div><div><h2>Running it</h2></div></div>
+<p><b>In a Codespace:</b> on your repo, <b>Code → Codespaces → Create codespace on main</b>. The devcontainer installs everything and creates <code>.env</code>; add your keys to it. Then, from the repo's top folder:</p>
+<pre tabindex="0"># HOS 1 (mlflow ui in its own terminal tab)
+mlflow ui --port 5000
+dvc repro
+python -m evals.run_agent_eval --runs 3
+
+# HOS 2: push a branch and open a pull request; the workflows run in the Actions tab
+git push -u origin my-change
+
+# HOS 3
+docker compose up -d qdrant
+python -m evals.run_week --questions evals/week.json --pause 4
+python -m bench.retrieval
+
+# HOS 4 (three terminal tabs)
+python -m a2a_orders.serve
+python -m pantry_helper.serve
+npx promptfoo@latest eval -c redteam/promptfooconfig.yaml
+
+# Any HOS: the ADK developer UI
+adk web --allow_origins "*"</pre>
+<p>Plain <code>adk web</code> shows a blank page in a Codespace, because ADK rejects requests through the forwarded URL; the <code>--allow_origins "*"</code> form is safe there, since Codespace ports are private to your account. Stop your Codespace when you're done: free hours are limited. More on the terminal, tabs and keys: <a href="../start-here/tools.html">Tools you'll use all term</a>.</p>
+</section>
+
+<section class="module card" id="reading">
+<div class="module-head"><div class="module-icon">🔎</div><div><h2>How to read code you didn't write</h2></div></div>
+<ol class="flow-list">
+<li><strong>Start at the entry point.</strong> That's <code>dvc.yaml</code>, a workflow file, <code>evals/run_week.py</code> or <code>pantry_helper/serve.py</code>, depending on the HOS.</li>
+<li><strong>Follow one change or one request end to end.</strong> One batch through the pipeline, or one question through the agent, file by file, before you read anything else.</li>
+<li><strong>Run it before you change it.</strong> Push a good batch, then a broken one; ask a question it can answer, then one it can't.</li>
+<li><strong>Break it on purpose.</strong> Blank a key, rename a column, misspell a secret. Knowing how it fails is how you know you understand it.</li>
+</ol>
+<p>This is the same habit the Evaluate and Analyze stages of every HOS are training.</p>
+</section>
+
+<div class="guide-nav">
+<a href="../index.html">← Course home</a>
+<a href="../start-here/accounts.html">Account &amp; Service Setup Guide →</a>
+</div>
+</main>
+<footer class="foot">AI 430: MLOps and AgentOps · City University of Seattle, School of Technology &amp; Computing<br>Course design &amp; materials: Clark Ngo <br>© 2026 Clark Ngo · Free to reuse and adapt under <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a>, except where noted · <a href="https://github.com/cityuseattle/ai430/blob/main/LICENSE.md">How to credit</a></footer>
+<script src="../assets/course.js"></script>
+<script>
+/* section nav highlight (scrolls only the nav row, never the page) */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); var c=a.parentElement, ar=a.getBoundingClientRect(), cr=c.getBoundingClientRect(); c.scrollLeft += (ar.left+ar.width/2)-(cr.left+cr.width/2); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+</script>
+</body>
+</html>
