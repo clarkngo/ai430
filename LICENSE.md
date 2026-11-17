@@ -8,7 +8,7 @@ You may share and adapt them for any purpose, including commercially, as long as
 
 ## How to credit
 
-> "AI 430: MLOps and AgentOps" by Clark Ngo, City University of Seattle, School of Technology & Computing. Licensed under CC BY 4.0. https://cityuseattle.github.io/ai430/
+> "AI 430: MLOps and AgentOps" by Clark Ngo, City University of Seattle, School of Technology & Computing. Licensed under CC BY 4.0. https://clarkngo.github.io/ai430/
 
 If you adapt the materials, say so, for example: "Adapted from 'AI 430: MLOps and AgentOps' by Clark Ngo…".
 
