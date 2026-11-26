@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="A fictional, finished AI 430 Term Project: an agentic help desk operated with all four HOS, with its live demo played step by step, three releases and a demo video storyboard.">
+<meta name="description" content="A fictional, finished AI 430 Term Project: an agentic help desk operated with all four AICs, with its live demo played step by step, three releases and a demo video storyboard.">
 <title>AI 430 — Example Term Project: Campus Help Desk Pipeline</title>
 <link rel="stylesheet" href="../assets/course.css">
 <style>
@@ -80,16 +80,16 @@
     <div class="eyebrow">AI 430 · Module 5 · Example Term Project</div>
     <h1>Example: Campus Help Desk Pipeline</h1>
     <p class="lede">A fictional, finished Term Project you can click through: an IT help agent with tools, memory and error handling, run through versioned data, a gated deploy, monitoring and a red-team suite.</p>
-    <div class="chips"><span class="chip">Fictional example</span><span class="chip">Group of three</span><span class="chip">All 4 HOS</span><span class="chip">Scripted demo</span></div>
+    <div class="chips"><span class="chip">Fictional example</span><span class="chip">Group of three</span><span class="chip">All 4 AICs</span><span class="chip">Scripted demo</span></div>
   </div>
 </section>
 <main id="main">
 <nav class="secnav no-print" aria-label="Page sections">
   <div class="secnav-inner"><a href="#overview">The project</a><a href="#demo">Live demo</a><a href="#releases">Three releases</a><a href="#video">Demo video</a><a href="#strong">What makes it strong</a></div>
 </nav>
-<p class="sim-note" style="margin-top:18px">⚠ Illustrative example only. Campus Help Desk Pipeline, its college, its team and its numbers are made up, and the demo is a scripted HTML model: no real model, database or network calls. Your project doesn't have to look like this. It has to be one end-to-end agentic pipeline operated with all four HOS.</p>
+<p class="sim-note" style="margin-top:18px">⚠ Illustrative example only. Campus Help Desk Pipeline, its college, its team and its numbers are made up, and the demo is a scripted HTML model: no real model, database or network calls. Your project doesn't have to look like this. It has to be one end-to-end agentic pipeline operated with all four AICs.</p>
 <section class="module card" id="overview">
-  <div class="module-head"><div class="module-icon">🗂️</div><div><h2>The project at a glance</h2><div class="module-meta"><span class="tag">Group of three</span><span class="tag blue">All 4 HOS</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🗂️</div><div><h2>The project at a glance</h2><div class="module-meta"><span class="tag">Group of three</span><span class="tag blue">All 4 AICs</span></div></div></div>
 <p><strong>The system.</strong> At a small, fictional college, two IT staff answer about 600 help requests a month from students and faculty: Wi-Fi, sign-in, laptop loans, software. Campus Help Desk Pipeline is an agent that answers from the IT knowledge base, remembers each person's devices, opens and routes tickets with a small classifier, and asks a separate asset agent about loaned laptops. The project is less the agent than how it's run: every change to its data, model or prompt goes through the same pipeline.</p>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th>Action</th><th>Who decides</th><th>Why</th></tr></thead>
@@ -101,12 +101,12 @@
 </tbody>
 </table></div>
 <div class="table-wrap" tabindex="0"><table>
-<thead><tr><th>HOS</th><th>What it is in Campus Help Desk Pipeline</th><th>Litmus test: why it's really that HOS</th></tr></thead>
+<thead><tr><th>AIC</th><th>What it is in Campus Help Desk Pipeline</th><th>Litmus test: why it's really that AIC</th></tr></thead>
 <tbody>
-<tr><td><span class="tag hos1">HOS 1 · data &amp; experiments</span></td><td>Ticket history versioned with DVC, a pandera schema, the routing classifier and every agent evaluation logged in MLflow, <code>champion</code> alias in the registry.</td><td>The team can name the data version and commit behind the model that's serving, and reproduce its score.</td></tr>
-<tr><td><span class="tag hos2">HOS 2 · CI/CD/CT</span></td><td><code>ci.yml</code>, <code>deploy.yml</code> with a gate on routing accuracy, agent success and p95 latency, and a weekly <code>ct.yml</code>, deploying to a free Hugging Face Space.</td><td>A prompt edit that lowered success was blocked in Week 8, and the run is in the demo.</td></tr>
-<tr><td><span class="tag hos3">HOS 3 · observability &amp; RAG</span></td><td>Langfuse traces with a judge score per answer, an Evidently drift report on ticket categories, and a Chroma vs. Qdrant benchmark of the knowledge base.</td><td>The drift alert fired for real at the start of term, and the team can justify its threshold.</td></tr>
-<tr><td><span class="tag hos4">HOS 4 · security &amp; A2A</span></td><td>A 24-case promptfoo suite, four guardrail callbacks, the autonomy table above, and A2A calls to <code>asset_agent</code>, which checks the caller and the borrower.</td><td>Results before and after guardrails, mapped to OWASP categories, with one residual risk named.</td></tr>
+<tr><td><span class="tag hos1">AIC 1 · data &amp; experiments</span></td><td>Ticket history versioned with DVC, a pandera schema, the routing classifier and every agent evaluation logged in MLflow, <code>champion</code> alias in the registry.</td><td>The team can name the data version and commit behind the model that's serving, and reproduce its score.</td></tr>
+<tr><td><span class="tag hos2">AIC 2 · CI/CD/CT</span></td><td><code>ci.yml</code>, <code>deploy.yml</code> with a gate on routing accuracy, agent success and p95 latency, and a weekly <code>ct.yml</code>, deploying to a free Hugging Face Space.</td><td>A prompt edit that lowered success was blocked in Week 8, and the run is in the demo.</td></tr>
+<tr><td><span class="tag hos3">AIC 3 · observability &amp; RAG</span></td><td>Langfuse traces with a judge score per answer, an Evidently drift report on ticket categories, and a Chroma vs. Qdrant benchmark of the knowledge base.</td><td>The drift alert fired for real at the start of term, and the team can justify its threshold.</td></tr>
+<tr><td><span class="tag hos4">AIC 4 · security &amp; A2A</span></td><td>A 24-case promptfoo suite, four guardrail callbacks, the autonomy table above, and A2A calls to <code>asset_agent</code>, which checks the caller and the borrower.</td><td>Results before and after guardrails, mapped to OWASP categories, with one residual risk named.</td></tr>
 </tbody>
 </table></div>
 <h3>The team and who owned what</h3>
@@ -114,16 +114,16 @@
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th>Member (fictional)</th><th>Owned</th></tr></thead>
 <tbody>
-<tr><td>Member A</td><td>Data &amp; models (HOS 1) and pipelines (HOS 2)</td></tr>
-<tr><td>Member B</td><td>Agent &amp; monitoring (HOS 3)</td></tr>
-<tr><td>Member C</td><td>Security (HOS 4) and the demo script</td></tr>
+<tr><td>Member A</td><td>Data &amp; models (AIC 1) and pipelines (AIC 2)</td></tr>
+<tr><td>Member B</td><td>Agent &amp; monitoring (AIC 3)</td></tr>
+<tr><td>Member C</td><td>Security (AIC 4) and the demo script</td></tr>
 </tbody>
 </table></div>
 </section>
 
 <section class="module card" id="demo">
   <div class="module-head"><div class="module-icon">🎬</div><div><h2>Live demo: play it step by step</h2><div class="module-meta"><span class="tag">Follows the Demo plan</span><span class="tag blue">≈ 5–6 min</span></div></div></div>
-<p>This is the live-demo part of the presentation, in the order the <a href="index.html#demo">Demo plan</a> suggests. Pick a step, then press <b>Next ▸</b> to play it one event at a time. The console shows what the audience sees; <b>Behind the scenes</b> shows what the presenter points at, with the HOS each event belongs to.</p>
+<p>This is the live-demo part of the presentation, in the order the <a href="index.html#demo">Demo plan</a> suggests. Pick a step, then press <b>Next ▸</b> to play it one event at a time. The console shows what the audience sees; <b>Behind the scenes</b> shows what the presenter points at, with the AIC each event belongs to.</p>
 <div class="steps-pick" id="pick" role="group" aria-label="Demo steps"></div>
 <div class="say" id="say"><span class="label">The presenter says</span><span id="sayText"></span></div>
 <div class="demo-layout">
@@ -166,7 +166,7 @@
 <p>Campus Help Desk Pipeline didn't appear in Week 10. Each phase released a working system version and a report, the same as yours will.</p>
 <div class="rel">
 <div class="card"><span class="tag">End of Week 3 · Phase 1</span><h3>System v0.3</h3>
-<ul><li>Repo with a devcontainer, a README, a <code>.gitignore</code> and no keys committed</li><li>Ticket history under DVC with a schema, and the first routing model logged in MLflow</li><li>An ADK agent answering from the knowledge base in a Codespace</li><li>A one-page proposal: the system, which HOS goes where, and who owns what</li></ul></div>
+<ul><li>Repo with a devcontainer, a README, a <code>.gitignore</code> and no keys committed</li><li>Ticket history under DVC with a schema, and the first routing model logged in MLflow</li><li>An ADK agent answering from the knowledge base in a Codespace</li><li>A one-page proposal: the system, which AIC goes where, and who owns what</li></ul></div>
 <div class="card"><span class="tag">End of Week 7 · Phase 2</span><h3>System v0.7</h3>
 <ul><li><code>ci.yml</code> and a gated <code>deploy.yml</code> to a Hugging Face Space</li><li>Memory across sessions, and Langfuse traces with a judge score</li><li>No guardrails and no drift monitoring yet: listed honestly as known gaps</li><li>A 3–4 page progress report</li></ul></div>
 <div class="card"><span class="tag ok">End of Week 10 · Phase 3</span><h3>System v1.0</h3>
@@ -193,7 +193,7 @@
   <div class="module-head"><div class="module-icon">✅</div><div><h2>What makes this a strong example</h2><div class="module-meta"><span class="tag">Use it as a checklist</span></div></div></div>
 <ul>
   <li><b>It's a pipeline, not just an agent.</b> The demo shows a change moving from a commit to a monitored deployment, not only a chat.</li>
-  <li><b>Every HOS is real, not a token mention.</b> For each one the team can point to a file, a workflow run or a dashboard and say why it's that HOS (the litmus test in the second table).</li>
+  <li><b>Every AIC is real, not a token mention.</b> For each one the team can point to a file, a workflow run or a dashboard and say why it's that AIC (the litmus test in the second table).</li>
   <li><b>The autonomy table came first.</b> The guardrails and the red-team suite test against decisions the team wrote down, not against whatever the agent happens to do.</li>
   <li><b>It shows real failures.</b> A blocked prompt edit and a drift alert that fired for real are more convincing than a demo where nothing goes wrong.</li>
   <li><b>Its numbers include the noise.</b> The gate's margin comes from three-run spreads, and the judge's agreement with human grades is reported.</li>
@@ -209,7 +209,7 @@
 (function(){
   var $=function(id){return document.getElementById(id);};
 
-  var HOS={1:'HOS 1 · data & experiments',2:'HOS 2 · CI/CD/CT',3:'HOS 3 · observability & RAG',4:'HOS 4 · security & A2A'};
+  var HOS={1:'AIC 1 · data & experiments',2:'AIC 2 · CI/CD/CT',3:'AIC 3 · observability & RAG',4:'AIC 4 · security & A2A'};
   function wf(rows){ return rows.map(function(r){ return '<div class="wf-row"><span class="nm">'+r[0]+'</span><div class="wf-track"><div class="wf-fill" style="left:'+r[1]+'%;width:'+r[2]+'%"></div></div><span>'+r[3]+'</span></div>'; }).join(''); }
   var TRACE='<h3 style="margin-top:14px">Langfuse trace · req-2291</h3>'+wf([['request',0,100,'2.6 s'],['search_kb (Chroma, k=4)',2,7,'0.18 s'],['memory · devices',10,3,'0.06 s'],['A2A · asset_agent',14,18,'0.47 s'],['route_ticket (model v6)',33,2,'0.04 s'],['gemini · answer',36,62,'1.6 s']])+'<p class="small" style="margin-top:8px"><span class="tag ok">judge 5 / 5</span> <span class="tag">p95 this week 3.1 s</span></p>';
   var GATE='<h3 style="margin-top:14px">deploy.yml · gates/check.py</h3><div class="table-wrap" tabindex="0"><table><thead><tr><th>Check</th><th>Production</th><th>Candidate</th><th>Rule</th></tr></thead><tbody><tr><td>Agent success (3 runs)</td><td>0.84</td><td>0.87</td><td><span class="tag ok">≥ prod + 0.02</span></td></tr><tr><td>Routing accuracy</td><td>0.88</td><td>0.88</td><td><span class="tag ok">≥ prod − 0.01</span></td></tr><tr><td>p95 latency</td><td>3.1 s</td><td>3.3 s</td><td><span class="tag ok">≤ 4 s</span></td></tr></tbody></table></div>';

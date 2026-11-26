@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 430 HOS 2 hands-on guide: CI/CD/CT for Models and Agents, stage by stage.">
+<title>AI 430 — HOS 2: CI/CD/CT for Models and Agents</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.goal-box { background:var(--blue-bg); border-left:5px solid var(--blue); padding:15px 18px; margin:18px 0; border-radius:4px; }
+        .goal-box h4 { margin:0 0 6px; color:var(--blue); font-size:0.95rem; }
+        .needs-list li { margin-bottom:6px; }
+        .stage-tagline { color:var(--muted); font-size:0.85rem; margin:0 0 14px; }
+        pre { background:var(--code-bg); color:var(--code-text); padding:14px 16px; border-radius:6px; overflow-x:auto; font-size:0.8rem; line-height:1.5; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        p code, li code { background:var(--surface2); color:var(--rose); padding:1px 5px; border-radius:4px; font-size:0.88em; }
+        .not-graded { background:var(--surface2); border-left:3px solid var(--border); padding:8px 14px; margin:10px 0; font-size:0.85rem; border-radius:0 4px 4px 0; color:var(--muted); }
+        .submit-box { background:var(--accent-light); border-left:5px solid var(--accent); padding:14px 18px; margin:14px 0 0; border-radius:0 4px 4px 0; font-size:0.9rem; }
+        .submit-box h5 { margin:0 0 8px; color:var(--accent2); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.03em; }
+        .submit-box ul { margin:0; padding-left:20px; }
+        .snag-box { background:var(--amber-bg); border-left:5px solid var(--amber); padding:15px 18px; margin:20px 0; border-radius:4px; }
+        .snag-box h4 { margin:0 0 8px; color:var(--amber); }
+        .shot { margin:14px 0; }
+        .shot img { max-width:100%; height:auto; border:1px solid var(--border); border-radius:6px; display:block; }
+        .shot figcaption { font-size:0.84rem; color:var(--muted); margin-top:6px; }
+        .shot-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap:14px; align-items:start; }
+        .shot-grid .shot { margin:0; }
+        details.sample-run { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px 16px; margin:16px 0; }
+        details.sample-run summary { cursor:pointer; font-weight:600; color:var(--text); }
+        details.sample-run > p { font-size:0.88rem; }
+        .guide-nav { display:flex; justify-content:space-between; margin-top:30px; padding-top:16px; border-top:1px solid var(--border); font-size:0.9rem; }
+        .guide-nav a { color:var(--link); text-decoration:none; font-weight:600; }
+    
+        .ref-box { background:var(--surface2); border:1px solid var(--border); padding:12px 16px; margin:16px 0; border-radius:6px; font-size:0.9rem; }
+        .ref-box h4 { margin:0 0 6px; font-size:0.9rem; }
+        blockquote { border-left:4px solid var(--border); margin:12px 0; padding:4px 14px; color:var(--text); }
+</style>
+</head>
+<body>
+<div role="note" style="background:#fff7ed;border-bottom:2px solid #ea580c;color:#7c2d12;padding:10px 16px;font:600 15px/1.4 system-ui,sans-serif;text-align:center">Archived page: Version 1.0: HOS, Application Challenges and Muddiest Point (before the Nov 2026 revamp). Kept for reference and no longer current. <a href="../../../module-2/hos-guide.html" style="color:#9a3412">Open the current version</a> · <a href="../../index.html" style="color:#9a3412">All versions</a></div>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="../index.html"><span class="brand-icon">430</span><span><b>AI 430: MLOps and AgentOps</b><small>Course guides</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../index.html">Course home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 430 · Module 2 · Hands-On Skill (HOS) guide</div>
+    <h1>HOS 2: CI/CD/CT for Models &amp; Agents</h1>
+    <p class="lede">Write the three GitHub Actions workflows that ship Salish Fresh's model and agent: tests on every push, an evaluation gate before every deploy to a free Hugging Face Space, and a weekly job that retrains when the data drifts. Then try to sneak changes past them.</p>
+    <div class="chips"><span class="chip">Est. 3–4 hrs</span><span class="chip">Outcome CO2</span><span class="chip">Module 2 · Weeks 3–4</span><span class="chip">10% of final grade</span></div>
+  </div>
+</section>
+<main id="main">
+<nav class="secnav no-print" aria-label="Page sections">
+  <div class="secnav-inner"><a href="#before">Before you start</a><a href="#create">Create</a><a href="#evaluate">Evaluate</a><a href="#analyze">Analyze</a><a href="#refine">Understand &amp; Refine</a><a href="#snags">Common snags</a></div>
+</nav>
+<section class="module card" id="before">
+  <div class="module-head"><div class="module-icon">🧭</div><div><h2>Before you start</h2></div></div>
+<div class="before-box">
+  <ol>
+    <li><b>Check your account setup.</b> This HOS needs a <a href="../start-here/accounts.html#huggingface">free Hugging Face account and write token</a>, plus the GitHub account and Gemini key from HOS 1. Set them up first; the build won't run without them.</li>
+    <li><b>Know the concepts.</b> Read <a href="../reference/concept-companion.html#module-2">Concept Companion → Module 2</a> before you open the starter code.</li>
+  </ol>
+</div>
+<h4>What you'll need</h4>
+<ul class="needs-list">
+  <li><strong>Starter code:</strong> your <b>HOS 2</b> repo, created from the <code>AI430-HOS02</code> template when you accept the HOS 2 invite (<span class="tag amber">Planned</span> planned (the Classroom50 link is added here once the <code>AI430-HOS02</code> template repo is built and tested)). Open it in GitHub Codespaces; dependencies install automatically. Not sure what a file does? See the <a href="../reference/starter-code-walkthrough.html#hos2">starter code walkthrough for this HOS</a>.</li>
+  <li>A free <a href="../start-here/accounts.html#huggingface">Hugging Face account</a>, an empty Gradio Space on the free CPU hardware, and a <b>write</b> access token.</li>
+  <li>Two repository secrets, <code>HF_TOKEN</code> and <code>GOOGLE_API_KEY</code>, and one repository variable, <code>HF_SPACE</code> (for example <code>your-name/salish-fresh</code>), under <b>Settings → Secrets and variables → Actions</b>.</li>
+  <li>An AI coding assistant in your Codespace (Copilot Chat in Agent mode, or equivalent)</li>
+</ul>
+<div class="ref-box"><h4>Reference reading (optional, before you start)</h4><ul><li><a href="https://docs.github.com/en/actions/get-started/quickstart" target="_blank" rel="noopener">GitHub Actions quickstart</a>, and <a href="https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets" target="_blank" rel="noopener">using secrets</a>.</li><li><a href="https://huggingface.co/docs/hub/spaces-overview" target="_blank" rel="noopener">Hugging Face Spaces overview</a>.</li></ul></div>
+<p>This HOS is graded across four stages instead of on code correctness alone: <strong>Engagement</strong> (Create/Scaffold) is 20% of the HOS grade, and <strong>Skills</strong> is 80%: Evaluate, Analyze, Apply (the change you make by hand in Understand &amp; Refine) and Understand (your own explanation of it), 20% each. Each stage below says exactly what to submit. Everything goes in your HOS 2 GitHub Classroom repo: written work under the matching heading in <code>NOTES.md</code>, screenshots in <code>screenshots/</code>. Commit and push as you go, then submit the repo link to the HOS 2 assignment in Brightspace by the end of Week 4.</p>
+</section>
+
+<section class="module card" id="create">
+  <div class="module-head"><div class="module-icon">🛠️</div><div><h2>1 · Create / Scaffold</h2></div></div>
+<p class="stage-tagline">Graded as Engagement: 20% of this HOS. The AI-assisted starting point, not the deliverable.</p>
+<p>The starter is HOS 1's finished pipeline plus a Gradio app for the Space (<code>app/</code>: a forecast form and a chat box for <code>pantry_helper</code>), a gate script with its thresholds (<code>gates/check.py</code>, <code>gates/thresholds.yaml</code>), a drift check (<code>monitoring/drift_check.py</code>) and a secret scanner (<code>scripts/scan_logs.py</code>). Set up the Space and the secrets first (see <a href="#before">Before you start</a>), then prompt your AI assistant. Start from this prompt:</p>
+<pre tabindex="0"><code>In THIS existing workspace (the starter-code folder that&#x27;s already open),
+edit files here; do not create a new workspace or project.
+Write three GitHub Actions workflows in .github/workflows/:
+- ci.yml on push and pull_request: install requirements, run pytest,
+  run pipelines/validate.py on data/orders.csv, run
+  pipelines/train.py --smoke (200 rows), and run
+  scripts/scan_logs.py so the job fails if a secret appears in output.
+- deploy.yml on push to main: dvc repro, then python -m gates.check
+  (compares the new model and agent with production, using
+  gates/thresholds.yaml); deploy app/ to the Hugging Face Space in
+  HF_SPACE with huggingface_hub only if the gate exits 0.
+- ct.yml on a weekly schedule and workflow_dispatch: run
+  monitoring/drift_check.py; if it reports drift, retrain and run the
+  same gate and deploy steps as deploy.yml.
+Secrets come only from ${{ secrets.HF_TOKEN }} and
+${{ secrets.GOOGLE_API_KEY }}; never echo them. Leave the numbers in
+gates/thresholds.yaml as they are. MODEL stays &quot;gemini-3.8-flash&quot;.</code></pre>
+<p>Push a branch and open a pull request: <code>ci.yml</code> should run. Merge it: <code>deploy.yml</code> should run the gate and deploy. Start <code>ct.yml</code> by hand from the <b>Actions</b> tab (<b>Run workflow</b>) to test it without waiting a week.</p>
+<div class="submit-box"><h5>Submit</h5>
+<ul><li>The prompt you gave your AI assistant, a screenshot of a green <code>deploy.yml</code> run, and a screenshot of your live Space.</li></ul>
+</div>
+</section>
+
+<section class="module card" id="evaluate">
+  <div class="module-head"><div class="module-icon">🔍</div><div><h2>2 · Evaluate</h2></div></div>
+<p class="stage-tagline">The critical gate — is the AI-produced result actually correct?</p>
+<p>Each test tries to sneak something past the pipeline. At minimum:</p>
+<ul>
+  <li><strong>A breaking change.</strong> Push a commit that breaks a unit test. Does CI fail before anything deploys? Does the Space keep serving the old version?</li>
+  <li><strong>Better but slower.</strong> Merge the starter's <code>candidates/bigger-model</code> branch: lower MAE, three times the prediction latency. Does the gate notice?</li>
+  <li><strong>A prompt that costs more.</strong> Merge <code>candidates/double-search</code>: a prompt edit that raises the agent's success rate slightly and doubles its tool calls. What does the gate say, and is the gain bigger than the spread you measured in HOS 1?</li>
+  <li><strong>A leaked secret.</strong> Add a step that prints <code>HF_TOKEN</code> reversed. Does <code>scan_logs.py</code> catch it? Then delete that run's logs and remove the step.</li>
+  <li><strong>Roll back.</strong> Move the <code>champion</code> alias back one version and run <code>deploy.yml</code>. How long did it take, and what did a user of the Space see meanwhile?</li>
+</ul>
+<div class="submit-box"><h5>Submit</h5>
+<ul><li>The workflow runs that prove each test (red and green), and a short note: what the gate caught, what it let through, and how the rollback went, with timings.</li></ul>
+</div>
+</section>
+
+<section class="module card" id="analyze">
+  <div class="module-head"><div class="module-icon">🔬</div><div><h2>3 · Analyze</h2></div></div>
+<p class="stage-tagline">Why does this work, mechanically?</p>
+<p>Pick <strong>one</strong> of these and explain it in your own words:</p>
+<ul><li><b>The quality gate.</b> Walk through <code>gates/check.py</code> for one candidate: what it loads, what it compares, the margin, and the exact line that decides pass or fail. What does it do on the very first deploy?</li><li><b>When to retrain.</b> Explain what <code>ct.yml</code> does with and without drift, why a retrained model goes through the same gate as a code change, and what should trigger the agent's evaluation instead, since it never retrains.</li><li><b>Secrets in CI.</b> Trace <code>HF_TOKEN</code> from the repository settings to the line that uses it. What does GitHub's log masking catch, and what does it miss?</li></ul>
+<div class="submit-box"><h5>Submit</h5>
+<ul><li>A written walkthrough of the one you chose (250–400 words), quoting the lines, log lines or trace steps you're explaining.</li></ul>
+</div>
+</section>
+
+<section class="module card" id="refine">
+  <div class="module-head"><div class="module-icon">✋</div><div><h2>4 · Understand &amp; Refine</h2></div></div>
+<p class="stage-tagline">The mastery check — by hand, no AI assistance for this stage.</p>
+<div class="not-graded">By hand this time — no AI assistance for this stage.</div>
+<p>The gate compares MAE and success rate. Add one condition by hand, in <code>gates/check.py</code>, for something it can't see yet:</p>
+<ul>
+  <li>p95 prediction latency, cost per task (tool calls or tokens per question), or MAE on one zone.</li>
+  <li>Its number in <code>gates/thresholds.yaml</code>, with a one-line comment saying why that number.</li>
+  <li>A test in <code>tests/test_gate.py</code> with a candidate that passes the old gate and fails yours.</li>
+  <li>Two workflow runs: the old gate passing that candidate, and yours blocking it with a message that says which condition failed.</li>
+</ul>
+<div class="submit-box"><h5>Submit</h5>
+<ul><li>Your condition, its threshold and its test (Apply).</li><li>Your own explanation under <b>Understand &amp; Refine</b> in <code>NOTES.md</code>: why this condition, why that number, what the gate still can't see, with screenshots of both runs (Understand).</li></ul>
+</div>
+</section>
+
+<section class="module card" id="snags">
+  <div class="module-head"><div class="module-icon">🧯</div><div><h2>Common snags</h2></div></div>
+<div class="snag-box">
+<ul><li><strong>The workflow never starts</strong> — a YAML error. The <b>Actions</b> tab shows "Invalid workflow file" with the line. Indentation is two spaces, never tabs.</li><li><strong>The deploy step says the token is empty</strong> — secrets aren't passed to workflows started by pull requests from forks, and a typo in the secret's name gives an empty string, not an error. Check the name in <b>Settings</b>.</li><li><strong>The Space shows "Build error"</strong> — open its <b>Logs</b> tab. Usually a package missing from <code>app/requirements.txt</code>, which is separate from the repo's own requirements.</li><li><strong>The gate fails on the first deploy</strong> — there's no production model to compare against. The starter treats "no champion yet" as a pass that registers the candidate; if your assistant changed that, put it back and say so in your Evaluate note.</li><li><strong><code>ct.yml</code> never runs on its schedule</strong> — scheduled workflows run only on the default branch, and can be delayed at busy times. Use <b>Run workflow</b> to test it.</li><li><strong><code>502 Bad Gateway</code>, a 404 or "model not found" from the agent</strong> — almost always the model name. AI assistants default to whatever model was current in their training data, such as <code>gemini-2.5-flash</code>, which new API keys can't use. Set it back to <code>gemini-3.8-flash</code>. If that ever stops working, check the current list at <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/models</a>.</li><li><strong><code>429 RESOURCE_EXHAUSTED</code></strong> — you hit the free Gemini tier's per-minute limit. Wait a minute and rerun; the starter scripts' <code>--pause</code> option adds a gap between calls.</li></ul>
+<p class="small" style="margin:10px 0 0">Most snags trace back to a concept. If one doesn't make sense, see <a href="../reference/concept-companion.html#module-2">Concept Companion → Module 2</a>.</p>
+</div>
+</section>
+
+<div class="guide-nav">
+  <a href="../module-1/hos-guide.html">← HOS 1 guide</a>
+  <a href="index.html">Module 2 lesson →</a>
+</div>
+</main>
+<footer class="foot">AI 430: MLOps and AgentOps · City University of Seattle, School of Technology &amp; Computing<br>Course design &amp; materials: Clark Ngo · Simulators are illustrative HTML models — no real LLM, database, or network calls. <br>© 2026 Clark Ngo · Free to reuse and adapt under <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a>, except where noted · <a href="https://github.com/clarkngo/ai430/blob/main/LICENSE.md">How to credit</a></footer>
+<script src="../assets/course.js"></script>
+<script>
+/* section nav highlight (scrolls only the nav row, never the page) */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); var c=a.parentElement, ar=a.getBoundingClientRect(), cr=c.getBoundingClientRect(); c.scrollLeft += (ar.left+ar.width/2)-(cr.left+cr.width/2); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+</script>
+</body>
+</html>

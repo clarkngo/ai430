@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 430 HOS 1 simulator: push data batches through versioning, validation, tracking and a model registry, and see what each one catches.">
+<title>Data &amp; Experiment Pipeline Simulator</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.sim-layout { display:grid; grid-template-columns:minmax(260px,340px) 1fr; gap:16px; align-items:start; }
+@media (max-width:860px){ .sim-layout { grid-template-columns:1fr; } }
+.panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow); margin-bottom:16px; min-width:0; }
+.panel h2 { font-size:1.02rem; margin-bottom:10px; }
+.panel h3 { font-size:.9rem; margin:14px 0 6px; }
+.presets { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 4px; }
+.presets button { font-family:inherit; font-size:.74rem; border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:14px; padding:4px 10px; cursor:pointer; }
+.presets button:hover { border-color:var(--accent); }
+.toggle { display:flex; gap:8px; align-items:flex-start; font-size:.85rem; margin:6px 0; cursor:pointer; }
+.toggle input { accent-color:var(--accent); margin-top:4px; }
+.toggle small { display:block; color:var(--muted); font-size:.74rem; }
+.lanes { display:grid; grid-template-columns:repeat(var(--lanes,4),1fr); gap:8px; margin-bottom:12px; }
+.lane { border:2px solid var(--border); border-radius:10px; padding:10px; text-align:center; font-size:.8rem; background:var(--surface2); transition:all .2s; min-width:0; }
+.lane b { display:block; font-size:.86rem; }
+.lane .ic { font-size:1.3rem; display:block; }
+.lane.from { border-color:var(--blue); background:var(--blue-bg); }
+.lane.to { border-color:var(--accent); background:var(--accent-light); box-shadow:0 0 0 3px var(--accent-light); }
+.lane.err { border-color:var(--bad); background:var(--bad-bg); }
+@media (max-width:520px){ .lanes { grid-template-columns:repeat(2,1fr); } }
+.stepbox { border:1px solid var(--border); border-left:5px solid var(--accent); border-radius:8px; padding:10px 14px; background:var(--surface2); margin-bottom:12px; min-height:84px; }
+.stepbox.err { border-left-color:var(--bad); } .stepbox.warn { border-left-color:var(--amber); }
+.stepbox .k { font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.steps-list { list-style:none; margin:0; padding:0; font-size:.8rem; }
+.steps-list li { padding:5px 8px; border-radius:6px; color:var(--muted); display:flex; gap:8px; }
+.steps-list li.cur { background:var(--accent-light); color:var(--text); font-weight:700; }
+.steps-list li.past { color:var(--text); }
+.steps-list li .n { flex:none; width:20px; text-align:right; }
+.steps-list li.bad { color:var(--bad); }
+.verdict { border-radius:8px; padding:10px 14px; font-size:.86rem; margin-top:10px; }
+.verdict.ok { background:var(--ok-bg); color:var(--ok); } .verdict.bad { background:var(--bad-bg); color:var(--bad); } .verdict.warn { background:var(--amber-bg); color:var(--amber); }
+.kv { display:grid; grid-template-columns:auto 1fr; gap:4px 12px; font-size:.82rem; }
+.kv dt { color:var(--muted); } .kv dd { margin:0; font-weight:600; }
+.bar-row { display:grid; grid-template-columns:70px 1fr 48px; gap:8px; align-items:center; font-size:.78rem; margin-bottom:4px; }
+.bar-track { height:12px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; overflow:hidden; position:relative; }
+.bar-fill { height:100%; background:var(--accent); }
+.project-tip { border:1px dashed var(--accent); border-radius:var(--radius); padding:14px 18px; background:var(--accent-light); font-size:.88rem; }
+.project-tip b.h { display:block; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--accent2); margin-bottom:4px; }
+
+.stepcard { border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:8px; padding:8px 12px; margin-bottom:6px; font-size:.84rem; background:var(--surface); }
+.stepcard .k { font-size:.68rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); }
+.stepcard.tool { border-left-color:var(--blue); } .stepcard.final { border-left-color:var(--ok); } .stepcard.stop { border-left-color:var(--amber); } .stepcard.bad { border-left-color:var(--bad); background:var(--bad-bg); }
+.stepcard.pick { cursor:pointer; } .stepcard.pick:hover { box-shadow:0 0 0 2px var(--accent-light); } .stepcard.chosen { box-shadow:0 0 0 3px var(--accent); }
+.metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:10px 0; }
+@media (max-width:560px){ .metrics { grid-template-columns:repeat(2,1fr); } }
+.metric { border:1px solid var(--border); border-radius:8px; padding:8px; text-align:center; background:var(--surface2); }
+.metric b { display:block; font-size:1.2rem; } .metric span { font-size:.72rem; color:var(--muted); }
+.seg { display:inline-flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; flex-wrap:wrap; }
+.seg button { font-family:inherit; font-size:.8rem; font-weight:700; padding:6px 12px; border:none; background:var(--surface2); color:var(--text); cursor:pointer; }
+.seg button[aria-pressed="true"] { background:var(--accent); color:var(--on-accent); }
+.tbl { width:100%; border-collapse:collapse; font-size:.8rem; }
+.tbl th, .tbl td { border:1px solid var(--border); padding:5px 8px; text-align:left; }
+.tbl th { background:var(--surface2); font-size:.7rem; text-transform:uppercase; color:var(--muted); }
+.ok { color:var(--ok); font-weight:700; } .no { color:var(--bad); font-weight:700; }
+
+.lanes.five { --lanes:5; }
+.lane.skip { opacity:.55; }
+.lane.ok { border-color:var(--ok); background:var(--ok-bg); }
+.tbl td.star { font-weight:800; color:var(--accent2); }
+.subhead { font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:12px 0 4px; }
+.bar-fill.alert { background:var(--bad); } .bar-fill.human { background:var(--blue); }
+.thr-line { position:absolute; top:-2px; bottom:-2px; width:2px; background:var(--text); }
+.sim-section-title { font-size:1.1rem; margin:22px 0 10px; }
+.sim-layout > * { min-width:0; } .panel select { max-width:100%; }
+</style>
+</head>
+<body>
+<div role="note" style="background:#fff7ed;border-bottom:2px solid #ea580c;color:#7c2d12;padding:10px 16px;font:600 15px/1.4 system-ui,sans-serif;text-align:center">Archived page: Version 1.0: HOS, Application Challenges and Muddiest Point (before the Nov 2026 revamp). Kept for reference and no longer current. <a href="../../../module-1/simulator.html" style="color:#9a3412">Open the current version</a> · <a href="../../index.html" style="color:#9a3412">All versions</a></div>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="../index.html"><span class="brand-icon">430</span><span><b>AI 430: MLOps and AgentOps</b><small>Course guides</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../index.html">Course home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Simulator 1 · Pairs with HOS 1 (Weeks 1–2)</div>
+    <h1>Data &amp; Experiment Pipeline Simulator</h1>
+    <p class="lede">Push weekly batches through Salish Fresh's forecasting pipeline with validation and tracking on or off, then promote and roll back through the registry. See which mistakes each piece catches.</p>
+    <div class="chips"><span class="chip">Outcome CO1</span><span class="chip">DVC</span><span class="chip">pandera</span><span class="chip">MLflow tracking</span><span class="chip">Model registry</span></div>
+  </div>
+</section>
+<main id="main">
+<div class="row no-print" style="margin-bottom:16px"><span class="small muted"><b>Simulators:</b></span><span class="tag">1 · Data &amp; Experiment Pipeline</span><a class="tag blue" href="../module-2/simulator.html" style="text-decoration:none">2 · CI/CD/CT Pipeline</a><a class="tag blue" href="../module-3/simulator.html" style="text-decoration:none">3 · Observability &amp; RAG Benchmark</a><a class="tag blue" href="../module-4/simulator.html" style="text-decoration:none">4 · Red-Team &amp; Guardrails</a></div><p class="sim-note">⚠ Simulation only — scripted behaviour and made-up numbers standing in for the real tools. No API key, no network calls.</p>
+<section class="card tour" id="tour" aria-label="Guided tour"><p class="small muted" style="margin:0">Guided tour loading…</p></section>
+<div class="sim-layout">
+  <div>
+    <div class="panel">
+      <h2>1 · This week's batch</h2>
+      <label class="field" for="batch">Batch arriving from the zones</label>
+      <select id="batch">
+        <option value="normal">Normal week (168 rows)</option>
+        <option value="renamed">Renamed column: temp_c → temperature</option>
+        <option value="stuck">Stuck sensor: temp_c is 21.0 in every row</option>
+      </select>
+      <label class="toggle"><input type="checkbox" id="validate" checked><span>Validate before training<small>The pandera schema runs as the first pipeline stage</small></span></label>
+      <label class="toggle"><input type="checkbox" id="rule"><span>Extra rule: reject a stuck sensor<small>The kind of check you write by hand in Understand &amp; Refine</small></span></label>
+      <label class="toggle"><input type="checkbox" id="track" checked><span>Track experiments<small>Off = only the MAE is printed to the terminal</small></span></label>
+      <div class="row" style="margin-top:10px"><button class="btn" id="push" type="button">Push batch &amp; run pipeline</button><button class="btn secondary" id="reset" type="button">Reset</button></div>
+    </div>
+    <div class="panel">
+      <h2>Model registry</h2>
+      <p class="small muted" style="margin-top:0">Production is whatever holds the <code>champion</code> alias, not the newest run.</p>
+      <div class="row"><button class="btn" id="promote" type="button">Promote newest run</button><button class="btn secondary" id="rollback" type="button">Roll back</button></div>
+      <div id="reg" class="small" style="margin-top:8px" aria-live="polite">No champion yet.</div>
+    </div>
+  </div>
+  <div>
+    <div class="panel">
+      <h2>2 · Pipeline stages</h2>
+      <div class="lanes five" id="lanes"></div>
+      <div class="stepbox" id="msg" aria-live="polite"><div class="k">Pipeline</div>Choose a batch and push it.</div>
+    </div>
+    <div class="panel">
+      <h2>3 · Run history (MLflow)</h2>
+      <div style="overflow-x:auto" tabindex="0"><table class="tbl" id="hist"><tr><th>Run</th><th>Data</th><th>Params</th><th>Validated</th><th>MAE</th><th>Production</th></tr></table></div>
+      <div id="verdict"></div>
+    </div>
+  </div>
+</div>
+<div class="card"><h2>What this teaches</h2><ul>
+<li><b>The data is part of the model.</b> Same code, different batch, different MAE. Without the data version in each run, you can't say which batch made a model worse.</li>
+<li><b>A renamed column doesn't crash anything.</b> With validation off, the missing temperature is filled in and training succeeds: the model is just quietly worse.</li>
+<li><b>Stop it at the door.</b> A schema check costs a second; a bad model in production costs a week of wrong forecasts.</li>
+<li><b>Types aren't enough.</b> The stuck-sensor batch passes the starter schema. Only a rule about the values (one unique temperature all week) catches it.</li>
+<li><b>Newest ≠ production.</b> Promote and roll back move an alias; the runs themselves never change.</li></ul></div>
+<div class="project-tip"><b class="h">For your Term Project</b>Write down one batch your project's data could arrive as that would train without an error and still be wrong. That's the first validation rule your Phase 1 pipeline needs.</div>
+</main>
+<footer class="foot">AI 430: MLOps and AgentOps · City University of Seattle, School of Technology &amp; Computing<br>Course design &amp; materials: Clark Ngo · Simulators are illustrative HTML models — no real LLM, database, or network calls. <br>© 2026 Clark Ngo · Free to reuse and adapt under <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a>, except where noted · <a href="https://github.com/clarkngo/ai430/blob/main/LICENSE.md">How to credit</a></footer>
+<script src="../assets/course.js"></script>
+<script>
+var $=function(id){return document.getElementById(id);};
+var ST=['Data (DVC)','Validate (pandera)','Train','Evaluate','Register'], runs=[], dv=1, champ=null, past=[], norm=0;
+function lanes(states){ $('lanes').innerHTML=ST.map(function(s,i){ var c=states[i]||''; return '<div class="lane '+c+'"><b>'+s+'</b>'+({ok:'✓ done',err:'✗ stopped',skip:'— skipped',from:'running'}[c]||'waiting')+'</div>'; }).join(''); }
+function msg(kind,k,html){ $('msg').className='stepbox '+kind; $('msg').innerHTML='<div class="k">'+k+'</div>'+html; }
+function table(){
+  var rows='<tr><th>Run</th><th>Data</th><th>Params</th><th>Validated</th><th>MAE</th><th>Production</th></tr>';
+  runs.forEach(function(r,i){ rows+='<tr><td>#'+(i+1)+'</td><td>'+(r.track?'<code>d'+r.dv+'</code>':'—')+'</td><td>'+(r.track?'n_estimators=200, seed=42':'—')+'</td><td>'+(r.track?(r.val?'yes':'no'):'—')+'</td><td class="'+(r.mae>13?'no':'')+'">'+r.mae.toFixed(1)+'</td><td class="star">'+(champ===i?'★ champion':'')+'</td></tr>'; });
+  $('hist').innerHTML=rows;
+  $('reg').innerHTML = champ===null ? 'No champion yet.' : '<b>champion</b> → run #'+(champ+1)+' (MAE '+runs[champ].mae.toFixed(1)+')'+(past.length?' · previous: run #'+(past[past.length-1]+1):'');
+}
+function push(){
+  var b=$('batch').value, val=$('validate').checked, rule=$('rule').checked, track=$('track').checked;
+  dv++;
+  if(val && b==='renamed'){ lanes(['ok','err','skip','skip','skip']); msg('err','Rejected at validation','<code>SchemaError: column \'temp_c\' not in dataframe. Columns: date, zone, orders, temperature, is_holiday</code><br>Nothing trained, nothing registered. Data version <code>d'+dv+'</code> is recorded so the batch can be fixed and re-pushed.'); verdict('ok','Stopped at the door, with a message someone can act on.'); return; }
+  if(val && rule && b==='stuck'){ lanes(['ok','err','skip','skip','skip']); msg('err','Rejected at validation (your rule)','<code>SchemaError: temp_c has 1 unique value across 168 rows; expected a varying reading (stuck sensor?)</code>'); verdict('ok','Your value rule caught what the type checks missed.'); return; }
+  var mae = b==='renamed' ? 17.9 : b==='stuck' ? 14.6 : Math.max(10.9, 11.8-0.3*norm);
+  if(b==='normal') norm++;
+  runs.push({dv:dv,mae:mae,track:track,val:val,b:b});
+  lanes(['ok',val?'ok':'skip','ok','ok','ok']);
+  var note = b==='normal' ? 'A normal week. The run is logged with its data version and parameters, and registered as a new version of <code>demand</code>.' :
+    b==='renamed' ? 'Training succeeded. The missing <code>temp_c</code> column was filled with 0 and the model learned that temperature never changes.' :
+    'Training succeeded. Every row has the same temperature, so the model learned that temperature doesn\'t matter.' + (val?' The starter schema checked types and ranges: 21.0 is a valid temperature.':'');
+  msg(b==='normal'?'':'warn','Run #'+runs.length+' finished · MAE '+mae.toFixed(1), note + (track?'':' <b>Tracking is off:</b> only the MAE was printed; no data version or parameters were saved.'));
+  if(b==='normal') verdict('ok','Normal run: tracked, registered, ready to promote if it beats the champion.');
+  else if(!track) verdict('bad','A worse model, and no record of which data made it. You know something went wrong, but not what.');
+  else verdict('bad','Quietly worse: no error anywhere, MAE up from '+(runs.length>1?runs[runs.length-2].mae.toFixed(1):'11.8')+' to '+mae.toFixed(1)+'. The data column tells you which batch did it.');
+  table();
+}
+function verdict(k,t){ $('verdict').innerHTML='<div class="verdict '+(k==='ok'?'ok':k==='bad'?'bad':'warn')+'">'+t+'</div>'; }
+$('push').addEventListener('click',push);
+$('promote').addEventListener('click',function(){ if(!runs.length){ verdict('warn','Nothing to promote yet: push a batch first.'); return; } var i=runs.length-1; if(champ===i) return; if(champ!==null) past.push(champ); champ=i; table(); verdict(runs[i].mae>13?'bad':'ok','Promoted run #'+(i+1)+' to champion'+(runs[i].mae>13?': a worse model is now serving forecasts.':'.')); });
+$('rollback').addEventListener('click',function(){ if(!past.length){ verdict('warn','No earlier champion to roll back to.'); return; } champ=past.pop(); table(); verdict('ok','Rolled back: the alias moved to run #'+(champ+1)+'. No retraining, no redeploy of code.'); });
+$('reset').addEventListener('click',function(){ runs=[]; dv=1; champ=null; past=[]; norm=0; lanes([]); msg('','Pipeline','Choose a batch and push it.'); $('verdict').innerHTML=''; table(); });
+lanes([]); table();
+</script>
+<script>window.SIM_TOUR=[
+ {title:'1 · A normal week: one batch, one tracked run',
+  'do':'Press <b>Set this up for me</b>. It resets, pushes a normal batch with validation and tracking on, then pushes a second normal week.',
+  watch:'The five pipeline stages and panel 3, <b>Run history</b>.',
+  expect:'Every stage done, and two runs, each with its own data version (<code>d2</code>, <code>d3</code>), its parameters and its MAE.',
+  why:'This is the pipeline you build in HOS 1 Create: DVC versions the data, pandera checks it, MLflow records the run.',
+  setup:function(h){ h.click('reset'); h.set('validate',true); h.set('rule',false); h.set('track',true); h.set('batch','normal'); h.click('push'); h.click('push'); }},
+ {title:'2 · A renamed column with validation off',
+  'do':'Press <b>Set this up for me</b>. It pushes a normal week, turns validation off, and pushes the batch where <code>temp_c</code> was renamed.',
+  watch:'The stages, the MAE column and the verdict.',
+  expect:'No error anywhere. Training succeeds, and MAE jumps from about 11.8 to 17.9.',
+  why:'Bad data rarely crashes a pipeline. It makes a worse model that looks like a normal run.',
+  setup:function(h){ h.click('reset'); h.set('validate',true); h.set('rule',false); h.set('track',true); h.set('batch','normal'); h.click('push'); h.set('validate',false); h.set('batch','renamed'); h.click('push'); }},
+ {title:'3 · The same batch with validation on',
+  'do':'Press <b>Set this up for me</b>. It turns validation back on and pushes the renamed-column batch again.',
+  watch:'Which stage stops, and the message.',
+  expect:'Stopped at <b>Validate</b>, with a message naming the missing column. Nothing trained, no new run.',
+  why:'HOS 1 Evaluate asks you to break the data and check that the pipeline stops before <code>train</code>, with a message someone could act on.',
+  setup:function(h){ h.set('validate',true); h.set('track',true); h.set('batch','renamed'); h.click('push'); }},
+ {title:'4 · Tracking off: a regression nobody can trace',
+  'do':'Press <b>Set this up for me</b>. It turns tracking and validation off, then pushes a normal week and the stuck-sensor batch.',
+  watch:'The <b>Data</b> and <b>Params</b> columns.',
+  expect:'The MAE got worse, but the history has dashes where the data version and parameters should be.',
+  why:'You can see that something broke but not what. Tracking is what turns "it got worse" into "batch d3 made it worse".',
+  setup:function(h){ h.click('reset'); h.set('validate',false); h.set('rule',false); h.set('track',false); h.set('batch','normal'); h.click('push'); h.set('batch','stuck'); h.click('push'); }},
+ {title:'5 · Promote and roll back through the registry',
+  'do':'Press <b>Set this up for me</b>. It pushes a normal week and promotes it, then pushes a bad batch and promotes that too. Now press <b>Roll back</b> yourself.',
+  watch:'The <b>Production</b> column and the registry panel.',
+  expect:'The ★ moves to the bad run, then back to the earlier one when you roll back. No run is retrained or changed.',
+  why:'Production is an alias, not "the newest run". HOS 1 Analyze asks you to explain exactly this difference.',
+  setup:function(h){ h.click('reset'); h.set('validate',false); h.set('rule',false); h.set('track',true); h.set('batch','normal'); h.click('push'); h.click('promote'); h.set('batch','renamed'); h.click('push'); h.click('promote'); }},
+ {title:'Your turn',
+  'do':'Push the stuck-sensor batch with validation on, then turn on <b>Extra rule</b> and push it again.',
+  expect:'The starter schema lets the stuck sensor through; the value rule stops it. You can say in one sentence why a type check isn\'t enough.',
+  why:'That\'s the shape of the rule you write by hand in HOS 1 Understand &amp; Refine. Now go back to the <a href="index.html#lecture">lesson</a>.'}
+];</script>
+<script src="../assets/sim-tour.js"></script>
+</body>
+</html>

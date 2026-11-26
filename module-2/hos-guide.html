@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 430 HOS 2 hands-on guide: CI/CD/CT for Models and Agents, stage by stage.">
-<title>AI 430 — HOS 2: CI/CD/CT for Models and Agents</title>
+<meta name="description" content="AI 430 AIC 2 hands-on guide: CI/CD/CT for Models and Agents, stage by stage.">
+<title>AI 430 — AIC 2: CI/CD/CT for Models and Agents</title>
 <link rel="stylesheet" href="../assets/course.css">
 <style>
 .goal-box { background:var(--blue-bg); border-left:5px solid var(--blue); padding:15px 18px; margin:18px 0; border-radius:4px; }
@@ -46,8 +46,8 @@
 </header>
 <section class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">AI 430 · Module 2 · Hands-On Skill (HOS) guide</div>
-    <h1>HOS 2: CI/CD/CT for Models &amp; Agents</h1>
+    <div class="eyebrow">AI 430 · Module 2 · AI Challenge (AIC) guide</div>
+    <h1>AIC 2: CI/CD/CT for Models &amp; Agents</h1>
     <p class="lede">Write the three GitHub Actions workflows that ship Salish Fresh's model and agent: tests on every push, an evaluation gate before every deploy to a free Hugging Face Space, and a weekly job that retrains when the data drifts. Then try to sneak changes past them.</p>
     <div class="chips"><span class="chip">Est. 3–4 hrs</span><span class="chip">Outcome CO2</span><span class="chip">Module 2 · Weeks 3–4</span><span class="chip">10% of final grade</span></div>
   </div>
@@ -60,25 +60,25 @@
   <div class="module-head"><div class="module-icon">🧭</div><div><h2>Before you start</h2></div></div>
 <div class="before-box">
   <ol>
-    <li><b>Check your account setup.</b> This HOS needs a <a href="../start-here/accounts.html#huggingface">free Hugging Face account and write token</a>, plus the GitHub account and Gemini key from HOS 1. Set them up first; the build won't run without them.</li>
+    <li><b>Check your account setup.</b> This AIC needs a <a href="../start-here/accounts.html#huggingface">free Hugging Face account and write token</a>, plus the GitHub account and Gemini key from AIC 1. Set them up first; the build won't run without them.</li>
     <li><b>Know the concepts.</b> Read <a href="../reference/concept-companion.html#module-2">Concept Companion → Module 2</a> before you open the starter code.</li>
   </ol>
 </div>
 <h4>What you'll need</h4>
 <ul class="needs-list">
-  <li><strong>Starter code:</strong> your <b>HOS 2</b> repo, created from the <code>AI430-HOS02</code> template when you accept the HOS 2 invite (<span class="tag amber">Planned</span> planned (the Classroom50 link is added here once the <code>AI430-HOS02</code> template repo is built and tested)). Open it in GitHub Codespaces; dependencies install automatically. Not sure what a file does? See the <a href="../reference/starter-code-walkthrough.html#hos2">starter code walkthrough for this HOS</a>.</li>
+  <li><strong>Starter code:</strong> your <b>AIC 2</b> repo, created from the <code>AI430-AIC02</code> template when you accept the AIC 2 invite (<span class="tag amber">Planned</span> planned (the Classroom50 link is added here once the <code>AI430-AIC02</code> template repo is built and tested)). Open it in GitHub Codespaces; dependencies install automatically. Not sure what a file does? See the <a href="../reference/starter-code-walkthrough.html#hos2">starter code walkthrough for this AIC</a>.</li>
   <li>A free <a href="../start-here/accounts.html#huggingface">Hugging Face account</a>, an empty Gradio Space on the free CPU hardware, and a <b>write</b> access token.</li>
   <li>Two repository secrets, <code>HF_TOKEN</code> and <code>GOOGLE_API_KEY</code>, and one repository variable, <code>HF_SPACE</code> (for example <code>your-name/salish-fresh</code>), under <b>Settings → Secrets and variables → Actions</b>.</li>
   <li>An AI coding assistant in your Codespace (Copilot Chat in Agent mode, or equivalent)</li>
 </ul>
 <div class="ref-box"><h4>Reference reading (optional, before you start)</h4><ul><li><a href="https://docs.github.com/en/actions/get-started/quickstart" target="_blank" rel="noopener">GitHub Actions quickstart</a>, and <a href="https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets" target="_blank" rel="noopener">using secrets</a>.</li><li><a href="https://huggingface.co/docs/hub/spaces-overview" target="_blank" rel="noopener">Hugging Face Spaces overview</a>.</li></ul></div>
-<p>This HOS is graded across four stages instead of on code correctness alone: <strong>Engagement</strong> (Create/Scaffold) is 20% of the HOS grade, and <strong>Skills</strong> is 80%: Evaluate, Analyze, Apply (the change you make by hand in Understand &amp; Refine) and Understand (your own explanation of it), 20% each. Each stage below says exactly what to submit. Everything goes in your HOS 2 GitHub Classroom repo: written work under the matching heading in <code>NOTES.md</code>, screenshots in <code>screenshots/</code>. Commit and push as you go, then submit the repo link to the HOS 2 assignment in Brightspace by the end of Week 4.</p>
+<p>This guide covers the <strong>build</strong>: Part A (Create / Scaffold, Evaluate) and the first half of Part B (Analyze, Understand &amp; Refine). It is graded across those stages instead of on code correctness alone, for <strong>60 of the 100 AIC points</strong>: 12 points each for Create, Evaluate, Analyze, Apply (the change you make by hand in Understand &amp; Refine) and Understand (your own explanation of it, plus the short <a href="index.html#postmortem">Post Mortem</a> you write after the challenge). The other 40 points are the <a href="application-challenge.html">Part B challenge</a>, in the <code>challenge/</code> folder of the same repo. The whole AIC is graded once, at the end of Week 4. Each stage below says exactly what to submit. Everything goes in your Module 2 GitHub Classroom repo: written work under the matching heading in <code>NOTES.md</code>, screenshots in <code>screenshots/</code>. Commit and push as you go. By the end of Week 4, push your final work: your repo is your submission, so there is nothing to submit in Brightspace, and your last push before the deadline is what counts.</p>
 </section>
 
 <section class="module card" id="create">
   <div class="module-head"><div class="module-icon">🛠️</div><div><h2>1 · Create / Scaffold</h2></div></div>
-<p class="stage-tagline">Graded as Engagement: 20% of this HOS. The AI-assisted starting point, not the deliverable.</p>
-<p>The starter is HOS 1's finished pipeline plus a Gradio app for the Space (<code>app/</code>: a forecast form and a chat box for <code>pantry_helper</code>), a gate script with its thresholds (<code>gates/check.py</code>, <code>gates/thresholds.yaml</code>), a drift check (<code>monitoring/drift_check.py</code>) and a secret scanner (<code>scripts/scan_logs.py</code>). Set up the Space and the secrets first (see <a href="#before">Before you start</a>), then prompt your AI assistant. Start from this prompt:</p>
+<p class="stage-tagline">Graded under Build: Create, 12 of the 100 AIC points. The AI-assisted starting point, not the deliverable.</p>
+<p>The starter is AIC 1's finished pipeline plus a Gradio app for the Space (<code>app/</code>: a forecast form and a chat box for <code>pantry_helper</code>), a gate script with its thresholds (<code>gates/check.py</code>, <code>gates/thresholds.yaml</code>), a drift check (<code>monitoring/drift_check.py</code>) and a secret scanner (<code>scripts/scan_logs.py</code>). Set up the Space and the secrets first (see <a href="#before">Before you start</a>), then prompt your AI assistant. Start from this prompt:</p>
 <pre tabindex="0"><code>In THIS existing workspace (the starter-code folder that&#x27;s already open),
 edit files here; do not create a new workspace or project.
 Write three GitHub Actions workflows in .github/workflows/:
@@ -109,7 +109,7 @@ gates/thresholds.yaml as they are. MODEL stays &quot;gemini-3.8-flash&quot;.</co
 <ul>
   <li><strong>A breaking change.</strong> Push a commit that breaks a unit test. Does CI fail before anything deploys? Does the Space keep serving the old version?</li>
   <li><strong>Better but slower.</strong> Merge the starter's <code>candidates/bigger-model</code> branch: lower MAE, three times the prediction latency. Does the gate notice?</li>
-  <li><strong>A prompt that costs more.</strong> Merge <code>candidates/double-search</code>: a prompt edit that raises the agent's success rate slightly and doubles its tool calls. What does the gate say, and is the gain bigger than the spread you measured in HOS 1?</li>
+  <li><strong>A prompt that costs more.</strong> Merge <code>candidates/double-search</code>: a prompt edit that raises the agent's success rate slightly and doubles its tool calls. What does the gate say, and is the gain bigger than the spread you measured in AIC 1?</li>
   <li><strong>A leaked secret.</strong> Add a step that prints <code>HF_TOKEN</code> reversed. Does <code>scan_logs.py</code> catch it? Then delete that run's logs and remove the step.</li>
   <li><strong>Roll back.</strong> Move the <code>champion</code> alias back one version and run <code>deploy.yml</code>. How long did it take, and what did a user of the Space see meanwhile?</li>
 </ul>
@@ -153,7 +153,7 @@ gates/thresholds.yaml as they are. MODEL stays &quot;gemini-3.8-flash&quot;.</co
 </section>
 
 <div class="guide-nav">
-  <a href="../module-1/hos-guide.html">← HOS 1 guide</a>
+  <a href="../module-1/hos-guide.html">← AIC 1 build guide</a>
   <a href="index.html">Module 2 lesson →</a>
 </div>
 </main>

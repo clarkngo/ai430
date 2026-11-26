@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 430 Concept Debate worked example: four students through the HOS 1 debate, with the Brightspace thread, timeline and grading.">
+<meta name="description" content="AI 430 Concept Debate worked example: four students through the AIC 1 debate, with the Brightspace thread, timeline and grading.">
 <title>AI 430 — Concept Debate: A Worked Example</title>
 <link rel="stylesheet" href="../assets/course.css">
 <style>
@@ -74,7 +74,7 @@
     <div class="eyebrow">AI 430 · Concept Debate</div>
     <h1>Concept Debate: A Worked Example</h1>
     <p class="lede">Four students, one debate, one week. Every post they write, when they write it, what the Brightspace thread looks like, what the instructor does, and how each student is graded.</p>
-    <div class="chips"><span class="chip">HOS 1 debate</span><span class="chip">4 fictional students</span><span class="chip">Grading shown</span></div>
+    <div class="chips"><span class="chip">AIC 1 debate</span><span class="chip">4 fictional students</span><span class="chip">Grading shown</span></div>
   </div>
 </section>
 <main id="main">
@@ -82,13 +82,13 @@
   <div class="secnav-inner"><a href="#setup">The setup</a><a href="#timeline">Timeline</a><a href="#thread">Thread view</a><a href="#posts">The posts</a><a href="#grading">Grading</a><a href="#ai-use">AI use</a><a href="#brightspace">Brightspace setup</a></div>
 </nav>
 <section class="module card" id="setup">
-  <div class="module-head"><div class="module-icon">⚖️</div><div><h2>The setup</h2><div class="module-meta"><span class="tag">HOS 1 · Week 1</span><span class="tag">CO1</span></div></div></div>
+  <div class="module-head"><div class="module-icon">⚖️</div><div><h2>The setup</h2><div class="module-meta"><span class="tag">AIC 1 · Week 1</span><span class="tag">CO1</span></div></div></div>
 <p><b>The question</b> (already in the Module 1 lesson): <em>Should an agent's prompts be versioned and tracked like model weights, or treated like ordinary configuration?</em></p>
 <ul>
   <li><b>Side A — Track prompts like models.</b> Every prompt change is an experiment: versioned, evaluated and promoted.</li>
   <li><b>Side B — Treat prompts as configuration.</b> Keep prompts in Git with the code; skip the experiment-tracking overhead.</li>
 </ul>
-<p>Before the first debate, the class is split into two debate groups of about the same size, either assigned by the instructor or chosen by students. In HOS 1, Debate Group 1 argues Side A and Debate Group 2 argues Side B. The four students below are fictional.</p>
+<p>Before the first debate, the class is split into two debate groups of about the same size, either assigned by the instructor or chosen by students. In AIC 1, Debate Group 1 argues Side A and Debate Group 2 argues Side B. The four students below are fictional.</p>
 <div class="cast">
   <div class="person"><b>Ravi</b>Debate Group 1 · Side A<br><span class="muted">Strong throughout</span></div>
   <div class="person"><b>Marcus</b>Debate Group 1 · Side A<br><span class="muted">On time, but general</span></div>
@@ -98,7 +98,7 @@
 </section>
 
 <section class="module card" id="timeline">
-  <div class="module-head"><div class="module-icon">🗓️</div><div><h2>Timeline</h2><div class="module-meta"><span class="tag">Week 1 of the HOS</span><span class="tag violet">Instructor steps in purple</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🗓️</div><div><h2>Timeline</h2><div class="module-meta"><span class="tag">Week 1 of the AIC</span><span class="tag violet">Instructor steps in purple</span></div></div></div>
 <p class="small muted">Days follow the suggested pacing in the lessons; your Brightspace dates win.</p>
 <div class="timeline">
   <div class="tl"><span class="when">Week 1 · Monday</span><h4>The topic opens</h4><p>After the lecture, students read the question and both sides in the lesson. The instructor posts nothing new; the question is already in the course.</p></div>
@@ -114,8 +114,8 @@
 <section class="module card" id="thread">
   <div class="module-head"><div class="module-icon">🧵</div><div><h2>What the thread looks like in Brightspace</h2><div class="module-meta"><span class="tag">One topic, one thread per student</span></div></div></div>
 <p>One whole-class topic for this debate. Each student's thread holds their Stage 1 and Stage 2; Stage 3 lives in someone else's thread.</p>
-<div class="thread-view" role="group" aria-label="Brightspace topic: HOS 1 Concept Debate">
-  <div class="tv-head">Concept Debates › HOS 1: Prompts as models, or as configuration?</div>
+<div class="thread-view" role="group" aria-label="Brightspace topic: AIC 1 Concept Debate">
+  <div class="tv-head">Concept Debates › AIC 1: Prompts as models, or as configuration?</div>
   <div class="tv-row"><span class="who">Side A — Ravi</span><span class="tag">Stage 1</span><span class="ts">Mon 8:40 pm</span></div>
   <div class="tv-row r1"><span>↳ Ravi</span><span class="tag">Stage 2</span><span class="ts">Wed 6:05 pm</span></div>
   <div class="tv-row r1"><span>↳ Dana</span><span class="tag">Stage 3</span><span class="ts">Sat 11:20 am</span></div>
@@ -135,7 +135,7 @@
 <section class="module card" id="posts">
   <div class="module-head"><div class="module-icon">💬</div><div><h2>The posts</h2><div class="module-meta"><span class="tag">In the order they were written</span></div></div></div>
 <h3>Stage 1 · Monday – Tuesday: initial position</h3>
-<div class="post strongp"><div class="ph"><b>Side A — Ravi</b><span class="tag blue">Side A</span><span class="tag">Stage 1</span><span class="ts">Mon 8:40 pm</span></div><div class="pb"><p><b>Claim:</b> a prompt change should be tracked like a model change, because it changes behaviour as much as retraining does.</p><p><b>Evidence:</b> in my HOS 1 build, I changed one sentence in <code>pantry_helper</code>'s instruction ("answer briefly" to "answer in one sentence") and its evaluation score fell from 0.82 to 0.71 across three runs. Git shows the one-line diff; only the MLflow runs show it made the agent worse.</p></div><div class="note"><b>Why it works:</b> one claim, and evidence from something he actually ran.</div></div>
+<div class="post strongp"><div class="ph"><b>Side A — Ravi</b><span class="tag blue">Side A</span><span class="tag">Stage 1</span><span class="ts">Mon 8:40 pm</span></div><div class="pb"><p><b>Claim:</b> a prompt change should be tracked like a model change, because it changes behaviour as much as retraining does.</p><p><b>Evidence:</b> in my AIC 1 build, I changed one sentence in <code>pantry_helper</code>'s instruction ("answer briefly" to "answer in one sentence") and its evaluation score fell from 0.82 to 0.71 across three runs. Git shows the one-line diff; only the MLflow runs show it made the agent worse.</p></div><div class="note"><b>Why it works:</b> one claim, and evidence from something he actually ran.</div></div>
 <div class="post strongp"><div class="ph"><b>Side B — Dana</b><span class="tag rose">Side B</span><span class="tag">Stage 1</span><span class="ts">Tue 10:15 am</span></div><div class="pb"><p><b>Claim:</b> prompts are configuration, and Git already versions configuration well.</p><p><b>Evidence:</b> my three evaluation runs of the same prompt scored 0.74, 0.80 and 0.77. If one run swings by 0.06 on its own, logging every small prompt edit as an experiment mostly records noise. A reviewed pull request with the diff, plus a scheduled evaluation, catches what matters without a registry for text.</p></div><div class="note"><b>Why it works:</b> real numbers from her own build, used to make a specific point about cost.</div></div>
 <div class="post weakp"><div class="ph"><b>Side A — Marcus</b><span class="tag blue">Side A</span><span class="tag">Stage 1</span><span class="ts">Tue 9:50 pm</span></div><div class="pb"><p>MLflow tracks parameters, metrics and artifacts for each run, and it has a model registry with aliases. Prompts are an important part of LLM systems, so tracking them is a best practice.</p></div><div class="note"><b>What's missing:</b> this describes MLflow, not why prompts belong in it. No specific claim, no evidence.</div></div>
 <div class="post instp reply"><div class="ph"><b>Instructor</b><span class="tag violet">Instructor</span><span class="ts">Wed 9:10 am</span></div><div class="pb"><p>Marcus, this says what MLflow does, but not why a prompt needs it when Git already has the history. For Stage 2, find one thing Git can't tell you about a prompt change, and argue from that.</p></div><div class="note"><b>Instructor move:</b> one public question, not a grade. Other students can see what a stronger post needs.</div></div>
@@ -153,13 +153,13 @@
 </section>
 
 <section class="module card" id="grading">
-  <div class="module-head"><div class="module-icon">✅</div><div><h2>How each student is graded</h2><div class="module-meta"><span class="tag">10 points per debate</span><span class="tag">Participation 50% · Writing 50%</span></div></div></div>
+  <div class="module-head"><div class="module-icon">✅</div><div><h2>How each student is graded</h2><div class="module-meta"><span class="tag">10 points per debate</span><span class="tag">Participation 60% · Writing 40%</span></div></div></div>
 <div class="table-wrap" tabindex="0"><table class="t">
-  <tr><th>Student</th><th>Participation (5)</th><th>Writing (5)</th><th>Total</th><th>Why</th></tr>
-  <tr><td><b>Ravi</b></td><td>5</td><td>5</td><td><b>10</b></td><td>All three stages on time. Specific evidence, a genuine Stage 2, and a synthesis that cites Dana and changes his own rule.</td></tr>
-  <tr><td><b>Dana</b></td><td>5</td><td>5</td><td><b>10</b></td><td>All three on time. Evidence from her own build, and a synthesis that narrows her position because of Ravi's point.</td></tr>
-  <tr><td><b>Jordan</b></td><td>3</td><td>5</td><td><b>8</b></td><td>Stage 1 a day late (checked from the post time). The writing is strong at every stage.</td></tr>
-  <tr><td><b>Marcus</b></td><td>5</td><td>1</td><td><b>6</b></td><td>Posted every stage on time, so full Participation. Stage 1 is a summary, Stage 2 a one-liner, and Stage 3 "great points, I agree", which doesn't meet the Writing criterion.</td></tr>
+  <tr><th>Student</th><th>Participation (6)</th><th>Writing (4)</th><th>Total</th><th>Why</th></tr>
+  <tr><td><b>Ravi</b></td><td>6</td><td>4</td><td><b>10</b></td><td>All three stages on time. Specific evidence, a genuine Stage 2, and a synthesis that cites Dana and changes his own rule.</td></tr>
+  <tr><td><b>Dana</b></td><td>6</td><td>4</td><td><b>10</b></td><td>All three on time. Evidence from her own build, and a synthesis that narrows her position because of Ravi's point.</td></tr>
+  <tr><td><b>Jordan</b></td><td>4</td><td>4</td><td><b>8</b></td><td>Stage 1 a day late (checked from the post time), so Participation is Approaching Standard (68% of 6, rounded). The writing is strong at every stage.</td></tr>
+  <tr><td><b>Marcus</b></td><td>6</td><td>1</td><td><b>7</b></td><td>Posted every stage on time, so full Participation. Stage 1 is a summary, Stage 2 a one-liner, and Stage 3 "great points, I agree", which is Below Standard on Writing (30% of 4, rounded).</td></tr>
 </table></div>
 <div class="callout"><span class="label">Feedback that moves Marcus up next time</span><p>"Your Stage 3 needs one point from Jordan's post, in your own words, and what it made you think. Jordan's "roll back by moving the alias" idea was there to respond to."</p></div>
 </section>
@@ -177,10 +177,10 @@
 <section class="module card" id="brightspace">
   <div class="module-head"><div class="module-icon">🛠️</div><div><h2>Set it up in Brightspace</h2><div class="module-meta"><span class="tag">Instructor · once per term, then once per debate</span></div></div></div>
 <ol>
-  <li><b>One forum,</b> "Concept Debates", with <b>one topic per debate</b>: HOS 1–4 and the Week 8 Integration debate. Paste the question and both sides into each topic's description.</li>
+  <li><b>One forum,</b> "Concept Debates", with <b>one topic per debate</b>: CD01–CD10, two per module (Debate A in Week 1, Debate B in Week 2). Paste the question and both sides into each topic's description.</li>
   <li><b>Turn on "Users must start a thread before they can read and reply to other threads in this topic"</b> (Post and View settings). Nobody can read and borrow arguments before posting their own Stage 1.</li>
   <li><b>Set the topic's end date to the Stage 3 deadline.</b> Brightspace allows one end date per topic, so check Stage 1 and Stage 2 times when grading rather than splitting a debate into three topics.</li>
-  <li><b>Assessment tab:</b> score out of 10 and attach the Participation 50 / Writing 50 rubric, so you can grade from the topic with each student's posts together.</li>
+  <li><b>Assessment tab:</b> score out of 10 and attach the Participation 60 / Writing 40 rubric, so you can grade from the topic with each student's posts together.</li>
   <li><b>Tell students the thread title format:</b> "Side A — First name L." It makes the topic easy to scan.</li>
   <li><b>Keep it one whole-class topic.</b> Above about 30–35 students, use Brightspace groups to make two or three restricted copies of the topic, each with a mix of both sides. Don't split by side: Stages 2 and 3 need the other side's posts.</li>
 </ol>

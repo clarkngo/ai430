@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 430 HOS 2 simulator: send changes through CI, a quality gate and deployment, and see what each stage stops.">
+<meta name="description" content="AI 430 AIC 2 simulator: send changes through CI, a quality gate and deployment, and see what each stage stops.">
 <title>CI/CD/CT Pipeline Simulator</title>
 <link rel="stylesheet" href="../assets/course.css">
 <style>
@@ -82,7 +82,7 @@
 </header>
 <section class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">Simulator 2 · Pairs with HOS 2 (Weeks 3–4)</div>
+    <div class="eyebrow">Simulator 2 · Pairs with AIC 2 (Weeks 3–4)</div>
     <h1>CI/CD/CT Pipeline Simulator</h1>
     <p class="lede">Send five kinds of change through Salish Fresh's three workflows (CI, the gated deploy, and scheduled retraining) and watch where each one stops, or doesn't.</p>
     <div class="chips"><span class="chip">Outcome CO2</span><span class="chip">GitHub Actions</span><span class="chip">Quality gate</span><span class="chip">Hugging Face Spaces</span><span class="chip">Continuous training</span></div>
@@ -139,7 +139,7 @@
 var $=function(id){return document.getElementById(id);};
 var prod, n;
 var C={better:{name:'Better model',mae:11.4,p95:42},bug:{name:'Bug in a feature function'},bigger:{name:'Bigger model',mae:10.9,p95:140},leak:{name:'Debug print of HF_TOKEN',mae:11.8,p95:45},drift:{name:'Scheduled retrain (drift)',mae:11.6,p95:44}};
-function init(){ prod={v:1,mae:11.8,p95:45,name:'v1 (from HOS 1)'}; n=0; showProd(); lanes(['','','','']); $('steps').innerHTML='<p class="small muted">Pick a change and run it.</p>'; $('verdict').innerHTML=''; $('log').innerHTML='<tr><th>#</th><th>Change</th><th>Stopped at</th><th>Serving</th></tr>'; }
+function init(){ prod={v:1,mae:11.8,p95:45,name:'v1 (from AIC 1)'}; n=0; showProd(); lanes(['','','','']); $('steps').innerHTML='<p class="small muted">Pick a change and run it.</p>'; $('verdict').innerHTML=''; $('log').innerHTML='<tr><th>#</th><th>Change</th><th>Stopped at</th><th>Serving</th></tr>'; }
 function showProd(){ $('prod').innerHTML='<dt>Version</dt><dd>'+prod.name+'</dd><dt>MAE</dt><dd>'+prod.mae.toFixed(1)+'</dd><dt>p95 latency</dt><dd>'+prod.p95+' ms</dd>'; }
 function lanes(s,first){ var L=[first||'Trigger','CI','Gate','Deploy']; $('lanes').innerHTML=L.map(function(x,i){ var c=s[i]||''; return '<div class="lane '+c+'"><b>'+x+'</b>'+({ok:'✓ passed',err:'✗ failed',skip:'— not run'}[c]||'waiting')+'</div>'; }).join(''); }
 function card(kind,k,html){ return '<div class="stepcard '+kind+'"><div class="k">'+k+'</div>'+html+'</div>'; }
@@ -186,13 +186,13 @@ $('go').addEventListener('click',run); $('reset').addEventListener('click',init)
   'do':'Press <b>Set this up for me</b>. It resets and runs the <b>Better model</b> change.',
   watch:'The four stages, and <b>In production now</b>.',
   expect:'CI passes, the gate compares MAE 11.4 with production\'s 11.8 and passes, and the Space deploys v2.',
-  why:'This is the path every change takes in HOS 2: <code>ci.yml</code>, then the gate and deploy in <code>deploy.yml</code>.',
+  why:'This is the path every change takes in AIC 2: <code>ci.yml</code>, then the gate and deploy in <code>deploy.yml</code>.',
   setup:function(h){ h.click('reset'); h.set('lat',false); h.set('scan',true); h.set('chg','better'); h.click('go'); }},
  {title:'2 · A bug stops at CI, before anything deploys',
   'do':'Press <b>Set this up for me</b>. It runs the change with a broken feature function.',
   watch:'Which stage fails, and how long it took.',
   expect:'A failed unit test in about a minute. The gate and deploy never run; production is unchanged.',
-  why:'Cheap checks first. HOS 2 Evaluate asks you to push a breaking change and confirm the Space keeps serving the old version.',
+  why:'Cheap checks first. AIC 2 Evaluate asks you to push a breaking change and confirm the Space keeps serving the old version.',
   setup:function(h){ h.set('chg','bug'); h.click('go'); }},
  {title:'3 · A bigger, slower model with only an accuracy gate',
   'do':'Press <b>Set this up for me</b>. It resets and runs the <b>Bigger model</b> with the latency condition off.',
@@ -204,7 +204,7 @@ $('go').addEventListener('click',run); $('reset').addEventListener('click',init)
   'do':'Press <b>Set this up for me</b>. It resets, turns on the latency condition, and runs the same change.',
   watch:'The gate\'s FAIL line.',
   expect:'Blocked, with a message naming the condition that failed: p95 140 ms over the 80 ms limit.',
-  why:'This is HOS 2 Understand &amp; Refine: you add one condition by hand for something the gate can\'t see yet.',
+  why:'This is AIC 2 Understand &amp; Refine: you add one condition by hand for something the gate can\'t see yet.',
   setup:function(h){ h.click('reset'); h.set('lat',true); h.set('chg','bigger'); h.click('go'); }},
  {title:'5 · A debug print that would leak the token',
   'do':'Press <b>Set this up for me</b>. It turns the secret scan off and runs the debug-print change. Then turn the scan on and run it again.',

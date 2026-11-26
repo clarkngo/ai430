@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 430 HOS 1 simulator: push data batches through versioning, validation, tracking and a model registry, and see what each one catches.">
+<meta name="description" content="AI 430 AIC 1 simulator: push data batches through versioning, validation, tracking and a model registry, and see what each one catches.">
 <title>Data &amp; Experiment Pipeline Simulator</title>
 <link rel="stylesheet" href="../assets/course.css">
 <style>
@@ -82,7 +82,7 @@
 </header>
 <section class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">Simulator 1 · Pairs with HOS 1 (Weeks 1–2)</div>
+    <div class="eyebrow">Simulator 1 · Pairs with AIC 1 (Weeks 1–2)</div>
     <h1>Data &amp; Experiment Pipeline Simulator</h1>
     <p class="lede">Push weekly batches through Salish Fresh's forecasting pipeline with validation and tracking on or off, then promote and roll back through the registry. See which mistakes each piece catches.</p>
     <div class="chips"><span class="chip">Outcome CO1</span><span class="chip">DVC</span><span class="chip">pandera</span><span class="chip">MLflow tracking</span><span class="chip">Model registry</span></div>
@@ -177,7 +177,7 @@ lanes([]); table();
   'do':'Press <b>Set this up for me</b>. It resets, pushes a normal batch with validation and tracking on, then pushes a second normal week.',
   watch:'The five pipeline stages and panel 3, <b>Run history</b>.',
   expect:'Every stage done, and two runs, each with its own data version (<code>d2</code>, <code>d3</code>), its parameters and its MAE.',
-  why:'This is the pipeline you build in HOS 1 Create: DVC versions the data, pandera checks it, MLflow records the run.',
+  why:'This is the pipeline you build in AIC 1 Create: DVC versions the data, pandera checks it, MLflow records the run.',
   setup:function(h){ h.click('reset'); h.set('validate',true); h.set('rule',false); h.set('track',true); h.set('batch','normal'); h.click('push'); h.click('push'); }},
  {title:'2 · A renamed column with validation off',
   'do':'Press <b>Set this up for me</b>. It pushes a normal week, turns validation off, and pushes the batch where <code>temp_c</code> was renamed.',
@@ -189,7 +189,7 @@ lanes([]); table();
   'do':'Press <b>Set this up for me</b>. It turns validation back on and pushes the renamed-column batch again.',
   watch:'Which stage stops, and the message.',
   expect:'Stopped at <b>Validate</b>, with a message naming the missing column. Nothing trained, no new run.',
-  why:'HOS 1 Evaluate asks you to break the data and check that the pipeline stops before <code>train</code>, with a message someone could act on.',
+  why:'AIC 1 Evaluate asks you to break the data and check that the pipeline stops before <code>train</code>, with a message someone could act on.',
   setup:function(h){ h.set('validate',true); h.set('track',true); h.set('batch','renamed'); h.click('push'); }},
  {title:'4 · Tracking off: a regression nobody can trace',
   'do':'Press <b>Set this up for me</b>. It turns tracking and validation off, then pushes a normal week and the stuck-sensor batch.',
@@ -201,12 +201,12 @@ lanes([]); table();
   'do':'Press <b>Set this up for me</b>. It pushes a normal week and promotes it, then pushes a bad batch and promotes that too. Now press <b>Roll back</b> yourself.',
   watch:'The <b>Production</b> column and the registry panel.',
   expect:'The ★ moves to the bad run, then back to the earlier one when you roll back. No run is retrained or changed.',
-  why:'Production is an alias, not "the newest run". HOS 1 Analyze asks you to explain exactly this difference.',
+  why:'Production is an alias, not "the newest run". AIC 1 Analyze asks you to explain exactly this difference.',
   setup:function(h){ h.click('reset'); h.set('validate',false); h.set('rule',false); h.set('track',true); h.set('batch','normal'); h.click('push'); h.click('promote'); h.set('batch','renamed'); h.click('push'); h.click('promote'); }},
  {title:'Your turn',
   'do':'Push the stuck-sensor batch with validation on, then turn on <b>Extra rule</b> and push it again.',
   expect:'The starter schema lets the stuck sensor through; the value rule stops it. You can say in one sentence why a type check isn\'t enough.',
-  why:'That\'s the shape of the rule you write by hand in HOS 1 Understand &amp; Refine. Now go back to the <a href="index.html#lecture">lesson</a>.'}
+  why:'That\'s the shape of the rule you write by hand in AIC 1 Understand &amp; Refine. Now go back to the <a href="index.html#lecture">lesson</a>.'}
 ];</script>
 <script src="../assets/sim-tour.js"></script>
 </body>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 430 HOS 3 simulator: drift a feature, loosen an LLM judge, and tune a retrieval index, and see what each signal shows.">
+<meta name="description" content="AI 430 AIC 3 simulator: drift a feature, loosen an LLM judge, and tune a retrieval index, and see what each signal shows.">
 <title>Observability &amp; RAG Benchmark Simulator</title>
 <link rel="stylesheet" href="../assets/course.css">
 <style>
@@ -82,7 +82,7 @@
 </header>
 <section class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">Simulator 3 · Pairs with HOS 3 (Weeks 5–6)</div>
+    <div class="eyebrow">Simulator 3 · Pairs with AIC 3 (Weeks 5–6)</div>
     <h1>Observability &amp; RAG Benchmark Simulator</h1>
     <p class="lede">Three small dashboards: inject drift and move the alert threshold, make the judge lenient and compare it with a human sample, and benchmark retrieval across top-k, chunk size and database.</p>
     <div class="chips"><span class="chip">Outcomes CO3 · CO4</span><span class="chip">Evidently</span><span class="chip">LLM-as-judge</span><span class="chip">Ragas</span><span class="chip">Chroma · Qdrant</span></div>
@@ -210,19 +210,19 @@ drift(); judge();
   'do':'Press <b>Set this up for me</b>. It injects 50% drift into <code>temp_c</code> from week 5 and sets the alert threshold to 0.40.',
   watch:'Panel A: the bars, the threshold line, and the MAE after each score.',
   expect:'The drift score climbs from week 5, but never crosses 0.40. MAE starts rising in week 7, and nothing alerts.',
-  why:'A threshold set too loose turns a monitor into decoration. HOS 3 Evaluate injects drift on purpose to check yours.',
+  why:'A threshold set too loose turns a monitor into decoration. AIC 3 Evaluate injects drift on purpose to check yours.',
   setup:function(h){ h.set('feat','temp_c'); h.set('shift',50); h.set('thr',0.4); }},
  {title:'2 · The same drift with a tighter threshold',
   'do':'Press <b>Set this up for me</b>. It keeps the drift and lowers the threshold to 0.10.',
   watch:'Which week first turns red, compared with when MAE moves.',
   expect:'An alert in week 5 or 6, before the MAE rises in week 7.',
-  why:'Drift warns you while accuracy still looks fine. The threshold you choose in HOS 3 Understand &amp; Refine needs a number from your own data behind it.',
+  why:'Drift warns you while accuracy still looks fine. The threshold you choose in AIC 3 Understand &amp; Refine needs a number from your own data behind it.',
   setup:function(h){ h.set('feat','temp_c'); h.set('shift',50); h.set('thr',0.1); }},
  {title:'3 · A lenient judge, caught by the human sample',
   'do':'Press <b>Set this up for me</b>. It makes the judge lenient.',
   watch:'Panel B: judge average vs. the human sample, and the agreement column.',
   expect:'The judge scores rise every week; the human scores don\'t, and agreement drops below 8 / 10.',
-  why:'You grade 10 traces yourself in HOS 3 Evaluate, before looking at the judge\'s scores, for exactly this reason.',
+  why:'You grade 10 traces yourself in AIC 3 Evaluate, before looking at the judge\'s scores, for exactly this reason.',
   setup:function(h){ h.set('len',2); h.set('jm',false); }},
  {title:'4 · The judge\'s model changes mid-month',
   'do':'Press <b>Set this up for me</b>. It sets the judge back to strict and changes its model in week 3.',
@@ -245,7 +245,7 @@ drift(); judge();
  {title:'Your turn',
   'do':'Try drift on <code>is_holiday</code>, a very lenient judge, and chunk size 256 vs. 1024.',
   expect:'You can answer the lesson\'s three questions: why drift warns before accuracy, how you\'d know the judge changed, and what relevance costs.',
-  why:'Those are most of HOS 3 Analyze. Now go back to the <a href="index.html#lecture">lesson</a>.'}
+  why:'Those are most of AIC 3 Analyze. Now go back to the <a href="index.html#lecture">lesson</a>.'}
 ];</script>
 <script src="../assets/sim-tour.js"></script>
 </body>
