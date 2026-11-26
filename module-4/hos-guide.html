@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 430 HOS 4 hands-on guide: Security, Guardrails and Agent-to-Agent, stage by stage.">
-<title>AI 430 — HOS 4: Security, Guardrails and Agent-to-Agent</title>
+<meta name="description" content="AI 430 AIC 4 hands-on guide: Security, Guardrails and Agent-to-Agent, stage by stage.">
+<title>AI 430 — AIC 4: Security, Guardrails and Agent-to-Agent</title>
 <link rel="stylesheet" href="../assets/course.css">
 <style>
 .goal-box { background:var(--blue-bg); border-left:5px solid var(--blue); padding:15px 18px; margin:18px 0; border-radius:4px; }
@@ -46,8 +46,8 @@
 </header>
 <section class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">AI 430 · Module 4 · Hands-On Skill (HOS) guide</div>
-    <h1>HOS 4: Security, Guardrails &amp; Agent-to-Agent</h1>
+    <div class="eyebrow">AI 430 · Module 4 · AI Challenge (AIC) guide</div>
+    <h1>AIC 4: Security, Guardrails &amp; Agent-to-Agent</h1>
     <p class="lede">Red-team Salish Fresh's support agent with promptfoo, add guardrails as ADK callbacks until the attacks fail, and split order lookups into a separate agent that pantry_helper calls over A2A, which checks who is asking. Then map what you found to the OWASP Top 10 for LLM Applications.</p>
     <div class="chips"><span class="chip">Est. 4 hrs</span><span class="chip">Outcome CO5</span><span class="chip">Module 4 · Weeks 7–8</span><span class="chip">10% of final grade</span></div>
   </div>
@@ -60,24 +60,24 @@
   <div class="module-head"><div class="module-icon">🧭</div><div><h2>Before you start</h2></div></div>
 <div class="before-box">
   <ol>
-    <li><b>Check your account setup.</b> This HOS needs a <a href="../start-here/accounts.html#github">GitHub account</a> and <a href="../start-here/accounts.html#google">Gemini key</a> from HOS 1; promptfoo and the A2A servers need no account. Set them up first; the build won't run without them.</li>
+    <li><b>Check your account setup.</b> This AIC needs a <a href="../start-here/accounts.html#github">GitHub account</a> and <a href="../start-here/accounts.html#google">Gemini key</a> from AIC 1; promptfoo and the A2A servers need no account. Set them up first; the build won't run without them.</li>
     <li><b>Know the concepts.</b> Read <a href="../reference/concept-companion.html#module-4">Concept Companion → Module 4</a> before you open the starter code.</li>
   </ol>
 </div>
 <h4>What you'll need</h4>
 <ul class="needs-list">
-  <li><strong>Starter code:</strong> your <b>HOS 4</b> repo, created from the <code>AI430-HOS04</code> template when you accept the HOS 4 invite (<span class="tag amber">Planned</span> planned (the Classroom50 link is added here once the <code>AI430-HOS04</code> template repo is built and tested)). Open it in GitHub Codespaces; dependencies install automatically. Not sure what a file does? See the <a href="../reference/starter-code-walkthrough.html#hos4">starter code walkthrough for this HOS</a>.</li>
-  <li>Your free Gemini key in <code>.env</code>, as in earlier HOS. Every red-team run calls the model many times, so keep the config's <code>repeat</code> and <code>delay</code> settings.</li>
+  <li><strong>Starter code:</strong> your <b>AIC 4</b> repo, created from the <code>AI430-AIC04</code> template when you accept the AIC 4 invite (<span class="tag amber">Planned</span> planned (the Classroom50 link is added here once the <code>AI430-AIC04</code> template repo is built and tested)). Open it in GitHub Codespaces; dependencies install automatically. Not sure what a file does? See the <a href="../reference/starter-code-walkthrough.html#hos4">starter code walkthrough for this AIC</a>.</li>
+  <li>Your free Gemini key in <code>.env</code>, as in earlier AIC. Every red-team run calls the model many times, so keep the config's <code>repeat</code> and <code>delay</code> settings.</li>
   <li>Three terminal tabs: <code>orders_agent</code> on port 8001, <code>pantry_helper</code> on port 8000, and one for promptfoo.</li>
   <li>An AI coding assistant in your Codespace (Copilot Chat in Agent mode, or equivalent)</li>
 </ul>
 <div class="ref-box"><h4>Reference reading (optional, before you start)</h4><ul><li><a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener">OWASP Top 10 for LLM Applications</a>.</li><li><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener">NIST AI Risk Management Framework</a> — the four functions.</li><li><a href="https://www.promptfoo.dev/docs/red-team/" target="_blank" rel="noopener">promptfoo: LLM red teaming</a>.</li><li><a href="https://google.github.io/adk-docs/callbacks/" target="_blank" rel="noopener">ADK callbacks</a> and <a href="https://a2a-protocol.org/" target="_blank" rel="noopener">the A2A protocol</a>.</li></ul></div>
-<p>This HOS is graded across four stages instead of on code correctness alone: <strong>Engagement</strong> (Create/Scaffold) is 20% of the HOS grade, and <strong>Skills</strong> is 80%: Evaluate, Analyze, Apply (the change you make by hand in Understand &amp; Refine) and Understand (your own explanation of it), 20% each. Each stage below says exactly what to submit. Everything goes in your HOS 4 GitHub Classroom repo: written work under the matching heading in <code>NOTES.md</code>, screenshots in <code>screenshots/</code>. Commit and push as you go, then submit the repo link to the HOS 4 assignment in Brightspace by the end of Week 8.</p>
+<p>This guide covers the <strong>build</strong>: Part A (Create / Scaffold, Evaluate) and the first half of Part B (Analyze, Understand &amp; Refine). It is graded across those stages instead of on code correctness alone, for <strong>60 of the 100 AIC points</strong>: 12 points each for Create, Evaluate, Analyze, Apply (the change you make by hand in Understand &amp; Refine) and Understand (your own explanation of it, plus the short <a href="index.html#postmortem">Post Mortem</a> you write after the challenge). The other 40 points are the <a href="application-challenge.html">Part B challenge</a>, in the <code>challenge/</code> folder of the same repo. The whole AIC is graded once, at the end of Week 8. Each stage below says exactly what to submit. Everything goes in your Module 4 GitHub Classroom repo: written work under the matching heading in <code>NOTES.md</code>, screenshots in <code>screenshots/</code>. Commit and push as you go. By the end of Week 8, push your final work: your repo is your submission, so there is nothing to submit in Brightspace, and your last push before the deadline is what counts.</p>
 </section>
 
 <section class="module card" id="create">
   <div class="module-head"><div class="module-icon">🛠️</div><div><h2>1 · Create / Scaffold</h2></div></div>
-<p class="stage-tagline">Graded as Engagement: 20% of this HOS. The AI-assisted starting point, not the deliverable.</p>
+<p class="stage-tagline">Graded under Build: Create, 12 of the 100 AIC points. The AI-assisted starting point, not the deliverable.</p>
 <p>The starter has <code>pantry_helper</code> with all guardrails off (<code>guards.yaml</code>), <code>orders_agent</code> as a separate ADK agent served over A2A (<code>a2a_orders/</code>), a red-team suite (<code>redteam/promptfooconfig.yaml</code>: direct and indirect injection, excessive agency, disclosure and prompt leakage, each repeated three times), and a poisoned help article. Start both agents, then run the suite once with nothing on:</p>
 <pre tabindex="0">python -m a2a_orders.serve        # tab 1, port 8001
 python -m pantry_helper.serve     # tab 2, port 8000
@@ -156,7 +156,7 @@ MODEL stays &quot;gemini-3.8-flash&quot;. Don&#x27;t edit redteam/.</code></pre>
 </section>
 
 <div class="guide-nav">
-  <a href="../module-3/hos-guide.html">← HOS 3 guide</a>
+  <a href="../module-3/hos-guide.html">← AIC 3 build guide</a>
   <a href="index.html">Module 4 lesson →</a>
 </div>
 </main>

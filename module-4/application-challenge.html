@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 430 Application Challenge 4: Cascade Power &amp;amp; Water Service Agent. Build to a spec, make one open decision, defend it.">
-<title>AI 430 — Application Challenge 4: Cascade Power &amp; Water Service Agent</title>
+<meta name="description" content="AI 430 Part B challenge 4: Cascade Power &amp;amp; Water Service Agent. Build to a spec, make one open decision, defend it.">
+<title>AI 420 — AIC 4 Part B Challenge: Cascade Power &amp; Water Service Agent</title>
 <link rel="stylesheet" href="../assets/course.css">
 <style>
 .rules-box { background:var(--surface2); border-left:3px solid var(--border); padding:8px 14px; margin:0 0 18px; font-size:0.85rem; border-radius:0 4px 4px 0; color:var(--muted); }
@@ -52,10 +52,10 @@
 </header>
 <section class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">AI 430 · Module 4 · Application Challenge</div>
-    <h1>Application Challenge 4: Cascade Power &amp; Water Service Agent</h1>
-    <p class="lede">Take the red-teaming from HOS 4 to a system you haven't seen: attack a utility company's customer-service agent, build guardrails until the provided attacks fail, decide which actions it may take on its own, and name the risk your guardrails leave open.</p>
-    <div class="chips"><span class="chip">Est. 60–90 min</span><span class="chip">Outcome CO5</span><span class="chip">Module 4 · end of Week 8</span><span class="chip">Individual</span><span class="chip">AI assistant allowed — disclose it</span><span class="chip">5% of final grade</span></div>
+    <div class="eyebrow">AI 430 · Module 4 · AIC 4 Part B: Apply</div>
+    <h1>AIC 4 Part B Challenge: Cascade Power &amp; Water Service Agent</h1>
+    <p class="lede">Take the red-teaming from AIC 4 to a system you haven't seen: attack a utility company's customer-service agent, build guardrails until the provided attacks fail, decide which actions it may take on its own, and name the risk your guardrails leave open.</p>
+    <div class="chips"><span class="chip">Est. 60–90 min</span><span class="chip">Outcome CO5</span><span class="chip">Module 4 · end of Week 8</span><span class="chip">Individual</span><span class="chip">AI assistant allowed — disclose it</span><span class="chip">4% of final grade</span></div>
   </div>
 </section>
 <main id="main">
@@ -101,7 +101,7 @@
   <div class="module-head"><div class="module-icon">🪜</div><div><h2>Steps &amp; what to submit</h2></div></div>
 <div class="stage-block">
   <h3><span class="stage-num">1</span>Open it and run the tests</h3>
-  <p>Open your own <b>AC 4</b> repo (<span class="tag amber">Planned</span> the AC 4 invite (the Classroom50 link is added here once the <code>AI430-AC04</code> template repo is built and tested)) in GitHub Codespaces and run <code>pytest</code>. Most attack tests fail: the agent follows every injected instruction.</p>
+  <p>Open your AIC 4 repo in the same Codespace you used for the build, and move into its <code>challenge/</code> folder (<code>cd challenge</code>) and run <code>pytest</code>. Most attack tests fail: the agent follows every injected instruction.</p>
 </div>
 <div class="stage-block">
   <h3><span class="stage-num">2</span>Build the guardrails</h3>
@@ -120,21 +120,22 @@
   <p>Fill in <code>DECISIONS.md</code>, about one page: your autonomy table, the risk you leave open, and what your AI assistant wrote, got wrong, or missed.</p>
 </div>
 <div class="submit-box">
-  <h5>Submit (via Brightspace)</h5>
-  <ul><li><code>guards/</code>, <code>redteam/my_cases.yaml</code> and <code>tests/test_my_rules.py</code></li><li>The output of <code>pytest</code>, pasted as text (all tests passing, including yours)</li><li><code>FINDINGS.md</code></li><li><code>DECISIONS.md</code></li></ul>
+  <h5>What goes in <code>challenge/</code> (pushed with your AIC 4 repo)</h5>
+  <ul><li><code>guards/</code>, <code>redteam/my_cases.yaml</code> and <code>tests/test_my_rules.py</code></li><li>The output of <code>pytest</code>, saved as <code>challenge/pytest-output.txt</code> (all tests passing, including yours)</li><li><code>FINDINGS.md</code></li><li><code>DECISIONS.md</code></li></ul>
 </div>
 </section>
 
 <section class="module card" id="grading">
   <div class="module-head"><div class="module-icon">📊</div><div><h2>How it's graded</h2></div></div>
-<p>Each criterion is graded on one part of your submission, at one of three levels.</p>
+<p>The challenge is the <b>Challenge half of the AIC 4 grade: 40 of its 100 points</b>, graded with the build at the end of Week 8. It has four criteria, weighted as in the syllabus: Application 4, Analysis 8, Evaluation 12 and Design 16. Each is graded on part of what you push.</p>
+        <p>When the challenge is done, finish AIC 4 with the <a href="index.html#postmortem"><b>Post Mortem</b></a>: three short answers in <code>NOTES.md</code>, written without AI and graded under the build's Understand criterion. Your instructor answers the most common "still unclear" points at the start of the next module.</p>
 <div class="table-scroll">
 <div class="table-wrap" tabindex="0"><table class="mini rubric">
   <tr><th>Criterion</th><th>Weight</th><th>Graded on</th><th>Full</th><th>Partial</th><th>Missing</th></tr>
-  <tr><td><strong>Application</strong></td><td class="wt">10%</td><td><code>FINDINGS.md</code></td><td>Before-and-after live runs on Cascade's agent, each attack with its rate and OWASP category.</td><td>Both runs, but categories missing or the rates not reported.</td><td>It restates the HOS 4 Salish Fresh suite, or doesn't run.</td></tr><tr><td><strong>Analysis</strong></td><td class="wt">20%</td><td><code>DECISIONS.md</code>, the autonomy table</td><td>Each action broken down by what it can cost, whether it can be undone, and which risk it guards against.</td><td>A decision for each, with generic reasons.</td><td>No breakdown.</td></tr><tr><td><strong>Evaluation</strong></td><td class="wt">30%</td><td><code>DECISIONS.md</code>, decisions and residual risk</td><td>Clear decisions judged against the manager's constraint, a rejected alternative, and an honest residual risk with who should know.</td><td>Decisions with reasons, but no rejected alternative or no residual risk.</td><td>No decisions, or no justification.</td></tr><tr><td><strong>Design</strong></td><td class="wt">40%</td><td><code>guards/</code>, your cases and the <code>pytest</code> output</td><td>All provided tests pass, including the normal requests, and your own cases cover a new attack and a must-not-block request.</td><td>Most provided tests pass, or your cases cover only the easy case.</td><td>It doesn't run, or you wrote no cases of your own.</td></tr>
+  <tr><td><strong>Application</strong></td><td class="wt">4 pts</td><td><code>FINDINGS.md</code></td><td>Before-and-after live runs on Cascade's agent, each attack with its rate and OWASP category.</td><td>Both runs, but categories missing or the rates not reported.</td><td>It restates the AIC 4 Salish Fresh suite, or doesn't run.</td></tr><tr><td><strong>Analysis</strong></td><td class="wt">8 pts</td><td><code>DECISIONS.md</code>, the autonomy table</td><td>Each action broken down by what it can cost, whether it can be undone, and which risk it guards against.</td><td>A decision for each, with generic reasons.</td><td>No breakdown.</td></tr><tr><td><strong>Evaluation</strong></td><td class="wt">12 pts</td><td><code>DECISIONS.md</code>, decisions and residual risk</td><td>Clear decisions judged against the manager's constraint, a rejected alternative, and an honest residual risk with who should know.</td><td>Decisions with reasons, but no rejected alternative or no residual risk.</td><td>No decisions, or no justification.</td></tr><tr><td><strong>Design</strong></td><td class="wt">16 pts</td><td><code>guards/</code>, your cases and the <code>pytest</code> output</td><td>All provided tests pass, including the normal requests, and your own cases cover a new attack and a must-not-block request.</td><td>Most provided tests pass, or your cases cover only the easy case.</td><td>It doesn't run, or you wrote no cases of your own.</td></tr>
 </table></div>
 </div>
-<p style="font-size:0.88rem;color:var(--muted)">How this differs from HOS 4's Understand &amp; Refine: there you extended code you already understood, by hand, with no AI. Here the business, the code, and the decisions are new, AI help is allowed (say what it wrote in <code>DECISIONS.md</code>), and half the grade (Analysis and Evaluation) is for the calls you make, not the typing.</p>
+<p style="font-size:0.88rem;color:var(--muted)">How this differs from AIC 4's Understand &amp; Refine: there you extended code you already understood, by hand, with no AI. Here the business, the code, and the decisions are new, AI help is allowed (say what it wrote in <code>DECISIONS.md</code>), and half the challenge grade (Analysis and Evaluation, 20 of the 40 points) is for the calls you make, not the typing.</p>
 </section>
 
 <section class="module card" id="snags">
@@ -145,7 +146,7 @@
 </section>
 
 <div class="guide-nav">
-  <a href="hos-guide.html">← HOS 4 guide</a>
+  <a href="hos-guide.html">← AIC 4 build guide</a>
   <a href="index.html">Module 4 lesson →</a>
 </div>
 </main>

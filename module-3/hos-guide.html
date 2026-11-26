@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 430 HOS 3 hands-on guide: Observability, Evaluation and RAG Performance, stage by stage.">
-<title>AI 430 — HOS 3: Observability, Evaluation and RAG Performance</title>
+<meta name="description" content="AI 430 AIC 3 hands-on guide: Observability, Evaluation and RAG Performance, stage by stage.">
+<title>AI 430 — AIC 3: Observability, Evaluation and RAG Performance</title>
 <link rel="stylesheet" href="../assets/course.css">
 <style>
 .goal-box { background:var(--blue-bg); border-left:5px solid var(--blue); padding:15px 18px; margin:18px 0; border-radius:4px; }
@@ -46,8 +46,8 @@
 </header>
 <section class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">AI 430 · Module 3 · Hands-On Skill (HOS) guide</div>
-    <h1>HOS 3: Observability, Evaluation &amp; RAG Performance</h1>
+    <div class="eyebrow">AI 430 · Module 3 · AI Challenge (AIC) guide</div>
+    <h1>AIC 3: Observability, Evaluation &amp; RAG Performance</h1>
     <p class="lede">Instrument everything Salish Fresh runs: a drift report for the demand model, a Langfuse trace with a judge score and per-step latency for every agent answer, and a retrieval benchmark across Chroma and Qdrant. Then check whether each signal would actually warn you.</p>
     <div class="chips"><span class="chip">Est. 4 hrs</span><span class="chip">Outcome CO3 · CO4</span><span class="chip">Module 3 · Weeks 5–6</span><span class="chip">10% of final grade</span></div>
   </div>
@@ -60,24 +60,24 @@
   <div class="module-head"><div class="module-icon">🧭</div><div><h2>Before you start</h2></div></div>
 <div class="before-box">
   <ol>
-    <li><b>Check your account setup.</b> This HOS needs a <a href="../start-here/accounts.html#langfuse">free Langfuse account and its two keys</a>, plus the GitHub account and Gemini key from HOS 1. Set them up first; the build won't run without them.</li>
+    <li><b>Check your account setup.</b> This AIC needs a <a href="../start-here/accounts.html#langfuse">free Langfuse account and its two keys</a>, plus the GitHub account and Gemini key from AIC 1. Set them up first; the build won't run without them.</li>
     <li><b>Know the concepts.</b> Read <a href="../reference/concept-companion.html#module-3">Concept Companion → Module 3</a> before you open the starter code.</li>
   </ol>
 </div>
 <h4>What you'll need</h4>
 <ul class="needs-list">
-  <li><strong>Starter code:</strong> your <b>HOS 3</b> repo, created from the <code>AI430-HOS03</code> template when you accept the HOS 3 invite (<span class="tag amber">Planned</span> planned (the Classroom50 link is added here once the <code>AI430-HOS03</code> template repo is built and tested)). Open it in GitHub Codespaces; dependencies install automatically. Not sure what a file does? See the <a href="../reference/starter-code-walkthrough.html#hos3">starter code walkthrough for this HOS</a>.</li>
+  <li><strong>Starter code:</strong> your <b>AIC 3</b> repo, created from the <code>AI430-AIC03</code> template when you accept the AIC 3 invite (<span class="tag amber">Planned</span> planned (the Classroom50 link is added here once the <code>AI430-AIC03</code> template repo is built and tested)). Open it in GitHub Codespaces; dependencies install automatically. Not sure what a file does? See the <a href="../reference/starter-code-walkthrough.html#hos3">starter code walkthrough for this AIC</a>.</li>
   <li>Your <a href="../start-here/accounts.html#langfuse">Langfuse</a> public key, secret key and host in <code>.env</code>.</li>
   <li>Docker in the Codespace (the devcontainer includes it) for Qdrant: <code>docker compose up -d qdrant</code>.</li>
   <li>An AI coding assistant in your Codespace (Copilot Chat in Agent mode, or equivalent)</li>
 </ul>
 <div class="ref-box"><h4>Reference reading (optional, before you start)</h4><ul><li><a href="https://docs.evidentlyai.com/" target="_blank" rel="noopener">Evidently documentation</a> — the data drift preset.</li><li><a href="https://langfuse.com/docs" target="_blank" rel="noopener">Langfuse documentation</a> — tracing and scores.</li><li><a href="https://docs.ragas.io/" target="_blank" rel="noopener">Ragas documentation</a> — context precision and recall.</li><li><a href="https://docs.trychroma.com/" target="_blank" rel="noopener">Chroma</a> and <a href="https://qdrant.tech/documentation/" target="_blank" rel="noopener">Qdrant</a> quickstarts.</li></ul></div>
-<p>This HOS is graded across four stages instead of on code correctness alone: <strong>Engagement</strong> (Create/Scaffold) is 20% of the HOS grade, and <strong>Skills</strong> is 80%: Evaluate, Analyze, Apply (the change you make by hand in Understand &amp; Refine) and Understand (your own explanation of it), 20% each. Each stage below says exactly what to submit. Everything goes in your HOS 3 GitHub Classroom repo: written work under the matching heading in <code>NOTES.md</code>, screenshots in <code>screenshots/</code>. Commit and push as you go, then submit the repo link to the HOS 3 assignment in Brightspace by the end of Week 6.</p>
+<p>This guide covers the <strong>build</strong>: Part A (Create / Scaffold, Evaluate) and the first half of Part B (Analyze, Understand &amp; Refine). It is graded across those stages instead of on code correctness alone, for <strong>60 of the 100 AIC points</strong>: 12 points each for Create, Evaluate, Analyze, Apply (the change you make by hand in Understand &amp; Refine) and Understand (your own explanation of it, plus the short <a href="index.html#postmortem">Post Mortem</a> you write after the challenge). The other 40 points are the <a href="application-challenge.html">Part B challenge</a>, in the <code>challenge/</code> folder of the same repo. The whole AIC is graded once, at the end of Week 6. Each stage below says exactly what to submit. Everything goes in your Module 3 GitHub Classroom repo: written work under the matching heading in <code>NOTES.md</code>, screenshots in <code>screenshots/</code>. Commit and push as you go. By the end of Week 6, push your final work: your repo is your submission, so there is nothing to submit in Brightspace, and your last push before the deadline is what counts.</p>
 </section>
 
 <section class="module card" id="create">
   <div class="module-head"><div class="module-icon">🛠️</div><div><h2>1 · Create / Scaffold</h2></div></div>
-<p class="stage-tagline">Graded as Engagement: 20% of this HOS. The AI-assisted starting point, not the deliverable.</p>
+<p class="stage-tagline">Graded under Build: Create, 12 of the 100 AIC points. The AI-assisted starting point, not the deliverable.</p>
 <p>The starter has <code>pantry_helper</code> with its help-centre index built in both databases (<code>rag/build_index.py</code>), a recorded week of 40 customer questions (<code>evals/week.json</code>), a judge rubric (<code>evals/rubric.md</code>), 30 retrieval questions with known good passages (<code>bench/questions.json</code>) and weekly order batches for the drift report. Do the three pieces in order. First, tracing and the judge, with this prompt:</p>
 <pre tabindex="0"><code>In THIS existing workspace (the starter-code folder that&#x27;s already open),
 edit files here; do not create a new workspace or project.
@@ -145,13 +145,13 @@ agent&#x27;s prompt or tools.</code></pre>
 <section class="module card" id="snags">
   <div class="module-head"><div class="module-icon">🧯</div><div><h2>Common snags</h2></div></div>
 <div class="snag-box">
-<ul><li><strong>No traces appear in Langfuse</strong> — check that both keys are set and that <code>LANGFUSE_HOST</code> matches your project's region (<code>https://cloud.langfuse.com</code> for EU, <code>https://us.cloud.langfuse.com</code> for US). Traces can also take a few seconds to show up.</li><li><strong>Every span has the same duration</strong> — the spans are being created after the work, not around it. Check that tracing is set up before the agent runs, in <code>observability/tracing.py</code>.</li><li><strong>Qdrant: connection refused</strong> — <code>docker compose ps</code> shows whether it's running; <code>docker compose logs qdrant</code> shows why not.</li><li><strong>Ragas asks for an OpenAI key</strong> — by default it uses OpenAI. The starter's <code>bench/ragas_setup.py</code> points it at Gemini instead; import it before running any metric, and never add a paid key.</li><li><strong>The drift report flags every feature</strong> — you compared against the wrong reference (for example, an empty or tiny frame). The reference is the training data from HOS 1.</li><li><strong><code>502 Bad Gateway</code>, a 404 or "model not found" from the agent</strong> — almost always the model name. AI assistants default to whatever model was current in their training data, such as <code>gemini-2.5-flash</code>, which new API keys can't use. Set it back to <code>gemini-3.8-flash</code>. If that ever stops working, check the current list at <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/models</a>.</li><li><strong><code>429 RESOURCE_EXHAUSTED</code></strong> — you hit the free Gemini tier's per-minute limit. Wait a minute and rerun; the starter scripts' <code>--pause</code> option adds a gap between calls.</li></ul>
+<ul><li><strong>No traces appear in Langfuse</strong> — check that both keys are set and that <code>LANGFUSE_HOST</code> matches your project's region (<code>https://cloud.langfuse.com</code> for EU, <code>https://us.cloud.langfuse.com</code> for US). Traces can also take a few seconds to show up.</li><li><strong>Every span has the same duration</strong> — the spans are being created after the work, not around it. Check that tracing is set up before the agent runs, in <code>observability/tracing.py</code>.</li><li><strong>Qdrant: connection refused</strong> — <code>docker compose ps</code> shows whether it's running; <code>docker compose logs qdrant</code> shows why not.</li><li><strong>Ragas asks for an OpenAI key</strong> — by default it uses OpenAI. The starter's <code>bench/ragas_setup.py</code> points it at Gemini instead; import it before running any metric, and never add a paid key.</li><li><strong>The drift report flags every feature</strong> — you compared against the wrong reference (for example, an empty or tiny frame). The reference is the training data from AIC 1.</li><li><strong><code>502 Bad Gateway</code>, a 404 or "model not found" from the agent</strong> — almost always the model name. AI assistants default to whatever model was current in their training data, such as <code>gemini-2.5-flash</code>, which new API keys can't use. Set it back to <code>gemini-3.8-flash</code>. If that ever stops working, check the current list at <a href="https://ai.google.dev/gemini-api/docs/models" target="_blank" rel="noopener">ai.google.dev/gemini-api/docs/models</a>.</li><li><strong><code>429 RESOURCE_EXHAUSTED</code></strong> — you hit the free Gemini tier's per-minute limit. Wait a minute and rerun; the starter scripts' <code>--pause</code> option adds a gap between calls.</li></ul>
 <p class="small" style="margin:10px 0 0">Most snags trace back to a concept. If one doesn't make sense, see <a href="../reference/concept-companion.html#module-3">Concept Companion → Module 3</a>.</p>
 </div>
 </section>
 
 <div class="guide-nav">
-  <a href="../module-2/hos-guide.html">← HOS 2 guide</a>
+  <a href="../module-2/hos-guide.html">← AIC 2 build guide</a>
   <a href="index.html">Module 3 lesson →</a>
 </div>
 </main>

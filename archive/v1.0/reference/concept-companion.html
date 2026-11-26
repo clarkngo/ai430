@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI 430 Concept Companion: every concept and term to know before each module's hands-on guide, with a self-check per module.">
+<title>AI 430 — Concept Companion</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.intro-box { background:var(--blue-bg); border-left:5px solid var(--blue); padding:15px 18px; margin:18px 0; border-radius:0 6px 6px 0; font-size:0.92rem; }
+        .intro-box h4 { margin:0 0 6px; color:var(--blue); font-size:0.95rem; }
+
+        /* Map table — the "modular" jump nav */
+        table.map-table { width:100%; border-collapse:collapse; margin:14px 0 6px; font-size:0.85rem; }
+        table.map-table th, table.map-table td { border:1px solid var(--border); padding:9px 12px; text-align:left; vertical-align:top; }
+        table.map-table th { background:var(--surface2); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:var(--muted); }
+        table.map-table td.mod-name { font-weight:700; color:var(--accent); white-space:nowrap; }
+        table.map-table a.jump { font-weight:600; text-decoration:none; color:var(--blue); }
+        table.map-table a.jump:hover { text-decoration:underline; }
+
+        /* Module blocks */
+        .module-pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+        .mod-pill { font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:999px; }
+        .mod-pill.hos { background:var(--blue-bg); color:var(--violet); }
+        .mod-pill.wk { background:var(--blue-bg); color:var(--blue); }
+        .mod-pill.outcome { background:var(--accent-light); color:var(--accent2); }
+        .why-line { font-size:0.92rem; color:var(--text); margin:0 0 18px; }
+        .why-line strong { color:var(--text); }
+
+        /* Concept cards */
+        .concept-grid { display:grid; grid-template-columns:1fr; gap:12px; margin:14px 0; }
+        .concept-card { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:13px 16px; }
+        .concept-card h4 { margin:0 0 5px; font-size:0.95rem; color:var(--text); }
+        .concept-card p { margin:0; font-size:0.88rem; color:var(--text); }
+        .concept-card .why { margin-top:6px; font-size:0.82rem; color:var(--muted); }
+        .concept-card .why strong { color:var(--muted); }
+
+        /* Diagrams */
+        .diagram-box { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px; margin:18px 0; text-align:center; }
+        .diagram-box svg { max-width:100%; height:auto; }
+        .diagram-caption { font-size:0.8rem; color:var(--muted); margin-top:6px; }
+        .flow-line { stroke-dasharray:6 4; animation:flowdash 1s linear infinite; }
+        .flow-line.slow { animation-duration:1.8s; }
+        @keyframes flowdash { to { stroke-dashoffset:-20; } }
+        .flow-dot { animation:dotmove linear infinite; }
+        .pulse-box { animation:pulsebox 2.2s ease-in-out infinite; }
+        @keyframes pulsebox { 0%,100% { opacity:1; } 50% { opacity:0.45; } }
+        @media (prefers-reduced-motion: reduce) {
+            .flow-line, .flow-dot, .pulse-box { animation:none !important; }
+        }
+
+        /* Glossary / self-check boxes — matching the lessons' vocabulary */
+        .glossary-box { background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:12px 16px; margin:14px 0; font-size:0.85rem; }
+        .glossary-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); }
+        .glossary-box dl { margin:0; }
+        .glossary-box dt { font-weight:700; color:var(--text); display:inline; }
+        .glossary-box dd { display:inline; margin:0 0 0 4px; color:var(--muted); }
+        .glossary-box dd::after { content:""; display:block; margin-bottom:4px; }
+        .check-box { background:var(--blue-bg); border-left:5px solid var(--blue); padding:12px 16px; margin:16px 0 0; border-radius:0 4px 4px 0; font-size:0.85rem; }
+        .check-box h5 { margin:0 0 6px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--blue); }
+        .check-box ul { margin:0; padding-left:18px; }
+        .check-box li { margin-bottom:4px; }
+        .check-answers { margin-top:10px; border-top:1px solid var(--border); padding-top:8px; }
+        .check-answers summary { cursor:pointer; font-weight:700; color:var(--link); }
+        .check-answers ol { margin:8px 0 0; padding-left:20px; }
+        .check-answers li { margin-bottom:6px; color:var(--text); }
+        .layer-table td:first-child { width:44%; }
+
+        .module-nav { text-align:right; margin-top:16px; font-size:0.82rem; }
+        .module-nav a { color:var(--link); text-decoration:none; font-weight:600; }
+        .back-to-top { display:inline-block; margin-top:34px; font-size:0.85rem; color:var(--link); text-decoration:none; font-weight:600; }
+
+        .tabs-hint { display:none; margin:6px 0 4px; }
+        [id^="module-"] { scroll-margin-top:calc(var(--header-h,62px) + 16px); }
+        .tabs-on .tabs-hint { display:block; }
+        .module-tabs { margin-top:26px; }
+        @media (max-width:640px) { .module-tabs .tab-sub { display:none; } .module-tabs button[data-mod] { flex:1 1 calc(50% - 8px); padding:9px 6px; } .module-tabs .show-all { flex-basis:100%; text-align:right; margin-left:0; } }
+</style>
+</head>
+<body>
+<div role="note" style="background:#fff7ed;border-bottom:2px solid #ea580c;color:#7c2d12;padding:10px 16px;font:600 15px/1.4 system-ui,sans-serif;text-align:center">Archived page: Version 1.0: HOS, Application Challenges and Muddiest Point (before the Nov 2026 revamp). Kept for reference and no longer current. <a href="../../../reference/concept-companion.html" style="color:#9a3412">Open the current version</a> · <a href="../../index.html" style="color:#9a3412">All versions</a></div>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="../index.html"><span class="brand-icon">430</span><span><b>AI 430: MLOps and AgentOps</b><small>Reference</small></span></a>
+    <div class="top-right"><a class="pill-btn" href="../index.html">Course home</a><button class="pill-btn" id="themeToggle" type="button">🌙 Dark</button></div>
+  </div>
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">AI 430 · Reference · Read before each module</div>
+    <h1>Concept Companion</h1>
+    <p class="lede">Every concept and piece of vocabulary you should understand before you open a module's hands-on guide, gathered in one place. Read the module you're about to start, not the whole page.</p>
+    <div class="chips"><span class="chip">5 sections</span><span class="chip">A self-check in each</span><span class="chip">Read before each HOS</span></div>
+  </div>
+</section>
+<main id="main">
+<nav class="secnav no-print" aria-label="Page sections">
+<div class="secnav-inner"><a href="#find">Find your module</a><a href="#module-1">Module 1</a><a href="#module-2">Module 2</a><a href="#module-3">Module 3</a><a href="#module-4">Module 4</a><a href="#module-5">All 4 HOS</a></div>
+</nav>
+<section class="module card" id="find">
+<div class="module-head"><div class="module-icon">🗺️</div><div><h2>Find your module</h2></div></div>
+<div class="intro-box">
+<h4>What this page is</h4>
+<p>The hands-on guides tell you <em>what to build, step by step</em>. This page is different: it's every concept and piece of vocabulary you should already understand <strong>before</strong> you open one of those guides, gathered in one place. Read the module you're about to start, not the whole page.</p>
+<p style="margin-bottom:0"><strong>Modular by design:</strong> its four modules match the <a href="../index.html">course's Modules 1–4</a>, one per HOS. Module 5, the Term Project, adds no new concepts, so the last section, <a href="#module-5">Putting it together</a>, connects the four HOS instead.</p>
+</div>
+<div class="table-wrap" tabindex="0"><table class="map-table">
+<tr><th>Module</th><th>When</th><th>Outcome(s)</th><th>Jump</th></tr>
+<tr><td class="mod-name">1 — Pipelines, DataOps &amp; Experiment Tracking</td><td>Before HOS 1</td><td>CO1</td><td><a class="jump" href="#module-1">Read →</a></td></tr>
+<tr><td class="mod-name">2 — CI/CD/CT for Models &amp; Agents</td><td>Before HOS 2</td><td>CO2</td><td><a class="jump" href="#module-2">Read →</a></td></tr>
+<tr><td class="mod-name">3 — Observability, Evaluation &amp; RAG Performance</td><td>Before HOS 3</td><td>CO3 · CO4</td><td><a class="jump" href="#module-3">Read →</a></td></tr>
+<tr><td class="mod-name">4 — Security, Guardrails &amp; Agent-to-Agent</td><td>Before HOS 4</td><td>CO5</td><td><a class="jump" href="#module-4">Read →</a></td></tr>
+<tr><td class="mod-name">Putting it together — all 4 HOS</td><td>Before the Week 8 review and the Term Project</td><td>CO6</td><td><a class="jump" href="#module-5">Read →</a></td></tr>
+</table></div>
+<p style="font-size:0.85rem;color:var(--muted);margin-top:6px">Skipped a module and got confused later? That's the signal to come back and read it: every "common snag" in the hands-on guides traces back to one of the concepts below.</p>
+</section>
+
+<div class="week-tabs no-print module-tabs" role="group" aria-label="Modules">
+<button type="button" data-mod="1" aria-controls="module-1">Module 1<span class="tab-sub"> · Data &amp; experiments</span></button>
+<button type="button" data-mod="2" aria-controls="module-2">Module 2<span class="tab-sub"> · CI/CD/CT</span></button>
+<button type="button" data-mod="3" aria-controls="module-3">Module 3<span class="tab-sub"> · Observability &amp; RAG</span></button>
+<button type="button" data-mod="4" aria-controls="module-4">Module 4<span class="tab-sub"> · Security &amp; A2A</span></button>
+<button type="button" data-mod="5" aria-controls="module-5">Putting it together<span class="tab-sub"> · all 4 HOS</span></button>
+<button type="button" class="show-all">Show all modules</button>
+</div>
+<p class="small muted tabs-hint">Pick your module. Searching the page (Ctrl/Cmd+F) only looks in the open tab; use "Show all modules" to search everything.</p>
+
+<section class="module card" id="module-1">
+<div class="module-head"><div class="module-icon">1️⃣</div><div><h2>Module 1: Pipelines, DataOps &amp; Experiment Tracking</h2><div class="module-meta"><span class="tag blue">HOS 1</span><span class="tag">Outcome CO1</span></div></div></div>
+<p class="why-line"><strong>Why before you start:</strong> Every later HOS assumes you can answer "which data, which code and which settings made the thing that's running?" A pipeline that can't answer that can't be tested, deployed safely, monitored or rolled back.</p>
+<div class="concept-grid">
+<div class="concept-card">
+<h4>Three kinds of pipeline</h4>
+<p>A <strong>software</strong> pipeline versions and tests code. An <strong>MLOps</strong> pipeline also versions data and models, because the same code trained on different data is a different model. An <strong>AgentOps</strong> pipeline also versions prompts, tools and the agent's behaviour, because the same model with a different instruction acts differently.</p>
+<div class="why"><strong>Why it matters:</strong> CO1 asks you to tell these apart, and HOS 1 builds the first two layers for Salish Fresh's model and the third for its agent.</div>
+</div>
+<div class="concept-card">
+<h4>Data versioning (DVC)</h4>
+<p>Git can't hold large or frequently changing data well, so DVC stores the file in a separate <strong>remote</strong> and commits a small <code>.dvc</code> file holding its hash. <code>git checkout</code> brings back the hash; <code>dvc checkout</code> brings back the matching file.</p>
+<div class="why"><strong>Why it matters:</strong> A model is only reproducible if you can get back the exact data it was trained on.</div>
+</div>
+<div class="concept-card">
+<h4>A pipeline as stages</h4>
+<p><code>dvc.yaml</code> lists stages (validate → train → evaluate), each with its command, dependencies and outputs. <code>dvc repro</code> reruns only the stages whose dependencies changed, by comparing hashes.</p>
+<div class="why"><strong>Why it matters:</strong> "Stage didn't change, skipping" is DVC working, not a bug.</div>
+</div>
+<div class="concept-card">
+<h4>Schema validation (pandera)</h4>
+<p>A schema states what a batch must look like: columns, types, ranges and rules between values. Validation runs <em>before</em> training, so a bad batch is rejected with a message instead of becoming a quietly worse model.</p>
+<div class="why"><strong>Why it matters:</strong> A renamed column rarely crashes anything. It trains a model that's wrong.</div>
+</div>
+<div class="concept-card">
+<h4>Experiment tracking (MLflow)</h4>
+<p>Each training run logs its parameters, metrics, the data version and the model file. Each agent evaluation run logs the prompt version, model name and score. The runs table is how you find which change made things worse.</p>
+<div class="why"><strong>Why it matters:</strong> Without the data version and parameters, "it got worse" can't become "batch d3 made it worse".</div>
+</div>
+<div class="concept-card">
+<h4>The model registry</h4>
+<p>A registered model has numbered versions. An <strong>alias</strong> such as <code>champion</code> points at the one in production. Promoting or rolling back moves the alias; no run is retrained or changed.</p>
+<div class="why"><strong>Why it matters:</strong> Newest is not the same as production. HOS 2's deploy reads the alias.</div>
+</div>
+<div class="concept-card">
+<h4>Agents vary run to run</h4>
+<p>Ask the same agent the same ten questions three times and the score moves. One evaluation run can't tell a real improvement from noise.</p>
+<div class="why"><strong>Why it matters:</strong> The spread you measure here sets the gate's margin in HOS 2.</div>
+</div>
+</div>
+<div class="glossary-box">
+<h5>Vocabulary check</h5>
+<dl>
+<dt>Remote</dt><dd>where DVC keeps the actual data files, outside Git.</dd>
+<dt>Stage</dt><dd>one step of a DVC pipeline, with its inputs and outputs.</dd>
+<dt>Run</dt><dd>one recorded training or evaluation in MLflow.</dd>
+<dt>Alias</dt><dd>a movable name, like <code>champion</code>, for one registered model version.</dd>
+<dt>Reproducible</dt><dd>rerunning with the same data, code, settings and seed gives the same result.</dd>
+</dl>
+</div>
+<div class="check-box">
+<h5>Quick self-check before you continue</h5>
+<ul>
+<li>You check out an old commit. Why is the CSV still the new one?</li>
+<li>Name three things besides the code that can change a model's MAE.</li>
+<li>Your agent scored 0.82, then 0.76 with no change. What does that mean for judging a prompt edit?</li>
+</ul>
+<details class="check-answers">
+<summary>Check your thinking</summary>
+<ol>
+<li>Git restored the <code>.dvc</code> file's hash, not the data. <code>dvc checkout</code> copies the matching file back from the cache or remote.</li>
+<li>The data version, the parameters (including an unpinned random seed), and package versions. Any of them, unpinned, makes a rerun differ.</li>
+<li>Run-to-run spread is about 0.06, so a prompt edit needs several runs, and a gain bigger than that spread, before you can call it better.</li>
+</ol>
+</details>
+</div>
+<p class="module-nav"><a href="#module-2">Next: Module 2 — CI/CD/CT for Models &amp; Agents →</a></p>
+</section>
+
+<section class="module card" id="module-2">
+<div class="module-head"><div class="module-icon">2️⃣</div><div><h2>Module 2: CI/CD/CT for Models &amp; Agents</h2><div class="module-meta"><span class="tag blue">HOS 2</span><span class="tag">Outcome CO2</span></div></div></div>
+<p class="why-line"><strong>Why before you start:</strong> HOS 1 made every change traceable. HOS 2 makes every change go through the same checks automatically, so a broken commit, a slower model or a worse prompt is stopped by the pipeline instead of found by users.</p>
+<div class="concept-grid">
+<div class="concept-card">
+<h4>CI, CD and the third C</h4>
+<p><strong>Continuous integration</strong> runs fast checks on every push. <strong>Continuous delivery/deployment</strong> releases what passes. <strong>Continuous training</strong> retrains on new data, on a schedule or when drift is detected, and sends the result through the same checks.</p>
+<div class="why"><strong>Why it matters:</strong> Models get worse without any code change, because the world changes. CT is the answer to that.</div>
+</div>
+<div class="concept-card">
+<h4>A workflow</h4>
+<p>A YAML file in <code>.github/workflows/</code>: <strong>triggers</strong> (<code>on: push</code>, <code>pull_request</code>, <code>schedule</code>, <code>workflow_dispatch</code>), <strong>jobs</strong> that run on a fresh machine, and <strong>steps</strong> that run commands.</p>
+<div class="why"><strong>Why it matters:</strong> Scheduled workflows run only on the default branch; <code>workflow_dispatch</code> lets you start one by hand to test it.</div>
+</div>
+<div class="concept-card">
+<h4>Cheap checks first</h4>
+<p>Unit tests, the data schema and a one-minute training smoke test run on every push. The full evaluation, which costs minutes and model calls, runs before a deploy.</p>
+<div class="why"><strong>Why it matters:</strong> A bug should stop at CI in a minute, before any training or deployment.</div>
+</div>
+<div class="concept-card">
+<h4>The quality gate</h4>
+<p>A script that compares a candidate with what's deployed and exits non-zero if it isn't better by a margin, on every number it checks. If a number isn't in the gate, the gate can't see it.</p>
+<div class="why"><strong>Why it matters:</strong> A model with better MAE and three times the latency passes an accuracy-only gate.</div>
+</div>
+<div class="concept-card">
+<h4>Gates for agents</h4>
+<p>An agent never retrains, so its gate runs an evaluation set on every prompt, tool or model change: success rate, and cost per task (tool calls or tokens). The margin comes from the run-to-run spread you measured in HOS 1.</p>
+<div class="why"><strong>Why it matters:</strong> This is how a one-line prompt edit is caught before it reaches customers.</div>
+</div>
+<div class="concept-card">
+<h4>Secrets and rollback</h4>
+<p>Keys live in repository <strong>secrets</strong>, never in a workflow file. GitHub masks the exact secret in logs, but not a transformed copy, so a log scan is still worth having. A rollback moves the registry alias back and redeploys.</p>
+<div class="why"><strong>Why it matters:</strong> A leaked token in a public log has to be rotated; deleting the log isn't enough.</div>
+</div>
+</div>
+<div class="glossary-box">
+<h5>Vocabulary check</h5>
+<dl>
+<dt>Trigger</dt><dd>the event that starts a workflow.</dd>
+<dt>Smoke test</dt><dd>a tiny, fast run that proves training still works at all.</dd>
+<dt>Quality gate</dt><dd>the pass/fail comparison before a deploy.</dd>
+<dt>Repository secret</dt><dd>an encrypted value a workflow can read but no one can print back.</dd>
+<dt>Candidate</dt><dd>a model or agent version waiting to pass the gate.</dd>
+</dl>
+</div>
+<div class="check-box">
+<h5>Quick self-check before you continue</h5>
+<ul>
+<li>Why does a scheduled retrain go through the same gate as a code change?</li>
+<li>Your gate checks MAE only. What could still ship that you don't want?</li>
+<li>A workflow prints the token reversed. Why didn't masking hide it?</li>
+</ul>
+<details class="check-answers">
+<summary>Check your thinking</summary>
+<ol>
+<li>Because it's just another candidate. New data can make a model worse as easily as better, and the gate is what decides.</li>
+<li>Anything worse on a number the gate doesn't check: a slower model, a costlier one, or one that's worse for a single zone.</li>
+<li>Masking replaces the exact secret string. A reversed or encoded copy is a different string, so only a scan of the log output catches it.</li>
+</ol>
+</details>
+</div>
+<p class="module-nav"><a href="#module-3">Next: Module 3 — Observability, Evaluation &amp; RAG Performance →</a></p>
+</section>
+
+<section class="module card" id="module-3">
+<div class="module-head"><div class="module-icon">3️⃣</div><div><h2>Module 3: Observability, Evaluation &amp; RAG Performance</h2><div class="module-meta"><span class="tag blue">HOS 3</span><span class="tag">Outcome CO3 · CO4</span></div></div></div>
+<p class="why-line"><strong>Why before you start:</strong> A deployed model and agent get worse quietly. This module is about the signals that warn you first: what each one measures, how you know it's measuring the right thing, and what you'd do when it moves.</p>
+<div class="concept-grid">
+<div class="concept-card">
+<h4>Data drift vs. concept drift</h4>
+<p><strong>Data drift</strong>: the inputs change (new weather, a new zone, a stuck sensor). <strong>Concept drift</strong>: the relationship between inputs and outcome changes. A drift report compares each feature's current distribution with the training data and flags the ones that moved past a threshold.</p>
+<div class="why"><strong>Why it matters:</strong> Drift shows up before accuracy drops, because you don't know the true outcome yet.</div>
+</div>
+<div class="concept-card">
+<h4>Traces and spans</h4>
+<p>A <strong>trace</strong> is one request, end to end. Each step inside it (retrieval, a tool call, a model call) is a <strong>span</strong> with its inputs, outputs and duration. Langfuse stores them and lets you attach scores.</p>
+<div class="why"><strong>Why it matters:</strong> The slowest span is where latency comes from; the trace is where a wrong answer is explained.</div>
+</div>
+<div class="concept-card">
+<h4>Reasoning accuracy with an LLM judge</h4>
+<p>A second model grades each answer against a rubric. It scales, but it's a model too, so you check it: grade a sample yourself first, then compute <strong>agreement</strong>. Recheck when the judge's model changes.</p>
+<div class="why"><strong>Why it matters:</strong> A lenient or changed judge makes the agent look better than it is.</div>
+</div>
+<div class="concept-card">
+<h4>Latency: p50 and p95</h4>
+<p>The median (p50) is a typical request; p95 is the slow tail most complaints come from. Compute them per span name to see which step drives the tail.</p>
+<div class="why"><strong>Why it matters:</strong> An average hides the tail, which is what users notice.</div>
+</div>
+<div class="concept-card">
+<h4>RAG: speed and relevance</h4>
+<p><strong>Context precision</strong>: how much of what was retrieved was relevant. <strong>Context recall</strong>: how much of what the answer needed was retrieved. Ragas scores both against known passages. Larger top-k usually raises recall, lowers precision and costs more prompt tokens.</p>
+<div class="why"><strong>Why it matters:</strong> CO4 asks you to optimise retrieval speed and context relevance, and that means trading them.</div>
+</div>
+<div class="concept-card">
+<h4>The vector database</h4>
+<p>Chroma and Qdrant store the same embeddings and return nearly the same passages. They differ in speed, filtering and how you run them. Relevance comes mostly from chunking and embeddings.</p>
+<div class="why"><strong>Why it matters:</strong> Benchmark before choosing, and don't expect the database to fix relevance.</div>
+</div>
+<div class="concept-card">
+<h4>An alert is a decision</h4>
+<p>Pick one signal, a threshold and a window, and justify the number from your own past weeks. Too loose hides drift; too tight wakes someone up every week.</p>
+<div class="why"><strong>Why it matters:</strong> Your Refine stage writes exactly one alert, with a test that it fires and one that it doesn't.</div>
+</div>
+</div>
+<div class="glossary-box">
+<h5>Vocabulary check</h5>
+<dl>
+<dt>Span</dt><dd>one timed step inside a trace.</dd>
+<dt>Judge</dt><dd>a model that scores another model's answer against a rubric.</dd>
+<dt>Agreement</dt><dd>how often the judge's grade matches a human's on the same answers.</dd>
+<dt>Top-k</dt><dd>how many chunks retrieval returns.</dd>
+<dt>Context precision / recall</dt><dd>how much retrieved text was relevant / how much needed text was retrieved.</dd>
+</dl>
+</div>
+<div class="check-box">
+<h5>Quick self-check before you continue</h5>
+<ul>
+<li>Accuracy still looks fine but the drift report flags temperature. Why take it seriously?</li>
+<li>The judge's average went up 0.1 this week and the human sample didn't. What changed?</li>
+<li>Raising top-k from 3 to 10 raised recall. What did it cost?</li>
+</ul>
+<details class="check-answers">
+<summary>Check your thinking</summary>
+<ol>
+<li>Accuracy is measured only once true outcomes arrive. Drift in an input is an early warning that the model is meeting data it wasn't trained on.</li>
+<li>Probably the judge, not the agent. A model update or a looser rubric reading changes the scores. That's why the human sample is regular, not one-off.</li>
+<li>Lower precision (more irrelevant text in the prompt), more prompt tokens, and more latency in both retrieval and the model call.</li>
+</ol>
+</details>
+</div>
+<p class="module-nav"><a href="#module-4">Next: Module 4 — Security, Guardrails &amp; Agent-to-Agent →</a></p>
+</section>
+
+<section class="module card" id="module-4">
+<div class="module-head"><div class="module-icon">4️⃣</div><div><h2>Module 4: Security, Guardrails &amp; Agent-to-Agent</h2><div class="module-meta"><span class="tag blue">HOS 4</span><span class="tag">Outcome CO5</span></div></div></div>
+<p class="why-line"><strong>Why before you start:</strong> An agent that can act can be talked into acting wrongly. This module is about attacking your own agent first, layering defences that don't depend on the model behaving, and checking who's asking when another agent calls yours.</p>
+<div class="concept-grid">
+<div class="concept-card">
+<h4>Prompt injection</h4>
+<p><strong>Direct</strong>: the user tells the agent to ignore its rules. <strong>Indirect</strong>: the instruction hides in something the agent reads, such as a help article, an email or a web page. The model can't reliably tell data from instructions.</p>
+<div class="why"><strong>Why it matters:</strong> Every text the agent reads is a possible attacker, not just the user.</div>
+</div>
+<div class="concept-card">
+<h4>Excessive agency</h4>
+<p>The agent has more power than its task needs: a tool that can read any customer, a credit with no limit, an action no person approves. Most real damage comes from this, not from clever prompts.</p>
+<div class="why"><strong>Why it matters:</strong> OWASP lists it separately from injection for a reason.</div>
+</div>
+<div class="concept-card">
+<h4>Red-teaming</h4>
+<p>Attack your own agent with a suite of cases (promptfoo here), each repeated because attacks succeed only some of the time. Report rates per category, before and after guardrails.</p>
+<div class="why"><strong>Why it matters:</strong> Results that vary run to run are normal. Single outcomes aren't evidence.</div>
+</div>
+<div class="concept-card">
+<h4>Guardrails that hold</h4>
+<p>Four layers: <strong>least privilege</strong> (remove or scope the tool), <strong>marking input as data</strong>, an <strong>action check</strong> before each tool call (<code>before_tool_callback</code> in ADK) and an <strong>output check</strong> on each reply. The last two are code, so they hold even when the model is fooled.</p>
+<div class="why"><strong>Why it matters:</strong> No one layer stops everything. The suite shows which layer stops which attack.</div>
+</div>
+<div class="concept-card">
+<h4>A2A: agents calling agents</h4>
+<p>With the A2A protocol, one agent sends a task to another over HTTP, discovering what it can do from its agent card. The receiver checks who is calling and on whose behalf <em>before</em> any model call.</p>
+<div class="why"><strong>Why it matters:</strong> If the caller was itself injected, the receiver's checks are what still hold.</div>
+</div>
+<div class="concept-card">
+<h4>Frameworks for the report</h4>
+<p>The <strong>OWASP Top 10 for LLM Applications</strong> names the risk categories (prompt injection, sensitive information disclosure, excessive agency, system prompt leakage and more). The <strong>NIST AI RMF</strong> organises the work into Govern, Map, Measure and Manage.</p>
+<div class="why"><strong>Why it matters:</strong> Mapping findings to both is how an enterprise reads your red-team report.</div>
+</div>
+<div class="concept-card">
+<h4>Residual risk</h4>
+<p>Something always gets through: an attack that works sometimes, or a cost you chose to accept. Name it, and say who should know.</p>
+<div class="why"><strong>Why it matters:</strong> "Fully secured" is not a credible finding; a named residual risk is.</div>
+</div>
+</div>
+<div class="glossary-box">
+<h5>Vocabulary check</h5>
+<dl>
+<dt>Indirect injection</dt><dd>an instruction hidden in content the agent reads, not in the user's message.</dd>
+<dt>Least privilege</dt><dd>giving each tool and agent only the access its task needs.</dd>
+<dt>Guardrail callback</dt><dd>code ADK runs before or after a model or tool call, which can block or change it.</dd>
+<dt>Agent card</dt><dd>an A2A agent's description of itself: what it can do and how to reach it.</dd>
+<dt>Residual risk</dt><dd>the risk left after your defences, named and accepted.</dd>
+</dl>
+</div>
+<div class="check-box">
+<h5>Quick self-check before you continue</h5>
+<ul>
+<li>Why is removing a tool stronger than an instruction not to use it?</li>
+<li>All four layers are on and five $20 credits still go through. Which layer failed?</li>
+<li>An unknown agent sends a task to your orders agent. What should happen first?</li>
+</ul>
+<details class="check-answers">
+<summary>Check your thinking</summary>
+<ol>
+<li>An instruction is followed by the model, which can be talked out of it. A tool that isn't there can't be called, however the request is phrased.</li>
+<li>None did: each credit is within the $25 limit. The rule checks one action, not the total, so it needs a per-order or per-day cap, or a person to approve it.</li>
+<li>The orders agent checks the caller against its allowlist and the customer scope, and rejects the task before any model call or data lookup.</li>
+</ol>
+</details>
+</div>
+<p class="module-nav"><a href="#module-5">Next: Putting it together — all 4 HOS →</a></p>
+</section>
+
+<section class="module card" id="module-5">
+<div class="module-head"><div class="module-icon">🧩</div><div><h2>Putting it together: all 4 HOS</h2><div class="module-meta"><span class="tag blue">Week 8 review</span><span class="tag">Term Project</span><span class="tag">Outcome CO6</span></div></div></div>
+<p class="why-line"><strong>Why before you start:</strong> by Week 8 you've built every piece once. The Week 8 architecture review and your Term Project ask a different question: how the pieces connect, and which one catches which problem. Nothing here is new; it's the four modules, joined up.</p>
+<div class="concept-grid">
+<div class="concept-card">
+<h4>The path of a change</h4>
+<p>A data batch or a prompt edit → versioned and validated (HOS 1) → CI's fast checks → the gate's evaluation against production → deploy, with the registry alias moved (HOS 2) → traces, judge scores, latency and drift watched (HOS 3). A retrain follows the same path.</p>
+</div>
+
+<div class="concept-card">
+<h4>The path of a request</h4>
+<p>A user's message → input marked as data → the agent reasons, retrieves and calls tools, each call checked before it runs → another agent called over A2A checks the caller → the reply passes the output check (HOS 4) → one trace, with a span per step and a judge score (HOS 3).</p>
+</div>
+
+</div>
+<h3 style="margin:18px 0 8px;font-size:1rem">Which layer catches what</h3>
+<div class="table-wrap" tabindex="0"><table class="t layer-table">
+<tr><th>Problem</th><th>What catches it</th></tr>
+<tr><td>A bad batch of data</td><td>The validation schema, before training (HOS 1)</td></tr><tr><td>A model nobody can reproduce</td><td>DVC data versions and MLflow runs with parameters and seed (HOS 1)</td></tr><tr><td>A change that breaks the code</td><td>Unit tests in CI, before anything deploys (HOS 2)</td></tr><tr><td>A model that's more accurate but too slow</td><td>A latency condition in the gate (HOS 2)</td></tr><tr><td>A prompt edit that lowers quality</td><td>The agent evaluation in the gate, judged against the run-to-run spread (HOS 1, HOS 2)</td></tr><tr><td>A leaked key</td><td>Repository secrets, and a scan of the workflow logs (HOS 2)</td></tr><tr><td>The world changes under the model</td><td>The drift report and its alert, then CT through the same gate (HOS 3, HOS 2)</td></tr><tr><td>A judge that's drifted or too lenient</td><td>A regular human-graded sample and its agreement (HOS 3)</td></tr><tr><td>Slow answers</td><td>Per-span p95 in the traces (HOS 3)</td></tr><tr><td>Retrieval that misses what the answer needs</td><td>The retrieval benchmark: recall and precision per setting (HOS 3)</td></tr><tr><td>An injected instruction in a document</td><td>Marking input as data, then the action check (HOS 4)</td></tr><tr><td>An agent doing more than its job</td><td>Least privilege and the action check, from the autonomy table (HOS 4)</td></tr><tr><td>Another agent asking for data it shouldn't see</td><td>The A2A receiver's caller and scope checks (HOS 4)</td></tr>
+</table></div>
+<div class="check-box">
+<h5>Quick self-check before the Week 8 review</h5>
+<ul>
+<li>Can you draw both paths above from memory, labelling each step with the HOS it came from?</li>
+<li>Name one problem that no single layer catches on its own, and the two that catch it together.</li>
+<li>Your agent's success rate went up 2 points after a prompt edit. What else do you need to know before you ship it?</li>
+</ul>
+<details class="check-answers">
+<summary>Check your thinking</summary>
+<ol>
+<li>If a step won't come to mind, reread that HOS's module above. Then step through the same paths in the Week 8 review.</li>
+<li>Drift: the drift report sees it, but only continuous training sends a fix through the gate. Or indirect injection: marking reduces it, and the action check stops what gets through.</li>
+<li>Whether 2 points is more than the run-to-run spread, what it did to cost per task and p95 latency, and whether the judge that scored it still agrees with human grades.</li>
+</ol>
+</details>
+</div>
+<a class="back-to-top" href="#find">↑ Back to Find your module</a>
+</section>
+</main>
+<footer class="foot">AI 430: MLOps and AgentOps · City University of Seattle, School of Technology &amp; Computing<br>Course design &amp; materials: Clark Ngo <br>© 2026 Clark Ngo · Free to reuse and adapt under <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a>, except where noted · <a href="https://github.com/clarkngo/ai430/blob/main/LICENSE.md">How to credit</a></footer>
+<script src="../assets/course.js"></script>
+<script>
+/* module tabs: one module at a time; #module-N links open the right tab */
+(function(){
+  var panels=[1,2,3,4,5].map(function(n){ return document.getElementById('module-'+n); }).filter(Boolean); if(!panels.length) return;
+  var tabs=[].slice.call(document.querySelectorAll('.module-tabs [data-mod]')), all=document.querySelector('.module-tabs .show-all');
+  var key='ai430-cc-tab-'+location.pathname, last='1';
+  function save(v){ try{ localStorage.setItem(key,v); }catch(e){} }
+  function load(){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
+  function show(m){
+    if(m!=='all') last=m;
+    panels.forEach(function(p){ p.hidden = !(m==='all' || p.id==='module-'+m); });
+    tabs.forEach(function(t){ t.setAttribute('aria-pressed', String(t.getAttribute('data-mod')===m)); });
+    if(all) all.textContent = m==='all' ? 'Show one module at a time' : 'Show all modules';
+  }
+  function modOf(id){ var el=id && document.getElementById(id); var p=el && el.closest('[id^="module-"]'); return p ? p.id.replace('module-','') : null; }
+  document.body.classList.add('tabs-on');
+  var start = modOf(location.hash.slice(1)) || load() || '1';
+  show(start);
+  if(location.hash){ var tgt=document.getElementById(location.hash.slice(1)); if(tgt){ var go=function(){ tgt.scrollIntoView({block:'start', behavior:'instant'}); }; setTimeout(go,0); window.addEventListener('load',go); } }
+  tabs.forEach(function(t){ t.addEventListener('click',function(){ var m=t.getAttribute('data-mod'); show(m); save(m); }); });
+  if(all) all.addEventListener('click',function(){ var cur=tabs.filter(function(t){return t.getAttribute('aria-pressed')==='true';})[0]; var m = cur ? 'all' : last; show(m); save(m); });
+  document.addEventListener('click',function(e){
+    var a=e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
+    var m=modOf(a.getAttribute('href').slice(1)); if(!m) return;
+    var p=document.getElementById('module-'+m); if(p && p.hidden){ show(m); save(m); }
+  }, true);
+  window.addEventListener('hashchange',function(){ var m=modOf(location.hash.slice(1)); if(m){ var p=document.getElementById('module-'+m); if(p.hidden){ show(m); var el=document.getElementById(location.hash.slice(1)); if(el) el.scrollIntoView(); } } });
+})();
+</script>
+<script>
+/* section nav highlight (scrolls only the nav row, never the page) */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.secnav a')); var map={};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(l){l.classList.remove('active');}); var a=map[e.target.id]; if(a){ a.classList.add('active'); var c=a.parentElement, ar=a.getBoundingClientRect(), cr=c.getBoundingClientRect(); c.scrollLeft += (ar.left+ar.width/2)-(cr.left+cr.width/2); } } }); },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+})();
+</script>
+</body>
+</html>

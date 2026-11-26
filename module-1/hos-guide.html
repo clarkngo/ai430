@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 430 HOS 1 hands-on guide: Pipelines, DataOps and Experiment Tracking, stage by stage.">
-<title>AI 430 — HOS 1: Pipelines, DataOps and Experiment Tracking</title>
+<meta name="description" content="AI 430 AIC 1 hands-on guide: Pipelines, DataOps and Experiment Tracking, stage by stage.">
+<title>AI 430 — AIC 1: Pipelines, DataOps and Experiment Tracking</title>
 <link rel="stylesheet" href="../assets/course.css">
 <style>
 .goal-box { background:var(--blue-bg); border-left:5px solid var(--blue); padding:15px 18px; margin:18px 0; border-radius:4px; }
@@ -46,8 +46,8 @@
 </header>
 <section class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">AI 430 · Module 1 · Hands-On Skill (HOS) guide</div>
-    <h1>HOS 1: Pipelines, DataOps &amp; Experiment Tracking</h1>
+    <div class="eyebrow">AI 430 · Module 1 · AI Challenge (AIC) guide</div>
+    <h1>AIC 1: Pipelines, DataOps &amp; Experiment Tracking</h1>
     <p class="lede">Turn Salish Fresh's forecasting notebook into a pipeline that remembers what it did: data versioned with DVC, every batch checked by a pandera schema, every training run and every agent evaluation logged to MLflow. Then find out what "reproducible" means for a model, and for an agent.</p>
     <div class="chips"><span class="chip">Est. 3–4 hrs</span><span class="chip">Outcome CO1</span><span class="chip">Module 1 · Weeks 1–2</span><span class="chip">10% of final grade</span></div>
   </div>
@@ -60,24 +60,24 @@
   <div class="module-head"><div class="module-icon">🧭</div><div><h2>Before you start</h2></div></div>
 <div class="before-box">
   <ol>
-    <li><b>Check your account setup.</b> This HOS needs a <a href="../start-here/accounts.html#github">GitHub account</a> and a <a href="../start-here/accounts.html#google">free Gemini API key</a>. Set them up first; the build won't run without them.</li>
+    <li><b>Check your account setup.</b> This AIC needs a <a href="../start-here/accounts.html#github">GitHub account</a> and a <a href="../start-here/accounts.html#google">free Gemini API key</a>. Set them up first; the build won't run without them.</li>
     <li><b>Know the concepts.</b> Read <a href="../reference/concept-companion.html#module-1">Concept Companion → Module 1</a> before you open the starter code.</li>
   </ol>
 </div>
 <h4>What you'll need</h4>
 <ul class="needs-list">
-  <li><strong>Starter code:</strong> your <b>HOS 1</b> repo, created from the <code>AI430-HOS01</code> template when you accept the HOS 1 invite (<span class="tag amber">Planned</span> planned (the Classroom50 link is added here once the <code>AI430-HOS01</code> template repo is built and tested)). Open it in GitHub Codespaces; dependencies install automatically. Not sure what a file does? See the <a href="../reference/starter-code-walkthrough.html#hos1">starter code walkthrough for this HOS</a>.</li>
+  <li><strong>Starter code:</strong> your <b>AIC 1</b> repo, created from the <code>AI430-AIC01</code> template when you accept the AIC 1 invite (<span class="tag amber">Planned</span> planned (the Classroom50 link is added here once the <code>AI430-AIC01</code> template repo is built and tested)). Open it in GitHub Codespaces; dependencies install automatically. Not sure what a file does? See the <a href="../reference/starter-code-walkthrough.html#hos1">starter code walkthrough for this AIC</a>.</li>
   <li>Your free Gemini API key (no credit card) from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. In the repo: <code>cp .env.example .env</code>, then paste it in as <code>GOOGLE_API_KEY</code>.</li>
   <li>Two terminal tabs: one for <code>mlflow ui --port 5000</code>, one for everything else.</li>
   <li>An AI coding assistant in your Codespace (Copilot Chat in Agent mode, or equivalent)</li>
 </ul>
 <div class="ref-box"><h4>Reference reading (optional, before you start)</h4><ul><li><a href="https://dvc.org/doc/start" target="_blank" rel="noopener">DVC: Get Started</a> — data versioning and pipelines, the first two pages.</li><li><a href="https://pandera.readthedocs.io/en/stable/dataframe_schemas.html" target="_blank" rel="noopener">pandera: DataFrame schemas</a>.</li><li><a href="https://mlflow.org/docs/latest/ml/tracking/" target="_blank" rel="noopener">MLflow Tracking</a> and the <a href="https://mlflow.org/docs/latest/ml/model-registry/" target="_blank" rel="noopener">Model Registry</a> (aliases).</li></ul></div>
-<p>This HOS is graded across four stages instead of on code correctness alone: <strong>Engagement</strong> (Create/Scaffold) is 20% of the HOS grade, and <strong>Skills</strong> is 80%: Evaluate, Analyze, Apply (the change you make by hand in Understand &amp; Refine) and Understand (your own explanation of it), 20% each. Each stage below says exactly what to submit. Everything goes in your HOS 1 GitHub Classroom repo: written work under the matching heading in <code>NOTES.md</code>, screenshots in <code>screenshots/</code>. Commit and push as you go, then submit the repo link to the HOS 1 assignment in Brightspace by the end of Week 2.</p>
+<p>This guide covers the <strong>build</strong>: Part A (Create / Scaffold, Evaluate) and the first half of Part B (Analyze, Understand &amp; Refine). It is graded across those stages instead of on code correctness alone, for <strong>60 of the 100 AIC points</strong>: 12 points each for Create, Evaluate, Analyze, Apply (the change you make by hand in Understand &amp; Refine) and Understand (your own explanation of it, plus the short <a href="index.html#postmortem">Post Mortem</a> you write after the challenge). The other 40 points are the <a href="application-challenge.html">Part B challenge</a>, in the <code>challenge/</code> folder of the same repo. The whole AIC is graded once, at the end of Week 2. Each stage below says exactly what to submit. Everything goes in your Module 1 GitHub Classroom repo: written work under the matching heading in <code>NOTES.md</code>, screenshots in <code>screenshots/</code>. Commit and push as you go. By the end of Week 2, push your final work: your repo is your submission, so there is nothing to submit in Brightspace, and your last push before the deadline is what counts.</p>
 </section>
 
 <section class="module card" id="create">
   <div class="module-head"><div class="module-icon">🛠️</div><div><h2>1 · Create / Scaffold</h2></div></div>
-<p class="stage-tagline">Graded as Engagement: 20% of this HOS. The AI-assisted starting point, not the deliverable.</p>
+<p class="stage-tagline">Graded under Build: Create, 12 of the 100 AIC points. The AI-assisted starting point, not the deliverable.</p>
 <p>The starter has a working notebook's logic split into plain Python (<code>forecast/model.py</code>: features and a random-forest model), 52 weeks of orders for six delivery zones (<code>data/orders.csv</code>), a folder of weekly batches, some of them broken on purpose (<code>data/batches/</code>), and <code>pantry_helper</code>, the Google ADK support agent, with ten evaluation questions (<code>evals/questions.json</code>). First, put the data under DVC and see what Git now tracks:</p>
 <pre tabindex="0">dvc init
 dvc remote add -d local /workspaces/dvc-store

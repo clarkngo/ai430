@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 430 Starter Code Walkthrough: what every file in each HOS starter repo does, how to run it, and how to read code you didn't write.">
+<meta name="description" content="AI 430 Starter Code Walkthrough: what every file in each AIC starter repo does, how to run it, and how to read code you didn't write.">
 <title>AI 430 — Starter Code Walkthrough</title>
 <link rel="stylesheet" href="../assets/course.css">
 <style>
@@ -58,15 +58,15 @@
 </header>
 <section class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">AI 430 · Reference · Read as you start each HOS</div>
+    <div class="eyebrow">AI 430 · Reference · Read as you start each AIC</div>
     <h1>Starter Code Walkthrough</h1>
-    <p class="lede">What every file in each HOS's starter code does, and how a change or a request moves through it. Read the section for the HOS you're starting, not the ones after it.</p>
+    <p class="lede">What every file in each AIC's starter code does, and how a change or a request moves through it. Read the section for the AIC you're starting, not the ones after it.</p>
     <div class="chips"><span class="chip">4 starter repos (planned)</span><span class="chip">Runs in GitHub Codespaces</span><span class="chip">Free tiers only</span></div>
   </div>
 </section>
 <main id="main">
 <nav class="secnav no-print" aria-label="Page sections">
-<div class="secnav-inner"><a href="#overview">How to use</a><a href="#hos1">HOS 1</a><a href="#hos2">HOS 2</a><a href="#hos3">HOS 3</a><a href="#hos4">HOS 4</a><a href="#run">Run it</a><a href="#reading">Reading code</a></div>
+<div class="secnav-inner"><a href="#overview">How to use</a><a href="#hos1">AIC 1</a><a href="#hos2">AIC 2</a><a href="#hos3">AIC 3</a><a href="#hos4">AIC 4</a><a href="#run">Run it</a><a href="#reading">Reading code</a></div>
 </nav>
 <section class="module card" id="overview">
 <div class="module-head"><div class="module-icon">🧭</div><div><h2>How to use this page</h2></div></div>
@@ -75,23 +75,23 @@
 </div>
 <div class="intro-box">
 <h4>What "starter code" means in this course</h4>
-<p>Each HOS has a starter template repository on GitHub, and you get your own copy by accepting that HOS's invite, linked from its lesson. The templates (<code>AI430-HOS01</code> to <code>AI430-HOS04</code>) are planned: this page describes what each will contain. The same fictional business, Salish Fresh, runs through all four, but each HOS starts from its own repo, so you don't carry one HOS's bugs into the next. Your first job in each HOS is reading working code you didn't type.</p>
+<p>Each AIC has a starter template repository on GitHub, and you get your own copy by accepting that AIC's invite, linked from its lesson. The templates (<code>AI430-AIC01</code> to <code>AI430-AIC04</code>) are planned: this page describes what each will contain. The same fictional business, Salish Fresh, runs through all four, but each AIC starts from its own repo, so you don't carry one AIC's bugs into the next. Your first job in each AIC is reading working code you didn't type.</p>
 </div>
 <div class="spoiler-box">
-<strong>Don't read ahead.</strong> HOS 2's starter contains a finished HOS 1 pipeline, and HOS 4's contains finished monitoring. Read a section only when you're <em>starting</em> that HOS.
+<strong>Don't read ahead.</strong> AIC 2's starter contains a finished AIC 1 pipeline, and AIC 4's contains finished monitoring. Read a section only when you're <em>starting</em> that AIC.
 </div>
 <div class="table-wrap" tabindex="0"><table class="jump-table">
 <tr><th>You're starting…</th><th>The repo hands you</th><th>Jump</th></tr>
-<tr><td class="hos">HOS 1</td><td>A forecasting model, a year of orders, a support agent and ten evaluation questions, with no pipeline yet</td><td><a href="#hos1">Read →</a></td></tr>
-<tr><td class="hos">HOS 2</td><td>HOS 1's finished pipeline, an app for the Space, a gate script and a drift check, with no workflows yet</td><td><a href="#hos2">Read →</a></td></tr>
-<tr><td class="hos">HOS 3</td><td>The agent with its index in two vector databases, a recorded week, a rubric and benchmark questions</td><td><a href="#hos3">Read →</a></td></tr>
-<tr><td class="hos">HOS 4</td><td>The agent with guardrails off, an orders agent over A2A and a red-team suite</td><td><a href="#hos4">Read →</a></td></tr>
+<tr><td class="hos">AIC 1</td><td>A forecasting model, a year of orders, a support agent and ten evaluation questions, with no pipeline yet</td><td><a href="#hos1">Read →</a></td></tr>
+<tr><td class="hos">AIC 2</td><td>AIC 1's finished pipeline, an app for the Space, a gate script and a drift check, with no workflows yet</td><td><a href="#hos2">Read →</a></td></tr>
+<tr><td class="hos">AIC 3</td><td>The agent with its index in two vector databases, a recorded week, a rubric and benchmark questions</td><td><a href="#hos3">Read →</a></td></tr>
+<tr><td class="hos">AIC 4</td><td>The agent with guardrails off, an orders agent over A2A and a red-team suite</td><td><a href="#hos4">Read →</a></td></tr>
 <tr><td class="hos">Any</td><td>Running it, and how to read code you didn't write</td><td><a href="#run">Run →</a> · <a href="#reading">Read →</a></td></tr>
 </table></div>
 </section>
 
 <section class="module card" id="hos1">
-<div class="module-head"><div class="module-icon">1️⃣</div><div><h2>Starting HOS 1</h2></div></div>
+<div class="module-head"><div class="module-icon">1️⃣</div><div><h2>Starting AIC 1</h2></div></div>
 <span class="hos-tag">A working model and agent, no pipeline yet</span>
 <p>The forecasting code, the data and the support agent all work. What's missing is everything that makes them reproducible: data versioning, validation, tracked runs and the registry. That's yours to build.</p>
 <details class="file-block">
@@ -112,7 +112,7 @@ MLFLOW_TRACKING_URI=http://127.0.0.1:5000</pre><p>A template, safe to commit. Yo
 <details class="file-block">
 <summary>data/orders.csv <span class="role">— 52 weeks of orders for six zones</span></summary>
 <div class="file-body">
-<p>Columns <code>date</code>, <code>zone</code>, <code>orders</code>, <code>temp_c</code>, <code>is_holiday</code>. It isn't under DVC yet: the first commands in the HOS 1 guide put it there and commit the <code>.dvc</code> file instead.</p>
+<p>Columns <code>date</code>, <code>zone</code>, <code>orders</code>, <code>temp_c</code>, <code>is_holiday</code>. It isn't under DVC yet: the first commands in the AIC 1 build guide put it there and commit the <code>.dvc</code> file instead.</p>
 </div>
 </details>
 <details class="file-block">
@@ -130,7 +130,7 @@ MLFLOW_TRACKING_URI=http://127.0.0.1:5000</pre><p>A template, safe to commit. Yo
 <details class="file-block">
 <summary>pantry_helper/ <span class="role">— the support agent</span></summary>
 <div class="file-body">
-<p>A Google ADK agent on <code>gemini-3.8-flash</code> with tools <code>search_help</code> (the help centre), <code>get_order</code> and <code>issue_credit</code> (limit $25). In HOS 1 you don't change it; you evaluate it.</p>
+<p>A Google ADK agent on <code>gemini-3.8-flash</code> with tools <code>search_help</code> (the help centre), <code>get_order</code> and <code>issue_credit</code> (limit $25). In AIC 1 you don't change it; you evaluate it.</p>
 <div class="watch"><strong>Watch out:</strong> If your assistant changes the model name to something like <code>gemini-2.5-flash</code>, new keys get a 502 or "model not found". Keep <code>gemini-3.8-flash</code>.</div>
 </div>
 </details>
@@ -153,17 +153,17 @@ MLFLOW_TRACKING_URI=http://127.0.0.1:5000</pre><p>A template, safe to commit. Yo
 </div>
 </details>
 <p class="think"><strong>Before you prompt your assistant:</strong> run <code>python -c "from forecast.model import train; print(train('data/orders.csv'))"</code> once and read <code>forecast/model.py</code>, so you know what MAE to expect.</p>
-<p class="small muted">Repo: <code>AI430-HOS01</code> (planned). Guide: <a href="../module-1/hos-guide.html">HOS 1 guide</a>.</p>
+<p class="small muted">Repo: <code>AI430-AIC01</code> (planned). Guide: <a href="../module-1/hos-guide.html">AIC 1 build guide</a>.</p>
 </section>
 
 <section class="module card" id="hos2">
-<div class="module-head"><div class="module-icon">2️⃣</div><div><h2>Starting HOS 2</h2></div></div>
-<span class="hos-tag">HOS 1's pipeline, plus a Space to deploy to</span>
-<p>Your HOS 1 pipeline arrives finished, with an app for the Hugging Face Space, a gate script and a drift check. The three workflows that tie them together are yours.</p>
+<div class="module-head"><div class="module-icon">2️⃣</div><div><h2>Starting AIC 2</h2></div></div>
+<span class="hos-tag">AIC 1's pipeline, plus a Space to deploy to</span>
+<p>Your AIC 1 pipeline arrives finished, with an app for the Hugging Face Space, a gate script and a drift check. The three workflows that tie them together are yours.</p>
 <details class="file-block">
 <summary>requirements.txt + .devcontainer/ <span class="role">— setup, done for you in a Codespace</span></summary>
 <div class="file-body">
-<p>GitHub builds a Python container, copies <code>.env.example</code> to <code>.env</code> and installs <code>requirements.txt</code>: everything from HOS 1, plus <code>gradio</code>, <code>huggingface_hub</code>, <code>evidently</code> and <code>pyyaml</code>. If a command says "not found", the Codespace was built before the config changed: <em>Codespaces: Rebuild Container</em>.</p>
+<p>GitHub builds a Python container, copies <code>.env.example</code> to <code>.env</code> and installs <code>requirements.txt</code>: everything from AIC 1, plus <code>gradio</code>, <code>huggingface_hub</code>, <code>evidently</code> and <code>pyyaml</code>. If a command says "not found", the Codespace was built before the config changed: <em>Codespaces: Rebuild Container</em>.</p>
 </div>
 </details>
 <details class="file-block">
@@ -205,11 +205,11 @@ MLFLOW_TRACKING_URI=http://127.0.0.1:5000</pre><p>A template, safe to commit. Yo
 </div>
 </details>
 <p class="think"><strong>Before you prompt your assistant:</strong> add <code>HF_TOKEN</code>, <code>GOOGLE_API_KEY</code> and the <code>HF_SPACE</code> variable to the repo first (see <a href="../start-here/accounts.html#huggingface">Hugging Face setup</a>), or <code>deploy.yml</code> fails on its first run.</p>
-<p class="small muted">Repo: <code>AI430-HOS02</code> (planned). Guide: <a href="../module-2/hos-guide.html">HOS 2 guide</a>.</p>
+<p class="small muted">Repo: <code>AI430-AIC02</code> (planned). Guide: <a href="../module-2/hos-guide.html">AIC 2 build guide</a>.</p>
 </section>
 
 <section class="module card" id="hos3">
-<div class="module-head"><div class="module-icon">3️⃣</div><div><h2>Starting HOS 3</h2></div></div>
+<div class="module-head"><div class="module-icon">3️⃣</div><div><h2>Starting AIC 3</h2></div></div>
 <span class="hos-tag">An agent and a model to watch, and the data to watch them with</span>
 <p><code>pantry_helper</code> arrives with its help-centre index already built in both vector databases, a recorded week of questions and a judge rubric. Tracing, the judge, the drift report and the benchmark are yours.</p>
 <details class="file-block">
@@ -250,11 +250,11 @@ MLFLOW_TRACKING_URI=http://127.0.0.1:5000</pre><p>A template, safe to commit. Yo
 </div>
 </details>
 <p class="think"><strong>Before you prompt your assistant:</strong> start Qdrant and run <code>python -m rag.build_index</code> once, then ask <code>pantry_helper</code> two questions in <code>adk web --allow_origins "*"</code> so you've seen what a normal answer looks like.</p>
-<p class="small muted">Repo: <code>AI430-HOS03</code> (planned). Guide: <a href="../module-3/hos-guide.html">HOS 3 guide</a>.</p>
+<p class="small muted">Repo: <code>AI430-AIC03</code> (planned). Guide: <a href="../module-3/hos-guide.html">AIC 3 build guide</a>.</p>
 </section>
 
 <section class="module card" id="hos4">
-<div class="module-head"><div class="module-icon">4️⃣</div><div><h2>Starting HOS 4</h2></div></div>
+<div class="module-head"><div class="module-icon">4️⃣</div><div><h2>Starting AIC 4</h2></div></div>
 <span class="hos-tag">An agent with every guardrail off, and an attack suite</span>
 <p><code>pantry_helper</code> arrives with its guardrails switched off, a separate <code>orders_agent</code> served over A2A, and a promptfoo suite of attacks. The guardrail callbacks are yours.</p>
 <details class="file-block">
@@ -295,31 +295,31 @@ MLFLOW_TRACKING_URI=http://127.0.0.1:5000</pre><p>A template, safe to commit. Yo
 </div>
 </details>
 <p class="think"><strong>Before you prompt your assistant:</strong> run the suite once with every flag off and screenshot the report. That's the baseline every later number is compared with.</p>
-<p class="small muted">Repo: <code>AI430-HOS04</code> (planned). Guide: <a href="../module-4/hos-guide.html">HOS 4 guide</a>.</p>
+<p class="small muted">Repo: <code>AI430-AIC04</code> (planned). Guide: <a href="../module-4/hos-guide.html">AIC 4 build guide</a>.</p>
 </section>
 
 <section class="module card" id="run">
 <div class="module-head"><div class="module-icon">▶️</div><div><h2>Running it</h2></div></div>
 <p><b>In a Codespace:</b> on your repo, <b>Code → Codespaces → Create codespace on main</b>. The devcontainer installs everything and creates <code>.env</code>; add your keys to it. Then, from the repo's top folder:</p>
-<pre tabindex="0"># HOS 1 (mlflow ui in its own terminal tab)
+<pre tabindex="0"># AIC 1 (mlflow ui in its own terminal tab)
 mlflow ui --port 5000
 dvc repro
 python -m evals.run_agent_eval --runs 3
 
-# HOS 2: push a branch and open a pull request; the workflows run in the Actions tab
+# AIC 2: push a branch and open a pull request; the workflows run in the Actions tab
 git push -u origin my-change
 
-# HOS 3
+# AIC 3
 docker compose up -d qdrant
 python -m evals.run_week --questions evals/week.json --pause 4
 python -m bench.retrieval
 
-# HOS 4 (three terminal tabs)
+# AIC 4 (three terminal tabs)
 python -m a2a_orders.serve
 python -m pantry_helper.serve
 npx promptfoo@latest eval -c redteam/promptfooconfig.yaml
 
-# Any HOS: the ADK developer UI
+# Any AIC: the ADK developer UI
 adk web --allow_origins "*"</pre>
 <p>Plain <code>adk web</code> shows a blank page in a Codespace, because ADK rejects requests through the forwarded URL; the <code>--allow_origins "*"</code> form is safe there, since Codespace ports are private to your account. Stop your Codespace when you're done: free hours are limited. More on the terminal, tabs and keys: <a href="../start-here/tools.html">Tools you'll use all term</a>.</p>
 </section>
@@ -327,12 +327,12 @@ adk web --allow_origins "*"</pre>
 <section class="module card" id="reading">
 <div class="module-head"><div class="module-icon">🔎</div><div><h2>How to read code you didn't write</h2></div></div>
 <ol class="flow-list">
-<li><strong>Start at the entry point.</strong> That's <code>dvc.yaml</code>, a workflow file, <code>evals/run_week.py</code> or <code>pantry_helper/serve.py</code>, depending on the HOS.</li>
+<li><strong>Start at the entry point.</strong> That's <code>dvc.yaml</code>, a workflow file, <code>evals/run_week.py</code> or <code>pantry_helper/serve.py</code>, depending on the AIC.</li>
 <li><strong>Follow one change or one request end to end.</strong> One batch through the pipeline, or one question through the agent, file by file, before you read anything else.</li>
 <li><strong>Run it before you change it.</strong> Push a good batch, then a broken one; ask a question it can answer, then one it can't.</li>
 <li><strong>Break it on purpose.</strong> Blank a key, rename a column, misspell a secret. Knowing how it fails is how you know you understand it.</li>
 </ol>
-<p>This is the same habit the Evaluate and Analyze stages of every HOS are training.</p>
+<p>This is the same habit the Evaluate and Analyze stages of every AIC are training.</p>
 </section>
 
 <div class="guide-nav">

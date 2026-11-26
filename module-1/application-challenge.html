@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 430 Application Challenge 1: Rain City Bikes Demand Forecast. Build to a spec, make one open decision, defend it.">
-<title>AI 430 — Application Challenge 1: Rain City Bikes Demand Forecast</title>
+<meta name="description" content="AI 430 Part B challenge 1: Rain City Bikes Demand Forecast. Build to a spec, make one open decision, defend it.">
+<title>AI 420 — AIC 1 Part B Challenge: Rain City Bikes Demand Forecast</title>
 <link rel="stylesheet" href="../assets/course.css">
 <style>
 .rules-box { background:var(--surface2); border-left:3px solid var(--border); padding:8px 14px; margin:0 0 18px; font-size:0.85rem; border-radius:0 4px 4px 0; color:var(--muted); }
@@ -52,10 +52,10 @@
 </header>
 <section class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">AI 430 · Module 1 · Application Challenge</div>
-    <h1>Application Challenge 1: Rain City Bikes Demand Forecast</h1>
-    <p class="lede">Take the data pipeline from HOS 1 to a business you haven't seen: turn a bike-share company's un-rerunnable notebook into a tested pipeline, decide which of three logged models to promote, and explain which of the notebook's old results can't be reproduced.</p>
-    <div class="chips"><span class="chip">Est. 60–90 min</span><span class="chip">Outcome CO1</span><span class="chip">Module 1 · end of Week 2</span><span class="chip">Individual</span><span class="chip">AI assistant allowed — disclose it</span><span class="chip">5% of final grade</span></div>
+    <div class="eyebrow">AI 430 · Module 1 · AIC 1 Part B: Apply</div>
+    <h1>AIC 1 Part B Challenge: Rain City Bikes Demand Forecast</h1>
+    <p class="lede">Take the data pipeline from AIC 1 to a business you haven't seen: turn a bike-share company's un-rerunnable notebook into a tested pipeline, decide which of three logged models to promote, and explain which of the notebook's old results can't be reproduced.</p>
+    <div class="chips"><span class="chip">Est. 60–90 min</span><span class="chip">Outcome CO1</span><span class="chip">Module 1 · end of Week 2</span><span class="chip">Individual</span><span class="chip">AI assistant allowed — disclose it</span><span class="chip">4% of final grade</span></div>
   </div>
 </section>
 <main id="main">
@@ -101,7 +101,7 @@
   <div class="module-head"><div class="module-icon">🪜</div><div><h2>Steps &amp; what to submit</h2></div></div>
 <div class="stage-block">
   <h3><span class="stage-num">1</span>Open it and run the tests</h3>
-  <p>Open your own <b>AC 1</b> repo (<span class="tag amber">Planned</span> the AC 1 invite (the Classroom50 link is added here once the <code>AI430-AC01</code> template repo is built and tested)) in GitHub Codespaces. Then run <code>pytest</code>. Almost everything fails with <code>NotImplementedError</code>. That's your to-do list.</p>
+  <p>Open your AIC 1 repo in the same Codespace you used for the build, and move into its <code>challenge/</code> folder (<code>cd challenge</code>). Then run <code>pytest</code>. Almost everything fails with <code>NotImplementedError</code>. That's your to-do list.</p>
 </div>
 <div class="stage-block">
   <h3><span class="stage-num">2</span>Build the pipeline</h3>
@@ -120,21 +120,22 @@
   <p>Fill in <code>DECISIONS.md</code>, about one page: your promotion decision and why, your verdict on each of the notebook's three results, and what your AI assistant wrote, got wrong, or missed.</p>
 </div>
 <div class="submit-box">
-  <h5>Submit (via Brightspace)</h5>
-  <ul><li><code>pipelines/</code>, <code>dvc.yaml</code> and <code>tests/test_my_rules.py</code></li><li>The output of <code>pytest</code>, pasted as text (all tests passing, including yours)</li><li><code>RUNS.md</code></li><li><code>DECISIONS.md</code></li></ul>
+  <h5>What goes in <code>challenge/</code> (pushed with your AIC 1 repo)</h5>
+  <ul><li><code>pipelines/</code>, <code>dvc.yaml</code> and <code>tests/test_my_rules.py</code></li><li>The output of <code>pytest</code>, saved as <code>challenge/pytest-output.txt</code> (all tests passing, including yours)</li><li><code>RUNS.md</code></li><li><code>DECISIONS.md</code></li></ul>
 </div>
 </section>
 
 <section class="module card" id="grading">
   <div class="module-head"><div class="module-icon">📊</div><div><h2>How it's graded</h2></div></div>
-<p>Each criterion is graded on one part of your submission, at one of three levels.</p>
+<p>The challenge is the <b>Challenge half of the AIC 1 grade: 40 of its 100 points</b>, graded with the build at the end of Week 2. It has four criteria, weighted as in the syllabus: Application 4, Analysis 8, Evaluation 12 and Design 16. Each is graded on part of what you push.</p>
+        <p>When the challenge is done, finish AIC 1 with the <a href="index.html#postmortem"><b>Post Mortem</b></a>: three short answers in <code>NOTES.md</code>, written without AI and graded under the build's Understand criterion. Your instructor answers the most common "still unclear" points at the start of the next module.</p>
 <div class="table-scroll">
 <div class="table-wrap" tabindex="0"><table class="mini rubric">
   <tr><th>Criterion</th><th>Weight</th><th>Graded on</th><th>Full</th><th>Partial</th><th>Missing</th></tr>
-  <tr><td><strong>Application</strong></td><td class="wt">10%</td><td><code>RUNS.md</code></td><td>Your pipeline runs on Rain City's data, your run sits alongside A, B and C, and the columns you compare are the ones the decision needs.</td><td>It runs, but the comparison leaves out the data dates or the timing.</td><td>It restates the HOS 1 Salish Fresh pipeline, or doesn't run.</td></tr><tr><td><strong>Analysis</strong></td><td class="wt">20%</td><td><code>DECISIONS.md</code>, section 2 (past results)</td><td>For each result, you name exactly what's missing to reproduce it, or show that you did.</td><td>A verdict for each, with generic reasons ("data changed").</td><td>No breakdown.</td></tr><tr><td><strong>Evaluation</strong></td><td class="wt">30%</td><td><code>DECISIONS.md</code>, section 1 (promotion)</td><td>A clear choice, judged against stated criteria (accuracy this season, the 2 a.m. deadline, validation), with an alternative you rejected and what would change your mind.</td><td>A choice with a reason, but no criteria or no rejected alternative.</td><td>No choice, or no justification.</td></tr><tr><td><strong>Design</strong></td><td class="wt">40%</td><td><code>pipelines/</code>, your tests and the <code>pytest</code> output</td><td>All provided tests pass, and your own tests check a rule you added, including an edge case.</td><td>Most provided tests pass, or your tests cover only the easy case.</td><td>It doesn't run, or you wrote no tests of your own.</td></tr>
+  <tr><td><strong>Application</strong></td><td class="wt">4 pts</td><td><code>RUNS.md</code></td><td>Your pipeline runs on Rain City's data, your run sits alongside A, B and C, and the columns you compare are the ones the decision needs.</td><td>It runs, but the comparison leaves out the data dates or the timing.</td><td>It restates the AIC 1 Salish Fresh pipeline, or doesn't run.</td></tr><tr><td><strong>Analysis</strong></td><td class="wt">8 pts</td><td><code>DECISIONS.md</code>, section 2 (past results)</td><td>For each result, you name exactly what's missing to reproduce it, or show that you did.</td><td>A verdict for each, with generic reasons ("data changed").</td><td>No breakdown.</td></tr><tr><td><strong>Evaluation</strong></td><td class="wt">12 pts</td><td><code>DECISIONS.md</code>, section 1 (promotion)</td><td>A clear choice, judged against stated criteria (accuracy this season, the 2 a.m. deadline, validation), with an alternative you rejected and what would change your mind.</td><td>A choice with a reason, but no criteria or no rejected alternative.</td><td>No choice, or no justification.</td></tr><tr><td><strong>Design</strong></td><td class="wt">16 pts</td><td><code>pipelines/</code>, your tests and the <code>pytest</code> output</td><td>All provided tests pass, and your own tests check a rule you added, including an edge case.</td><td>Most provided tests pass, or your tests cover only the easy case.</td><td>It doesn't run, or you wrote no tests of your own.</td></tr>
 </table></div>
 </div>
-<p style="font-size:0.88rem;color:var(--muted)">How this differs from HOS 1's Understand &amp; Refine: there you extended code you already understood, by hand, with no AI. Here the business, the code, and the decisions are new, AI help is allowed (say what it wrote in <code>DECISIONS.md</code>), and half the grade (Analysis and Evaluation) is for the calls you make, not the typing.</p>
+<p style="font-size:0.88rem;color:var(--muted)">How this differs from AIC 1's Understand &amp; Refine: there you extended code you already understood, by hand, with no AI. Here the business, the code, and the decisions are new, AI help is allowed (say what it wrote in <code>DECISIONS.md</code>), and half the challenge grade (Analysis and Evaluation, 20 of the 40 points) is for the calls you make, not the typing.</p>
 </section>
 
 <section class="module card" id="snags">
@@ -145,7 +146,7 @@
 </section>
 
 <div class="guide-nav">
-  <a href="hos-guide.html">← HOS 1 guide</a>
+  <a href="hos-guide.html">← AIC 1 build guide</a>
   <a href="index.html">Module 1 lesson →</a>
 </div>
 </main>

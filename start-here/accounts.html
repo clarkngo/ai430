@@ -87,65 +87,65 @@
   <div class="module-head"><div class="module-icon">🗺️</div><div><h2>Find your service</h2></div></div>
 <div class="intro-box">
   <h4>What this page is</h4>
-  <p>Every external account this course asks you to create, in one place, with exactly what to click. You need four, and not all on day one: GitHub and Google immediately (HOS 1), Hugging Face for HOS 2, and Langfuse for HOS 3. DVC, MLflow, pandera, Evidently, Chroma, Qdrant, Ragas, promptfoo and the A2A servers run inside your Codespace and need no account at all.</p>
+  <p>Every external account this course asks you to create, in one place, with exactly what to click. You need four, and not all on day one: GitHub and Google immediately (AIC 1), Hugging Face for AIC 2, and Langfuse for AIC 3. DVC, MLflow, pandera, Evidently, Chroma, Qdrant, Ragas, promptfoo and the A2A servers run inside your Codespace and need no account at all.</p>
 </div>
 <div class="table-wrap" tabindex="0"><table class="map-table">
   <tr><th>Service</th><th>What it's for</th><th>First needed</th><th>Jump</th></tr>
-  <tr><td class="svc-name">GitHub</td><td>Your repos, GitHub Codespaces (where every HOS runs) and GitHub Actions (HOS 2's pipelines)</td><td>HOS 1</td><td><a class="jump" href="#github">Read →</a></td></tr>
-  <tr><td class="svc-name">Google AI Studio</td><td>Your Gemini API key: every model call all term runs through it</td><td>HOS 1</td><td><a class="jump" href="#google">Read →</a></td></tr>
-  <tr><td class="svc-name">Hugging Face</td><td>A free Space that hosts the deployed model and agent, and the token your workflow deploys with</td><td>HOS 2</td><td><a class="jump" href="#huggingface">Read →</a></td></tr>
-  <tr><td class="svc-name">Langfuse</td><td>Tracing: a record of every model call and tool call, with judge scores and timings</td><td>HOS 3</td><td><a class="jump" href="#langfuse">Read →</a></td></tr>
+  <tr><td class="svc-name">GitHub</td><td>Your repos, GitHub Codespaces (where every AIC runs) and GitHub Actions (AIC 2's pipelines)</td><td>AIC 1</td><td><a class="jump" href="#github">Read →</a></td></tr>
+  <tr><td class="svc-name">Google AI Studio</td><td>Your Gemini API key: every model call all term runs through it</td><td>AIC 1</td><td><a class="jump" href="#google">Read →</a></td></tr>
+  <tr><td class="svc-name">Hugging Face</td><td>A free Space that hosts the deployed model and agent, and the token your workflow deploys with</td><td>AIC 2</td><td><a class="jump" href="#huggingface">Read →</a></td></tr>
+  <tr><td class="svc-name">Langfuse</td><td>Tracing: a record of every model call and tool call, with judge scores and timings</td><td>AIC 3</td><td><a class="jump" href="#langfuse">Read →</a></td></tr>
 </table></div>
 </section>
 
 <section class="module card" id="github">
-  <div class="module-head"><div class="module-icon">🐙</div><div><h2>GitHub</h2><div class="module-meta"><span class="tag blue">First needed: HOS 1</span><span class="tag">Free — no credit card</span></div></div></div>
-<p class="why-line"><strong>What it's for:</strong> hosting your own repo for each HOS and Application Challenge, running it in <strong>GitHub Codespaces</strong>, a ready-made cloud dev environment, and from HOS 2 on, running your pipelines in <strong>GitHub Actions</strong> on the free minutes every account gets.</p>
+  <div class="module-head"><div class="module-icon">🐙</div><div><h2>GitHub</h2><div class="module-meta"><span class="tag blue">First needed: AIC 1</span><span class="tag">Free — no credit card</span></div></div></div>
+<p class="why-line"><strong>What it's for:</strong> hosting your own repo for each AIC (build and Part B challenge), running it in <strong>GitHub Codespaces</strong>, a ready-made cloud dev environment, and from AIC 2 on, running your pipelines in <strong>GitHub Actions</strong> on the free minutes every account gets.</p>
 <ol class="steps"><li>Go to <a href="https://github.com" target="_blank" rel="noopener">github.com</a> and click <strong>Sign up</strong> (top right).</li><li>Enter an email, create a password, and pick a username. Use something professional: this account is worth keeping for internships and job applications.</li><li>Verify your email when GitHub sends the confirmation.</li><li>That's it for a free account: no payment information is requested or required.</li></ol>
 <div class="explain"><strong>Already have a GitHub account</strong> from another course or your own projects? Use that one; don't create a second. If you're a student, the free <a href="https://education.github.com/pack" target="_blank" rel="noopener">GitHub Student Developer Pack</a> raises your Codespaces hours, but the course doesn't require it.</div>
 <div class="done-box"><h4>You'll know it worked when…</h4><ul><li>You can sign in at github.com and see <strong>Code → Codespaces → Create codespace on main</strong> on any repository, and an <strong>Actions</strong> tab on your own repos.</li></ul></div>
 </section>
 
 <section class="module card" id="google">
-  <div class="module-head"><div class="module-icon">🔑</div><div><h2>Google AI Studio: Gemini API key</h2><div class="module-meta"><span class="tag blue">First needed: HOS 1</span><span class="tag">Free — no credit card</span></div></div></div>
-<p class="why-line"><strong>What it's for:</strong> the API key that lets the support agent, the judge and the red-team runs talk to Gemini. You get it once, in HOS 1, and reuse the same key all term. Already have one from another course? Use that one.</p>
-<ol class="steps"><li>Go to <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> and sign in with any Google account (a personal Gmail account is fine).</li><li>Click <strong>Create API key</strong>.</li><li>Copy the long string it gives you: it starts with something like <code>AIza...</code>.</li><li>Paste it into your project's <code>.env</code> file:<pre tabindex="0">GOOGLE_API_KEY=AIzaSyD-your-real-key-goes-right-here</pre></li><li>In HOS 2 you also add it as a repository secret named <code>GOOGLE_API_KEY</code> (<strong>Settings → Secrets and variables → Actions</strong>), so the evaluation gate can run in GitHub Actions.</li></ol>
+  <div class="module-head"><div class="module-icon">🔑</div><div><h2>Google AI Studio: Gemini API key</h2><div class="module-meta"><span class="tag blue">First needed: AIC 1</span><span class="tag">Free — no credit card</span></div></div></div>
+<p class="why-line"><strong>What it's for:</strong> the API key that lets the support agent, the judge and the red-team runs talk to Gemini. You get it once, in AIC 1, and reuse the same key all term. Already have one from another course? Use that one.</p>
+<ol class="steps"><li>Go to <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> and sign in with any Google account (a personal Gmail account is fine).</li><li>Click <strong>Create API key</strong>.</li><li>Copy the long string it gives you: it starts with something like <code>AIza...</code>.</li><li>Paste it into your project's <code>.env</code> file:<pre tabindex="0">GOOGLE_API_KEY=AIzaSyD-your-real-key-goes-right-here</pre></li><li>In AIC 2 you also add it as a repository secret named <code>GOOGLE_API_KEY</code> (<strong>Settings → Secrets and variables → Actions</strong>), so the evaluation gate can run in GitHub Actions.</li></ol>
 <div class="explain"><strong>Treat this like a password.</strong> Anyone with your key can use your quota. Never paste it into a file you commit, a chat message, an AI assistant or a screenshot. That's why it lives in <code>.env</code> and in repository secrets, never in your code or a workflow file.</div>
 <div class="done-box"><h4>You'll know it worked when…</h4><ul><li>You have a key starting with <code>AIza</code> pasted into <code>.env</code> as <code>GOOGLE_API_KEY</code> (not <code>.env.example</code>, which is just a template).</li></ul></div>
 </section>
 
 <section class="module card" id="huggingface">
-  <div class="module-head"><div class="module-icon">🤗</div><div><h2>Hugging Face</h2><div class="module-meta"><span class="tag blue">First needed: HOS 2</span><span class="tag">Free — no credit card</span></div></div></div>
+  <div class="module-head"><div class="module-icon">🤗</div><div><h2>Hugging Face</h2><div class="module-meta"><span class="tag blue">First needed: AIC 2</span><span class="tag">Free — no credit card</span></div></div></div>
 <p class="why-line"><strong>What it's for:</strong> a free <strong>Space</strong> on the free CPU hardware that hosts Salish Fresh's forecast form and support chat, and a <strong>write token</strong> that your <code>deploy.yml</code> workflow uses to push each release to it.</p>
-<ol class="steps"><li>Go to <a href="https://huggingface.co/join" target="_blank" rel="noopener">huggingface.co/join</a> and sign up with an email; verify it.</li><li>Create a Space: <a href="https://huggingface.co/new-space" target="_blank" rel="noopener">huggingface.co/new-space</a>. Choose the <strong>Gradio</strong> SDK and the free <strong>CPU basic</strong> hardware. Name it, for example, <code>salish-fresh</code>.</li><li>Create a token: <strong>Settings → Access Tokens → Create new token</strong>, type <strong>Write</strong>. Copy it: it starts with <code>hf_</code>.</li><li>In your HOS 2 repo on GitHub, add it as a repository secret named <code>HF_TOKEN</code>, and add a repository <em>variable</em> <code>HF_SPACE</code> with your Space's name, such as <code>your-name/salish-fresh</code>.</li></ol>
+<ol class="steps"><li>Go to <a href="https://huggingface.co/join" target="_blank" rel="noopener">huggingface.co/join</a> and sign up with an email; verify it.</li><li>Create a Space: <a href="https://huggingface.co/new-space" target="_blank" rel="noopener">huggingface.co/new-space</a>. Choose the <strong>Gradio</strong> SDK and the free <strong>CPU basic</strong> hardware. Name it, for example, <code>salish-fresh</code>.</li><li>Create a token: <strong>Settings → Access Tokens → Create new token</strong>, type <strong>Write</strong>. Copy it: it starts with <code>hf_</code>.</li><li>In your AIC 2 repo on GitHub, add it as a repository secret named <code>HF_TOKEN</code>, and add a repository <em>variable</em> <code>HF_SPACE</code> with your Space's name, such as <code>your-name/salish-fresh</code>.</li></ol>
 <div class="explain"><strong>Free hardware sleeps.</strong> A free Space pauses after a period with no visitors and takes a little while to wake on the next visit. That's normal; it isn't a failed deploy. Don't upgrade the hardware: anything that asks for billing is out of scope.</div>
 <div class="done-box"><h4>You'll know it worked when…</h4><ul><li>Your Space's page loads (even as an empty "building" Space), and <code>HF_TOKEN</code> and <code>HF_SPACE</code> appear in your repo's <strong>Actions</strong> settings.</li></ul></div>
 </section>
 
 <section class="module card" id="langfuse">
-  <div class="module-head"><div class="module-icon">🔭</div><div><h2>Langfuse</h2><div class="module-meta"><span class="tag blue">First needed: HOS 3</span><span class="tag">Free — no credit card</span></div></div></div>
-<p class="why-line"><strong>What it's for:</strong> tracing: a record of what the agent actually did on every request (each model call, retrieval and tool call, with inputs, outputs and timings), plus the judge's score attached to each trace. HOS 3 is built around it, and your Term Project uses it too.</p>
-<ol class="steps"><li>Go to <a href="https://cloud.langfuse.com" target="_blank" rel="noopener">cloud.langfuse.com</a> and sign up on the free Hobby plan.</li><li>Create a new project (any name, such as <code>ai430</code>).</li><li>Go to <strong>Settings → API Keys</strong> and create a key pair: a <strong>Public Key</strong> (<code>pk-lf-...</code>) and a <strong>Secret Key</strong> (<code>sk-lf-...</code>).</li><li>Add all three to the <code>.env</code> in your HOS 3 repo. Use your project's region: <code>https://cloud.langfuse.com</code> for EU, or <code>https://us.cloud.langfuse.com</code> for US.<pre tabindex="0">LANGFUSE_PUBLIC_KEY=pk-lf-...
+  <div class="module-head"><div class="module-icon">🔭</div><div><h2>Langfuse</h2><div class="module-meta"><span class="tag blue">First needed: AIC 3</span><span class="tag">Free — no credit card</span></div></div></div>
+<p class="why-line"><strong>What it's for:</strong> tracing: a record of what the agent actually did on every request (each model call, retrieval and tool call, with inputs, outputs and timings), plus the judge's score attached to each trace. AIC 3 is built around it, and your Term Project uses it too.</p>
+<ol class="steps"><li>Go to <a href="https://cloud.langfuse.com" target="_blank" rel="noopener">cloud.langfuse.com</a> and sign up on the free Hobby plan.</li><li>Create a new project (any name, such as <code>ai430</code>).</li><li>Go to <strong>Settings → API Keys</strong> and create a key pair: a <strong>Public Key</strong> (<code>pk-lf-...</code>) and a <strong>Secret Key</strong> (<code>sk-lf-...</code>).</li><li>Add all three to the <code>.env</code> in your AIC 3 repo. Use your project's region: <code>https://cloud.langfuse.com</code> for EU, or <code>https://us.cloud.langfuse.com</code> for US.<pre tabindex="0">LANGFUSE_PUBLIC_KEY=pk-lf-...
 LANGFUSE_SECRET_KEY=sk-lf-...
 LANGFUSE_HOST=https://cloud.langfuse.com</pre></li></ol>
 <div class="explain"><strong>Two keys, not one.</strong> Langfuse needs both the public and the secret key. If either is missing, traces fail silently or the run errors at startup, so check both made it into <code>.env</code>.</div>
-<div class="done-box"><h4>You'll know it worked when…</h4><ul><li>Your Langfuse project's <strong>Traces</strong> tab shows entries after you run <code>python -m evals.run_week</code> in HOS 3. Traces can take a few seconds to appear.</li></ul></div>
+<div class="done-box"><h4>You'll know it worked when…</h4><ul><li>Your Langfuse project's <strong>Traces</strong> tab shows entries after you run <code>python -m evals.run_week</code> in AIC 3. Traces can take a few seconds to appear.</li></ul></div>
 </section>
 
 <section class="module card" id="together">
   <div class="module-head"><div class="module-icon">🧩</div><div><h2>Putting it all together</h2></div></div>
-<p style="font-size:0.9rem;color:var(--muted)">Each HOS repo has its own <code>.env</code>, copied from <code>.env.example</code>, and HOS 2 onwards also has repository secrets for GitHub Actions. You add each one when a HOS first needs it:</p>
+<p style="font-size:0.9rem;color:var(--muted)">Each AIC repo has its own <code>.env</code>, copied from <code>.env.example</code>, and AIC 2 onwards also has repository secrets for GitHub Actions. You add each one when an AIC first needs it:</p>
 <div class="env-example" tabindex="0">
-<span class="comment"># .env · HOS 1</span><br>
+<span class="comment"># .env · AIC 1</span><br>
 <span class="key">GOOGLE_API_KEY</span>=AIzaSyD-your-real-key-goes-right-here<br>
 <span class="key">MLFLOW_TRACKING_URI</span>=http://127.0.0.1:5000<br>
 <br>
-<span class="comment"># .env · HOS 3</span><br>
+<span class="comment"># .env · AIC 3</span><br>
 <span class="key">LANGFUSE_PUBLIC_KEY</span>=pk-lf-...<br>
 <span class="key">LANGFUSE_SECRET_KEY</span>=sk-lf-...<br>
 <span class="key">LANGFUSE_HOST</span>=https://cloud.langfuse.com<br>
 <br>
-<span class="comment"># Repository secrets and variables (GitHub → Settings → Secrets and variables → Actions) · HOS 2</span><br>
+<span class="comment"># Repository secrets and variables (GitHub → Settings → Secrets and variables → Actions) · AIC 2</span><br>
 <span class="key">HF_TOKEN</span>=hf_... <span class="comment">(secret)</span><br>
 <span class="key">GOOGLE_API_KEY</span>=AIza... <span class="comment">(secret)</span><br>
 <span class="key">HF_SPACE</span>=your-name/salish-fresh <span class="comment">(variable)</span>

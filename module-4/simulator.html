@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI 430 HOS 4 simulator: run a red-team suite against an agent with guardrail layers on and off, and send A2A requests with identity checks.">
+<meta name="description" content="AI 430 AIC 4 simulator: run a red-team suite against an agent with guardrail layers on and off, and send A2A requests with identity checks.">
 <title>Red-Team &amp; Guardrails Simulator</title>
 <link rel="stylesheet" href="../assets/course.css">
 <style>
@@ -82,7 +82,7 @@
 </header>
 <section class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">Simulator 4 · Pairs with HOS 4 (Weeks 7–8)</div>
+    <div class="eyebrow">Simulator 4 · Pairs with AIC 4 (Weeks 7–8)</div>
     <h1>Red-Team &amp; Guardrails Simulator</h1>
     <p class="lede">Attack Salish Fresh's support agent with six attacks, three runs each, turning four guardrail layers on one at a time. Then send A2A tasks to the orders agent from a known and an unknown caller.</p>
     <div class="chips"><span class="chip">Outcome CO5</span><span class="chip">promptfoo</span><span class="chip">ADK callbacks</span><span class="chip">OWASP LLM Top 10</span><span class="chip">A2A</span></div>
@@ -155,7 +155,7 @@ function suite(){
   $('ft').innerHTML=rows; $('mA').textContent=worked+' / 6'; $('mS').textContent=runs; $('mL').textContent=Object.keys(on).filter(function(k){return on[k];}).length+' / 4'; $('mN').textContent='2';
   var c=Object.keys(on).filter(function(k){return on[k];});
   var v = c.length===0 ? ['bad','No guardrails: '+worked+' of 6 attacks work at least once. The agent does whatever the latest text tells it.'] :
-    c.length===4 ? ['warn','All four layers: one attack still works every time. Five $20 credits each pass the $25 limit. Name it as a residual risk, or write a guard for it (HOS 4 Understand &amp; Refine).'] :
+    c.length===4 ? ['warn','All four layers: one attack still works every time. Five $20 credits each pass the $25 limit. Name it as a residual risk, or write a guard for it (AIC 4 Understand &amp; Refine).'] :
     (c.length===1&&on.lp) ? ['warn','Least privilege alone stops the attacks that need a tool it removed, and nothing else. Injection still issues credits.'] :
     ['warn',worked+' of 6 attacks still work at least once. Each layer covers different attacks: check the <b>Stopped by</b> column.'];
   $('verdict').innerHTML='<div class="verdict '+v[0]+'">'+v[1]+' Both normal requests (a balance question, a $10 late-delivery credit) still pass.</div>';
@@ -175,7 +175,7 @@ $('none').addEventListener('click',function(){ ['lp','mark','act','out'].forEach
   'do':'Press <b>Set this up for me</b>. It turns every layer off and runs the suite.',
   watch:'Panel 2: the <b>Succeeded</b> column and the OWASP category of each attack.',
   expect:'All six attacks work at least once out of three runs.',
-  why:'This is your baseline in HOS 4 Create: screenshot the report with nothing on before you add any guardrail.',
+  why:'This is your baseline in AIC 4 Create: screenshot the report with nothing on before you add any guardrail.',
   setup:function(h){ ['lp','mark','act','out'].forEach(function(i){ h.set(i,false); }); h.click('suite'); }},
  {title:'2 · Least privilege alone',
   'do':'Press <b>Set this up for me</b>. It turns on least privilege only and runs the suite.',
@@ -193,13 +193,13 @@ $('none').addEventListener('click',function(){ ['lp','mark','act','out'].forEach
   'do':'Press <b>Set this up for me</b>. It turns on all four layers and runs the suite.',
   watch:'The last row.',
   expect:'Five attacks stopped. The split credit, five $20 credits, works every time: each one passes the $25 limit.',
-  why:'Every guardrail set leaves something open. HOS 4 Analyze asks you to name the risk you accepted rather than fixed.',
+  why:'Every guardrail set leaves something open. AIC 4 Analyze asks you to name the risk you accepted rather than fixed.',
   setup:function(h){ ['lp','mark','act','out'].forEach(function(i){ h.set(i,true); }); h.click('suite'); }},
  {title:'5 · An unknown agent asks for every customer\'s orders',
   'do':'Press <b>Set this up for me</b>. It sends the "stranger" request with the identity check off. Then turn it on and send again.',
   watch:'Panel 3: the response code and what came back.',
   expect:'Off: 41 customers\' orders returned. On: 403, rejected before any model call.',
-  why:'An agent receiving tasks over A2A checks who is asking, and for whom, before it does anything. HOS 4 Evaluate runs this probe for real.',
+  why:'An agent receiving tasks over A2A checks who is asking, and for whom, before it does anything. AIC 4 Evaluate runs this probe for real.',
   setup:function(h){ h.set('req','stranger'); h.set('ident',false); h.click('send'); }},
  {title:'Your turn',
   'do':'Try the third A2A request with the identity check on and off, and find the smallest set of layers that stops five of the six attacks.',
